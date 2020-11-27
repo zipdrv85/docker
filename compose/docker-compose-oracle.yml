@@ -30,19 +30,20 @@ services:
     depends_on:
       - db
   db:
-      image: postgres:13-alpine
-      #build:
-        #context: ../db/postgres/
-        #dockerfile: Dockerfile
-      container_name: postgresHA-database
+      #image: jaspeen/oracle-11g
+      #image: jaspeen/oracle-xe-11g
+      build:
+        context: ../db/oracle/
+        dockerfile: Dockerfile
+      container_name: oracleHA-database
       restart: always 
-      environment:
-        - POSTGRES_PASSWORD=#Inzent@2020
+      env_file:
+        - ../edm/edm.oracle.env
       volumes:
-        - postgres13HA:/var/lib/postgresql/data
-        - ../db/postgres/script:/docker-entrypoint-initdb.d
+        - oraclexe11gHA:/u01/app/oracle
+        - ../db/oracle/script:/docker-entrypoint-initdb.d
       ports:
-        - "7181:5432"
+        - "7190:1521"
   nginx:
     image: nginx
     ports:
@@ -53,9 +54,9 @@ services:
       - db
 
 volumes:
-  postgres13HA:
-    driver: local
-    driver_opts:
-      type: none
-      device: /docker/db/postgres13/data
-      o: bind
+  oraclexe11gHA:
+    #driver: local
+    #driver_opts:
+      #type: none
+      #device: /docker/db/postgres13/data
+      #o: bind

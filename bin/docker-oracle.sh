@@ -4,7 +4,7 @@ case "$1" in
     'start')  # Start docker postgres
 	echo "Starting Docker PostgresHA Service...: "
 	
-	docker-compose -f ../compose/docker-compose-postgres.yml up --build -d
+	docker-compose -f ../compose/docker-compose-oracle.yml up --build -d
 	
 	RVAL=$?
 	echo $RVAL
@@ -14,7 +14,7 @@ case "$1" in
     'stop')   # Stop docker postgres
 	echo "Stop Docker PostgresHA Service...: "
 	
-	docker-compose -f ../compose/docker-compose-postgres.yml down
+	docker-compose -f ../compose/docker-compose-oracle.yml down
 	
 	exit $RVAL
 	;;
@@ -22,7 +22,7 @@ case "$1" in
     'restart')   # Stop docker postgres
 	echo "Restarting Docker PostgresHA Service...: "
 
-	docker-compose -f ../compose/docker-compose-postgres.yml restart -d
+	docker-compose -f ../compose/docker-compose-oracle.yml restart -d
 
 	RVAL=$?
 	echo $RVAL
