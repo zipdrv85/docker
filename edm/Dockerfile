@@ -1,9 +1,12 @@
 FROM java:openjdk-8-jdk-alpine
 
-RUN apk --no-cache add tzdata && cp /usr/share/zoneinfo/Asia/Seoul /etc/localtime
+RUN echo -e "https://alpine.global.ssl.fastly.net/alpine/v3.11/main\nhttps://alpine.global.ssl.fastly.net/alpine/v3.11/community\n" > /etc/apk/repositories
+RUN echo -e "http://nl.alpinelinux.org/alpine/latest-stable/community\n" > /etc/apk/repositories 
+RUN echo -e "http://nl.alpinelinux.org/alpine/latest-stable/main\n" > /etc/apk/repositories
 RUN apk update
 RUN apk add vim
 RUN apk add p7zip
+RUN apk --no-cache add tzdata && cp /usr/share/zoneinfo/Asia/Seoul /etc/localtime
 
 ENV PORT_NUMBER $PORT_NUMBER
 ENV PROFILE $PROFILE
@@ -18,8 +21,8 @@ ENV HIBERNATE_DIALECT $HIBERNATE_DIALECT
 ENV CLASSPATH $CLASSPATH
 
 WORKDIR /app
-COPY release.7z .
-RUN 7za -y x release.7z
+COPY release.tar .
+RUN tar xvf release.tar
 RUN mv release xedrm60
 RUN sed -i -e 's/\r$//' xedrm60/bin/xedrmctl
 RUN sed -i -e 's/\r$//' xedrm60/bin/env.sh

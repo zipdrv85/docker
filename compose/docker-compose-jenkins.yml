@@ -1,0 +1,12 @@
+version: "3"
+
+services:
+  jenkins: # 서비스명
+    image: jenkins/jenkins:lts # 이미지, 태그
+    #build:
+      #context: ../jenkins/
+      #dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - /jenkins:/var/jenkins_home

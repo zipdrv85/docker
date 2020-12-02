@@ -3,7 +3,7 @@
 version: "3"
 
 services:
-  edm-app-1: # 서비스명
+  edm-app-1-oracle: # 서비스명
     #image: zipdrv/edm60:6.1.0.1 # 이미지, 태그
     build:
       context: ../edm/
@@ -11,12 +11,12 @@ services:
     ports:
       - "7180:7080"
     volumes:
-      - /docker/service/postEdmHA/data:/app/xedrm60/data
+      - /home/whchoi/repo/oraEdmHA/data:/app/xedrm60/data
     env_file:
-      - ../edm/edm.postgres.env
+      - ../edm/edm.oracle.env
     depends_on:
-      - db
-  edm-app2-1: # 서비스명
+      - db-oracle
+  edm-app2-1-oracle: # 서비스명
     #image: zipdrv/edm60:6.1.0.1 # 이미지, 태그
     build:
       context: ../edm/
@@ -24,12 +24,12 @@ services:
     ports:
       - "7184:7080"
     env_file:
-      - ../edm/edm.postgres.env
+      - ../edm/edm.oracle.env
     volumes:
-      - /docker/service/postEdmHA/data:/app/xedrm60/data
+      - /home/whchoi/repo/oraEdmHA/data:/app/xedrm60/data
     depends_on:
-      - db
-  db:
+      - db-oracle
+  db-oracle:
       #image: jaspeen/oracle-11g
       #image: jaspeen/oracle-xe-11g
       build:
@@ -44,14 +44,15 @@ services:
         - ../db/oracle/script:/docker-entrypoint-initdb.d
       ports:
         - "7190:1521"
-  nginx:
+  nginxHA-oracle:
     image: nginx
     ports:
       - "7183:80"
     volumes:
-      - ../nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ../nginx/nginx.oracle.conf:/etc/nginx/nginx.conf
     depends_on:
-      - db
+      - edm-app2-1-oracle
+      - edm-app-1-oracle
 
 volumes:
   oraclexe11gHA:

@@ -115,12 +115,12 @@ BEGIN
 				where
 				   rownum <=
 				   to_date(SYSDATE ,'yyyy-mm-dd')-to_date(SYSDATE - p_before_day,'yyyy-mm-dd')+1
-
+							
 					)  gs
 				left outer join XEDRM5.sw_work sw
 				on gs.work_day = sw.work_day
 				left outer join XEDRM5.sw_go_out sgo
-				on sw.work_day = sgo.work_day and sw.user_id = sgo.user_id
+				on sw.work_day = sgo.work_day and sw.user_id = sgo.user_id 
 				and (sgo.tag is null or sgo.tag ='Y')
 				and (sgo.type like 'A0904%' or sgo.type is null)
 				where sw.user_id is not null
@@ -133,20 +133,20 @@ BEGIN
         and sw.work_day = B.work_day
         )
         WHEN MATCHED THEN
-    UPDATE SET 		real_working_time =
-            case when (sw.work_day = B.work_day and B.goout_time is not null and sw.user_id=B.user_id)
-                then case when (real_end_cputime - real_start_cputime)/60 - B.goout_time > 0  then (real_end_cputime - real_start_cputime)/60 - B.goout_time
-                else 0
-                end
+    UPDATE SET 		real_working_time = 
+            case when (sw.work_day = B.work_day and B.goout_time is not null and sw.user_id=B.user_id) 
+                then case when (real_end_cputime - real_start_cputime)/60 - B.goout_time > 0  then (real_end_cputime - real_start_cputime)/60 - B.goout_time 
+                else 0 
+                end 
             else (real_end_cputime - real_start_cputime)/60
             end
     ;
 
 	-- 실제 미인정 외출 시간 갱신
-    MERGE INTO XEDRM5.sw_work A
-    USING
+    MERGE INTO sw_work A
+    USING 
             (
-            select sw_go_out.user_id, sw_go_out.work_day, sum(sw_go_out.goout_time) as goout_time
+            select sw_go_out.user_id, sw_go_out.work_day, sum(sw_go_out.goout_time) as goout_time 
             from XEDRM5.sw_go_out
             inner join XEDRM5.sw_work
             on sw_work.user_id = sw_go_out.user_id and sw_work.work_day = sw_go_out.work_day
@@ -164,7 +164,7 @@ BEGIN
 ;
 	
 	-- insert stat
-    MERGE INTO XEDRM5.sw_work_week a
+    MERGE INTO sw_work_week a
     USING (
           SELECT
               h.user_id   AS user_id,

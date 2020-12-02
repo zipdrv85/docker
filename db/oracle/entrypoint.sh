@@ -5,17 +5,21 @@ chown -R oracle:dba /u01/app/oracle
 rm -f /u01/app/oracle/product
 ln -s /u01/app/oracle-product /u01/app/oracle/product
 
-
+export CHARACTER_SET="AL32UTF8"
+echo "CHARACTER_SET=AL32UTF8"
 
 if [ -z "$CHARACTER_SET" ]; then
 	if [ "${USE_UTF8_IF_CHARSET_EMPTY}" == "true" ]; then
 		export CHARACTER_SET="AL32UTF8"
+		#export CHARACTER_SET="KO16MSWIN949"
+		#echo "CHARACTER_SET=KO16MSWIN949"
 	fi
 fi
 
 if [ -n "$CHARACTER_SET" ]; then
 	export CHARSET_MOD="NLS_LANG=.$CHARACTER_SET"
 	export CHARSET_INIT="-characterSet $CHARACTER_SET"
+	echo "CHARSET_INIT=-characterSet $CHARACTER_SET"
 fi
 
 # Update hostname
@@ -49,6 +53,7 @@ case "$1" in
 			ln -s /u01/app/oracle/dbs /u01/app/oracle-product/11.2.0/xe/dbs
 
 			#Setting up processes, sessions, transactions.
+			echo "Setting up processes, sessions, transactions."
 			sed -i -E "s/processes=[^)]+/processes=$processes/g" /u01/app/oracle/product/11.2.0/xe/config/scripts/init.ora
 			sed -i -E "s/processes=[^)]+/processes=$processes/g" /u01/app/oracle/product/11.2.0/xe/config/scripts/initXETemp.ora
 			
@@ -90,6 +95,9 @@ case "$1" in
 			echo
 		fi
 
+                echo "oracle user password settings ================================================================== $JDBC_USERNAME"
+                echo "oracle user password settings ================================================================== $JDBC_PASSWORD"
+                /setUserPassword.sh $JDBC_USERNAME '$JDBC_PASSWORD'
 
 		echo "Database ready to use. Enjoy! ;)"
 

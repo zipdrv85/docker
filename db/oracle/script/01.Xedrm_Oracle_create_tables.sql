@@ -2,12 +2,12 @@
 --  DDL for Sequence ES_STICK
 --------------------------------------------------------
 
-   CREATE SEQUENCE  XEDRM5.ES_STICK  MINVALUE 0 MAXVALUE 1295 INCREMENT BY 1 START WITH 646 NOCACHE  NOORDER  CYCLE;
+   CREATE SEQUENCE XEDRM5.ES_STICK  MINVALUE 0 MAXVALUE 1295 INCREMENT BY 1 START WITH 646 NOCACHE  NOORDER  CYCLE;
 --------------------------------------------------------
 --  DDL for Table ASYSCONTENTELEMENT
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ASYSCONTENTELEMENT
+  CREATE TABLE XEDRM5.ASYSCONTENTELEMENT 
    (	ELEMENTID CHAR(16), 
 	VOLUMEID CHAR(16), 
 	FILEKEY VARCHAR2(64), 
@@ -26,7 +26,7 @@
 --  DDL for Table ASYSELEMENT
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ASYSELEMENT
+  CREATE TABLE XEDRM5.ASYSELEMENT 
    (	ELEMENTID CHAR(16), 
 	DESCR VARCHAR2(4000), 
 	USERSCLASS CHAR(16), 
@@ -63,7 +63,7 @@
 --  DDL for Table ASYSELEMENTATTR
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ASYSELEMENTATTR
+  CREATE TABLE XEDRM5.ASYSELEMENTATTR 
    (	ELEMENTID CHAR(16), 
 	ATTRNAME VARCHAR2(64), 
 	ATTRVALUE VARCHAR2(4000), 
@@ -79,7 +79,7 @@
 --  DDL for Table ASYSVOLUME
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ASYSVOLUME
+  CREATE TABLE XEDRM5.ASYSVOLUME 
    (	VOLUMEID CHAR(16), 
 	DESCR VARCHAR2(64), 
 	MAXSPACE NUMBER(14,0), 
@@ -98,7 +98,7 @@
 --  DDL for Table COM_WORKFLOW_ITEM
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.COM_WORKFLOW_ITEM
+  CREATE TABLE XEDRM5.COM_WORKFLOW_ITEM 
    (	ITEM_IDX NUMBER(5,0), 
 	ITEM_NM VARCHAR2(64), 
 	CHG_ID VARCHAR2(256), 
@@ -112,7 +112,7 @@
 --  DDL for Table COM_WORKFLOW_LIST
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.COM_WORKFLOW_LIST
+  CREATE TABLE XEDRM5.COM_WORKFLOW_LIST 
    (	ITEM_IDX NUMBER(5,0), 
 	LIST_IDX NUMBER(5,0), 
 	WORKFLOW_CL VARCHAR2(32), 
@@ -125,7 +125,7 @@
 --  DDL for Table ES_ADHOCAUTH
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_ADHOCAUTH
+  CREATE TABLE XEDRM5.ES_ADHOCAUTH 
    (	ELEMENTID CHAR(16), 
 	USERROLE VARCHAR2(256), 
 	PRIVILEGE NUMBER, 
@@ -139,7 +139,7 @@
 --  DDL for Table ES_ADMINMENU
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_ADMINMENU
+  CREATE TABLE XEDRM5.ES_ADMINMENU 
    (	ES_ID NUMBER(19,0), 
 	ES_LASTMODIFIED TIMESTAMP (6), 
 	ES_DELETED NUMBER(*,0), 
@@ -154,7 +154,7 @@
 --  DDL for Table ES_AUDIT
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_AUDIT
+  CREATE TABLE XEDRM5.ES_AUDIT 
    (	ES_TYPE NUMBER(*,0), 
 	ES_TARGETID VARCHAR2(20), 
 	ES_PARENTID VARCHAR2(20), 
@@ -166,7 +166,7 @@
 --  DDL for Table ES_BOOKMARK
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_BOOKMARK
+  CREATE TABLE XEDRM5.ES_BOOKMARK 
    (	ES_ID NUMBER(19,0), 
 	ES_LASTMODIFIED TIMESTAMP (6), 
 	ES_DELETED NUMBER(*,0), 
@@ -181,7 +181,7 @@
 --  DDL for Table ES_CODES
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_CODES
+  CREATE TABLE XEDRM5.ES_CODES 
    (	ES_ID NUMBER(19,0), 
 	ES_LASTMODIFIED TIMESTAMP (6), 
 	ES_DELETED NUMBER(*,0), 
@@ -194,7 +194,7 @@
 --  DDL for Table ES_COMMENTS
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_COMMENTS
+  CREATE TABLE XEDRM5.ES_COMMENTS 
    (	COMMENTID NUMBER(19,0), 
 	ELEMENTID CHAR(16), 
 	ES_COMMENT VARCHAR2(4000), 
@@ -209,7 +209,7 @@
 --  DDL for Table ES_DASHBOARD
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_DASHBOARD
+  CREATE TABLE XEDRM5.ES_DASHBOARD 
    (	ES_ID NUMBER(19,0), 
 	ES_DELETED NUMBER(*,0), 
 	ES_USERID VARCHAR2(20), 
@@ -220,7 +220,7 @@
 --  DDL for Table ES_DASHBOARDWIDGET
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_DASHBOARDWIDGET
+  CREATE TABLE XEDRM5.ES_DASHBOARDWIDGET 
    (	ES_WIDGETTYPE VARCHAR2(64), 
 	ES_WIDGETNAME VARCHAR2(64), 
 	ES_WIDGETICON VARCHAR2(64), 
@@ -233,7 +233,7 @@
 --  DDL for Table ES_DELEGATION
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_DELEGATION
+  CREATE TABLE XEDRM5.ES_DELEGATION 
    (	ES_ID NUMBER(19,0), 
 	ES_LASTMODIFIED TIMESTAMP (6), 
 	ES_DELETED NUMBER(*,0), 
@@ -247,7 +247,7 @@
 --  DDL for Table ES_DOCSTAT
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_DOCSTAT
+  CREATE TABLE XEDRM5.ES_DOCSTAT 
    (	ES_CREATIONDATE CHAR(8), 
 	ES_CREATIONUSERID VARCHAR2(20), 
 	ES_DOCTYPEID NUMBER(19,0), 
@@ -259,7 +259,7 @@
 --  DDL for Table ES_ECLASS
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_ECLASS
+  CREATE TABLE XEDRM5.ES_ECLASS 
    (	ECLASSID CHAR(16), 
 	DESCR VARCHAR2(64), 
 	INTERNALCONTAINER NUMBER(*,0), 
@@ -271,7 +271,7 @@
 --  DDL for Table ES_ECLASSATTRIBUTE
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_ECLASSATTRIBUTE
+  CREATE TABLE XEDRM5.ES_ECLASSATTRIBUTE 
    (	ECLASSID CHAR(16), 
 	ATTRNAME VARCHAR2(64), 
 	ATTRVALUE VARCHAR2(255)
@@ -280,7 +280,7 @@
 --  DDL for Table ES_GENERIC
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_GENERIC
+  CREATE TABLE XEDRM5.ES_GENERIC 
    (	ES_ID NUMBER(19,0), 
 	ES_LASTMODIFIED TIMESTAMP (6), 
 	ES_DELETED NUMBER(*,0), 
@@ -302,7 +302,7 @@
 --  DDL for Table ES_HISTORY
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_HISTORY
+  CREATE TABLE XEDRM5.ES_HISTORY 
    (	ES_ID NUMBER(19,0), 
 	ES_LASTMODIFIED TIMESTAMP (6), 
 	ES_DELETED NUMBER(*,0), 
@@ -347,7 +347,7 @@
 --  DDL for Table ES_KEYWORD
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_KEYWORD
+  CREATE TABLE XEDRM5.ES_KEYWORD 
    (	ELEMENTID CHAR(16), 
 	ECLASSID CHAR(16), 
 	TYPE NUMBER(19,0), 
@@ -357,7 +357,7 @@
 --  DDL for Table ES_LISTITEMS
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_LISTITEMS
+  CREATE TABLE XEDRM5.ES_LISTITEMS 
    (	ID VARCHAR2(36), 
 	NAME VARCHAR2(256), 
 	SEQ NUMBER(*,0), 
@@ -367,7 +367,7 @@
 --  DDL for Table ES_MENU
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_MENU
+  CREATE TABLE XEDRM5.ES_MENU 
    (	ES_ID VARCHAR2(20), 
 	ES_TITLE VARCHAR2(255), 
 	ES_PARENTID VARCHAR2(20), 
@@ -380,7 +380,7 @@
 --  DDL for Table ES_MENURIGHTS
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_MENURIGHTS
+  CREATE TABLE XEDRM5.ES_MENURIGHTS 
    (	ES_MENUID NUMBER(19,0), 
 	ES_SECURITYREF NUMBER(19,0)
    )TABLESPACE "XEDRM5_TABLESPACE";
@@ -388,7 +388,7 @@
 --  DDL for Table ES_MENU_UUID
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_MENU_UUID
+  CREATE TABLE XEDRM5.ES_MENU_UUID 
    (	ES_MENUID VARCHAR2(20), 
 	ES_USER_OR_GROUP_ID VARCHAR2(36), 
 	ES_USER_OR_GROUP_TYPE VARCHAR2(36)
@@ -397,7 +397,7 @@
 --  DDL for Table ES_RECIPIENT
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_RECIPIENT
+  CREATE TABLE XEDRM5.ES_RECIPIENT 
    (	ES_MESSAGEID NUMBER(19,0), 
 	ES_NAME VARCHAR2(255), 
 	ES_ADDRESS VARCHAR2(255), 
@@ -409,7 +409,7 @@
 --  DDL for Table ES_REWRITE
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_REWRITE
+  CREATE TABLE XEDRM5.ES_REWRITE 
    (	ES_ID NUMBER(19,0), 
 	ES_DELETED NUMBER(*,0), 
 	ES_AUTHORID VARCHAR2(20), 
@@ -433,7 +433,7 @@
 --  DDL for Table ES_REWRITECC
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_REWRITECC
+  CREATE TABLE XEDRM5.ES_REWRITECC 
    (	ES_REWRITEID NUMBER(19,0), 
 	ES_REWRITERCCID VARCHAR2(20)
    )TABLESPACE "XEDRM5_TABLESPACE";
@@ -441,7 +441,7 @@
 --  DDL for Table ES_REWRITEDOC
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_REWRITEDOC
+  CREATE TABLE XEDRM5.ES_REWRITEDOC 
    (	REWRITEID NUMBER(19,0), 
 	ELEMENTID CHAR(16), 
 	VERSION VARCHAR2(20)
@@ -450,7 +450,7 @@
 --  DDL for Table ES_REWRITEPROCESS
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_REWRITEPROCESS
+  CREATE TABLE XEDRM5.ES_REWRITEPROCESS 
    (	ES_REWRITEID NUMBER(19,0), 
 	ES_REWRITERID VARCHAR2(20), 
 	ES_COMMENT VARCHAR2(4000), 
@@ -462,7 +462,7 @@
 --  DDL for Table ES_SEARCHES
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_SEARCHES
+  CREATE TABLE XEDRM5.ES_SEARCHES 
    (	ES_ID NUMBER(19,0), 
 	ES_LASTMODIFIED TIMESTAMP (6), 
 	ES_DELETED NUMBER(*,0), 
@@ -475,7 +475,7 @@
 --  DDL for Table ES_SECUREACCESS
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_SECUREACCESS
+  CREATE TABLE XEDRM5.ES_SECUREACCESS 
    (	SECURECLASSID CHAR(16), 
 	ROLEID CHAR(16), 
 	PRIVILEDGE NUMBER(*,0), 
@@ -486,7 +486,7 @@
 --  DDL for Table ES_SECUREACCESSEXT
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_SECUREACCESSEXT
+  CREATE TABLE XEDRM5.ES_SECUREACCESSEXT 
    (	AUTHMNGRID CHAR(16), 
 	SECURECLASSID CHAR(16), 
 	ROLEID CHAR(32), 
@@ -496,7 +496,7 @@
 --  DDL for Table ES_SECURECLASS
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_SECURECLASS
+  CREATE TABLE XEDRM5.ES_SECURECLASS 
    (	SECURECLASSID CHAR(16), 
 	DESCR VARCHAR2(64), 
 	SECURETYPE NUMBER(*,0), 
@@ -506,7 +506,7 @@
 --  DDL for Table ES_SHARE
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_SHARE
+  CREATE TABLE XEDRM5.ES_SHARE 
    (	ES_ID NUMBER(38,0), 
 	ES_LASTMODIFIED TIMESTAMP (6), 
 	ES_DELETED NUMBER(*,0), 
@@ -523,7 +523,7 @@
 --  DDL for Table ES_SHAREACCESS
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_SHAREACCESS
+  CREATE TABLE XEDRM5.ES_SHAREACCESS 
    (	SHAREID NUMBER(38,0), 
 	ROLEID VARCHAR2(64), 
 	PRIVILEGE VARCHAR2(20)
@@ -532,7 +532,7 @@
 --  DDL for Table ES_STAT
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_STAT
+  CREATE TABLE XEDRM5.ES_STAT 
    (	ES_REGDATE CHAR(8), 
 	ES_EVENT VARCHAR2(255), 
 	ES_DOCTYPEID VARCHAR2(20), 
@@ -544,7 +544,7 @@
 --  DDL for Table ES_SYSMESSAGE
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_SYSMESSAGE
+  CREATE TABLE XEDRM5.ES_SYSMESSAGE 
    (	ES_ID NUMBER(19,0), 
 	ES_LASTMODIFIED TIMESTAMP (6), 
 	ES_DELETED NUMBER(*,0), 
@@ -563,7 +563,7 @@
 --  DDL for Table ES_TEMPLATE
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_TEMPLATE
+  CREATE TABLE XEDRM5.ES_TEMPLATE 
    (	ES_ID NUMBER(19,0), 
 	ES_LASTMODIFIED TIMESTAMP (6), 
 	ES_DELETED NUMBER(*,0), 
@@ -577,7 +577,7 @@
 --  DDL for Table ES_TEMPLATE_EXT
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_TEMPLATE_EXT
+  CREATE TABLE XEDRM5.ES_TEMPLATE_EXT 
    (	ES_TEMPLATEID NUMBER(19,0), 
 	ES_NAME VARCHAR2(255), 
 	ES_LABEL VARCHAR2(255), 
@@ -596,7 +596,7 @@
 --  DDL for Table ES_VERSION
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_VERSION
+  CREATE TABLE XEDRM5.ES_VERSION 
    (	ELEMENTID CHAR(16), 
 	CURRENTVERSION VARCHAR2(64), 
 	CURRENTREVISION VARCHAR2(64), 
@@ -606,7 +606,7 @@
 --  DDL for Table ES_VERSIONELEMENT
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_VERSIONELEMENT
+  CREATE TABLE XEDRM5.ES_VERSIONELEMENT 
    (	ELEMENTID CHAR(16), 
 	COMPELEMENT CHAR(16), 
 	VERSION VARCHAR2(64), 
@@ -616,7 +616,7 @@
 --  DDL for Table ES_VOLUME
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_VOLUME
+  CREATE TABLE XEDRM5.ES_VOLUME 
    (	VOLUMEID CHAR(16), 
 	DESCR VARCHAR2(64), 
 	MAXSPACE NUMBER(14,0), 
@@ -634,7 +634,7 @@
 --  DDL for Table ES_XREF
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.ES_XREF
+  CREATE TABLE XEDRM5.ES_XREF 
    (	ELEMENTID CHAR(16), 
 	ATTACHID CHAR(16), 
 	DESCR VARCHAR2(64), 
@@ -648,7 +648,7 @@
 --  DDL for Table HIBERNATE_UNIQUE_KEY
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.HIBERNATE_UNIQUE_KEY
+  CREATE TABLE XEDRM5.HIBERNATE_UNIQUE_KEY 
    (	TABLENAME VARCHAR2(40), 
 	NEXT_HI NUMBER(19,0)
    )TABLESPACE "XEDRM5_TABLESPACE";
@@ -656,7 +656,7 @@
 --  DDL for Table HT_ASYSELEMENT
 --------------------------------------------------------
 
-  CREATE GLOBAL TEMPORARY TABLE XEDRM5.HT_ASYSELEMENT
+  CREATE GLOBAL TEMPORARY TABLE XEDRM5.HT_ASYSELEMENT 
    (	ELEMENTID VARCHAR2(255 CHAR)
    ) ON COMMIT DELETE ROWS;
    
@@ -665,7 +665,7 @@
 --  DDL for Table POL_CLIENT
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.POL_CLIENT
+  CREATE TABLE XEDRM5.POL_CLIENT 
    (	PROD_NO CHAR(23), 
 	PROD_VER VARCHAR2(16), 
 	MAC_ADDR VARCHAR2(20), 
@@ -701,7 +701,7 @@
 --  DDL for Table POL_LIST
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.POL_LIST
+  CREATE TABLE XEDRM5.POL_LIST 
    (	POLICY_ID VARCHAR2(20), 
 	POLICY_NM VARCHAR2(64), 
 	DESCR VARCHAR2(256), 
@@ -717,7 +717,7 @@
 --  DDL for Table SYS_CODE
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.SYS_CODE
+  CREATE TABLE XEDRM5.SYS_CODE 
    (	CD_ID VARCHAR2(32), 
 	CD_KEY VARCHAR2(64), 
 	CD_KO VARCHAR2(128), 
@@ -748,7 +748,7 @@
 --  DDL for Table SYS_GROUP
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.SYS_GROUP
+  CREATE TABLE XEDRM5.SYS_GROUP 
    (	GROUP_ID VARCHAR2(256), 
 	GROUP_NM VARCHAR2(128), 
 	GROUP_ENM VARCHAR2(128), 
@@ -784,7 +784,7 @@
 --  DDL for Table SYS_GROUP_MANAGER
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.SYS_GROUP_MANAGER
+  CREATE TABLE XEDRM5.SYS_GROUP_MANAGER 
    (	GROUP_ID VARCHAR2(256), 
 	USER_ID VARCHAR2(256)
    )TABLESPACE "XEDRM5_TABLESPACE";
@@ -794,7 +794,7 @@
 --  DDL for Table SYS_GROUP_MEMBER
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.SYS_GROUP_MEMBER
+  CREATE TABLE XEDRM5.SYS_GROUP_MEMBER 
    (	GROUP_ID VARCHAR2(256), 
 	MEMBER_ID VARCHAR2(256), 
 	MEMBER_TYPE NUMBER(38,0) DEFAULT 1, 
@@ -806,7 +806,7 @@
 --  DDL for Table SYS_MENU
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.SYS_MENU
+  CREATE TABLE XEDRM5.SYS_MENU 
    (	"MENU_ID" VARCHAR2(128 BYTE), 
 	"P_MENU_ID" VARCHAR2(128 BYTE), 
 	"MENU_ORDER" NUMBER(3,0), 
@@ -839,7 +839,7 @@
 --  DDL for Table SYS_PGM
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.SYS_PGM
+  CREATE TABLE XEDRM5.SYS_PGM 
    (	PGM_ID VARCHAR2(128), 
 	PGM_TYPE VARCHAR2(16), 
 	RECORD_ADD_YN CHAR(1), 
@@ -883,7 +883,7 @@
 --  DDL for Table SYS_PGM_COLUMN
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.SYS_PGM_COLUMN
+  CREATE TABLE XEDRM5.SYS_PGM_COLUMN 
    (	PGM_ID VARCHAR2(128), 
 	COL_ID VARCHAR2(30), 
 	COL_KO VARCHAR2(512), 
@@ -936,7 +936,7 @@
 --  DDL for Table SYS_PGM_COLUMN_DATA
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.SYS_PGM_COLUMN_DATA
+  CREATE TABLE XEDRM5.SYS_PGM_COLUMN_DATA 
    (	DATA_ID VARCHAR2(64), 
 	DATA_VALUE VARCHAR2(256), 
 	CHG_ID VARCHAR2(256), 
@@ -949,7 +949,7 @@
 --  DDL for Table SYS_TREE_NODE
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.SYS_TREE_NODE
+  CREATE TABLE XEDRM5.SYS_TREE_NODE 
    (	NODE_ID VARCHAR2(128),
    P_NODE_ID VARCHAR2(128),
    NODE_TYPE VARCHAR2(8),
@@ -968,7 +968,7 @@
 --  DDL for Table SYS_USER
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5.SYS_USER
+  CREATE TABLE XEDRM5.SYS_USER 
    (	USER_ID VARCHAR2(256), 
 	USER_NM VARCHAR2(128), 
 	EMAIL VARCHAR2(256), 
@@ -2135,7 +2135,7 @@
 --  Constraints for Table PAT_LIST
 --------------------------------------------------------
 
-  ALTER TABLE XEDRM5.PAT_LIST MODIFY (PATCH_NO NOT NULL ENABLE);
+  ALTER TABLE XEDRM5.PAT_LIST MODIFY (PATCH_NO NOT NULL ENABLE);  
   
   ALTER TABLE XEDRM5.PAT_LIST ADD CONSTRAINT XPK_PAT_LIST PRIMARY KEY (PATCH_NO) ENABLE;
   
@@ -2183,20 +2183,20 @@
 --  20201022: 테스트 데이터 충돌로 인한 제약사항 비활성화
 --------------------------------------------------------
 
---  ALTER TABLE SYS_PGM_COLUMN_DATA ADD CONSTRAINT R_79 FOREIGN KEY (PGM_ID, COL_ID)
---	  REFERENCES SYS_PGM_COLUMN (PGM_ID, COL_ID) ENABLE;
+--  ALTER TABLE XEDRM5.SYS_PGM_COLUMN_DATA ADD CONSTRAINT R_79 FOREIGN KEY (PGM_ID, COL_ID)
+--	  REFERENCES XEDRM5.SYS_PGM_COLUMN (PGM_ID, COL_ID) ENABLE;
 	  
 --------------------------------------------------------
 --  Ref Constraints for Table ES_USER_WIDGET
 --------------------------------------------------------	
 
-  ALTER TABLE XEDRM5.ES_USER_WIDGET ADD CONSTRAINT "ES_USER_WIDGET_PK" PRIMARY KEY ("ES_WIDGETTEXT", "USER_ID") ENABLE;
+  ALTER TABLE XEDRM5.ES_USER_WIDGET ADD CONSTRAINT "ES_USER_WIDGET_PK" PRIMARY KEY ("ES_WIDGETTEXT", "USER_ID") ENABLE;  
   
   ALTER TABLE XEDRM5.ES_USER_WIDGET ADD CONSTRAINT "ES_USER_WIDGET_FK1" FOREIGN KEY ("ES_WIDGETTEXT")
-     REFERENCES XEDRM5."ES_DASHBOARDWIDGET" ("ES_WIDGETTEXT") ON DELETE CASCADE ENABLE;
+     REFERENCES XEDRM5."ES_DASHBOARDWIDGET" ("ES_WIDGETTEXT") ON DELETE CASCADE ENABLE;  
      
   ALTER TABLE XEDRM5.ES_USER_WIDGET ADD CONSTRAINT "ES_USER_WIDGET_FK2" FOREIGN KEY ("USER_ID")
-     REFERENCES XEDRM5."SYS_USER" ("USER_ID") ON DELETE CASCADE ENABLE;
+     REFERENCES XEDRM5."SYS_USER" ("USER_ID") ON DELETE CASCADE ENABLE;  
 
 --------------------------------------------------------
 --  Ref Constraints for Table PAT_OBJECT
@@ -2222,8 +2222,6 @@ CREATE TABLE XEDRM5.sys_user_attr
 
 update XEDRM5.sys_user_attr set	user_id = trim(user_id);
 
-COMMIT;
-
 CREATE INDEX XEDRM5.SYSUA_USERID ON XEDRM5.sys_user_attr (USER_ID) TABLESPACE "XEDRM5_TABLESPACE" ;
 
 --------------------------------------------------------
@@ -2238,7 +2236,7 @@ CREATE INDEX XEDRM5.SYSUA_USERID ON XEDRM5.sys_user_attr (USER_ID) TABLESPACE "X
 --  DDL for Table POL_SCHEDULE
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5."POL_SCHEDULE"
+  CREATE TABLE XEDRM5."POL_SCHEDULE" 
    (	"SCHED_IDX" NUMBER(38,0), 
 	"SCHED_NM" VARCHAR2(128 BYTE), 
 	"SCHED_TYPE" CHAR(4 BYTE), 
@@ -2263,7 +2261,7 @@ CREATE INDEX XEDRM5.SYSUA_USERID ON XEDRM5.sys_user_attr (USER_ID) TABLESPACE "X
 --  DDL for Table POL_APPLY_CLIENT
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5."POL_APPLY_CLIENT"
+  CREATE TABLE XEDRM5."POL_APPLY_CLIENT" 
    (	"POLICY_ID" VARCHAR2(20 BYTE), 
 	"CLIENT_IDX" NUMBER(38,0), 
 	"IP_ADDR" VARCHAR2(40 BYTE), 
@@ -2278,7 +2276,7 @@ CREATE INDEX XEDRM5.SYSUA_USERID ON XEDRM5.sys_user_attr (USER_ID) TABLESPACE "X
 --  DDL for Table POL_APPLY_USER
 --------------------------------------------------------
 
-  CREATE TABLE XEDRM5."POL_APPLY_USER"
+  CREATE TABLE XEDRM5."POL_APPLY_USER" 
    (	"POLICY_ID" VARCHAR2(20 BYTE), 
 	"USER_ID" VARCHAR2(256 BYTE), 
 	"USER_CL" VARCHAR2(8 BYTE), 
@@ -2293,19 +2291,19 @@ CREATE INDEX XEDRM5.SYSUA_USERID ON XEDRM5.sys_user_attr (USER_ID) TABLESPACE "X
 --  DDL for Index XPK_POL_SCHEDULE
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX XEDRM5."XPK_POL_SCHEDULE" ON XEDRM5."POL_SCHEDULE" ("SCHED_IDX") TABLESPACE "XEDRM5_TABLESPACE"
+  CREATE UNIQUE INDEX XEDRM5."XPK_POL_SCHEDULE" ON "POL_SCHEDULE" ("SCHED_IDX") TABLESPACE "XEDRM5_TABLESPACE"
   ;
 --------------------------------------------------------
 --  DDL for Index XPK_POL_APPLY_CLIENT
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX XEDRM5."XPK_POL_APPLY_CLIENT" ON XEDRM5."POL_APPLY_CLIENT" ("CLIENT_IDX") TABLESPACE "XEDRM5_TABLESPACE"
+  CREATE UNIQUE INDEX XEDRM5."XPK_POL_APPLY_CLIENT" ON "POL_APPLY_CLIENT" ("CLIENT_IDX") TABLESPACE "XEDRM5_TABLESPACE"
   ;
 --------------------------------------------------------
 --  DDL for Index XPK_POL_APPLY_USER
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX XEDRM5."XPK_POL_APPLY_USER" ON XEDRM5."POL_APPLY_USER" ("USER_CL", "USER_ID") TABLESPACE "XEDRM5_TABLESPACE"
+  CREATE UNIQUE INDEX XEDRM5."XPK_POL_APPLY_USER" ON "POL_APPLY_USER" ("USER_CL", "USER_ID") TABLESPACE "XEDRM5_TABLESPACE"
   ;
 
 --------------------------------------------------------
