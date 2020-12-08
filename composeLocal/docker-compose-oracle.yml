@@ -1,0 +1,62 @@
+# docker-compose.yml
+
+version: "3"
+
+services:
+  #edm-app-1-oracle: # 서비스명
+    #image: zipdrv/edm60:6.1.0.1 # 이미지, 태그
+    #build:
+      #context: ../edm/
+      #dockerfile: Dockerfile
+    #ports:
+      #- "7180:7080"
+    #volumes:
+      #- /home/whchoi/repo/oraEdmHA/data:/app/xedrm60/data
+    #env_file:
+      #- ../edm/edm.oracle.env
+    #depends_on:
+      #- db-oracle
+  #edm-app2-1-oracle: # 서비스명
+    #image: zipdrv/edm60:6.1.0.1 # 이미지, 태그
+    #build:
+      #context: ../edm/
+      #dockerfile: Dockerfile
+    #ports:
+      #- "7184:7080"
+    #env_file:
+      #- ../edm/edm.oracle.env
+    #volumes:
+      #- /home/whchoi/repo/oraEdmHA/data:/app/xedrm60/data
+    #depends_on:
+      #- db-oracle
+  db-oracle:
+      #image: jaspeen/oracle-11g
+      #image: jaspeen/oracle-xe-11g
+      build:
+        context: ../db/oracle/
+        dockerfile: Dockerfile
+      container_name: oracleHA-database
+      restart: always 
+      env_file:
+        - ../edm/edm.oracle.env
+      volumes:
+        - oraclexe11gHA:/u01/app/oracle
+        - ../db/oracle/script:/docker-entrypoint-initdb.d
+      ports:
+        - "7190:1521"
+  nginxHA-oracle:
+    image: nginx
+    ports:
+      - "7183:80"
+    volumes:
+      - ../nginxLocal/nginx.oracle.conf:/etc/nginx/nginx.conf
+    depends_on:
+      - db-oracle
+
+volumes:
+  oraclexe11gHA:
+    #driver: local
+    #driver_opts:
+      #type: none
+      #device: /docker/db/postgres13/data
+      #o: bind

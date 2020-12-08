@@ -1,8 +1,5 @@
 --Insert into SYS_MENU (MENU_ID,P_MENU_ID,MENU_ORDER,DESCR,MENU_URL,USE_YN,REG_ID,CHG_ID,S1,S2,S3,S4,S5,L1,L2,MENU_KO,ICON_URL,MENU_WIDTH,MENU_EN,MENU_ZH,MENU_JA,ICON_TYPE,ACCESS_LEVEL) values ('SMARTWORK52','ROOT',90,null,null,'N','admin','admin',null,null,null,null,null,null,null,'스마트워크52','icon-3.png',null,'Smartwork 52',null,null,'IMG',null);
-
-
-INSERT INTO saas_tenant (tenant_type,url,username,passwd,tenant_id,demo_start_date,demo_end_date,volume_size,users_limit,nonfree_start_date,nonfree_end_date,subscription,user_id,active_yn,company_id,payment_id,disable_dt,reg_dt,chg_dt) VALUES ('NONE','','','','public','2019-12-24','2020-01-23',NULL,300,NULL,NULL,'enterprise','o','y','c2019122410120769753',NULL,NULL,'2019-12-24 10:12:07.697','2019-12-24 10:12:07.696');
-;
+INSERT INTO saas_tenant (tenant_type,url,username,passwd,tenant_id,demo_start_date,demo_end_date,volume_size,users_limit,nonfree_start_date,nonfree_end_date,subscription,user_id,active_yn,company_id,payment_id,disable_dt,reg_dt,chg_dt) VALUES ('NONE','','','','public','2019-12-24','2020-01-23',NULL,300,NULL,NULL,'enterprise','o','y','c2019122410120769753',NULL,NULL,CURRENT_TIMESTAMP,CURRENT_TIMESTAMP);
 
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A0604','퇴근','A06',1,'Y','','','','A0604','Work Off');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A010201','연차','A0102',1,'Y','','','','A010201','Closed');
@@ -14,7 +11,7 @@ INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,c
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A010107','직출','A0101',7,'Y','','','','A010107','직출');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A0704','해지','A07',4,'Y','','','','A0704','Termination');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A0705','비밀번호 찾기','A07',5,'Y','','','','A0705','Find Password');
-;
+
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A0805','발송 완료','A08',1,'Y','','','','A0805','Send Completed');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A010208','포상휴가','A0102',8,'Y','','','','A010208','포상휴가');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A010604','근무지 정정','A0106',1,'Y','','','','A010604','Workplace modification');
@@ -25,7 +22,7 @@ INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,c
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A04','유저상태','A',1,'Y','','','','A04','	유저 상태');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A0503','근무지 추가','A05',1,'Y','','','','A0503','근무지 추가');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A010601','근무 정책 정정','A0106',1,'Y','','','','A010601','Work policy modification');
-;
+
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A0701','관리자가입','A07',1,'Y','','','','A0701','Admin Registration');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A0702','구성원 초대','A07',2,'Y','','','','A0702','Member Invitation');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A0703','만기안내','A07',3,'Y','','','','A0703','Expiration Info.');
@@ -36,7 +33,7 @@ INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,c
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A','SW52H','-1',1,'Y','','','','','');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A010206','산전후휴가','A0102',6,'Y','','','','A010206','산전후휴가');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('P0118','6급','P01',18,'Y','','','','P0118','6급');
-;
+
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('P0120','촉탁','P01',18,'Y','','','','P0120','촉탁');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('P0103','사장','P01',3,'Y','','','','P0103','사장');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('P0106','상무','P01',6,'Y','','','','P0106','상무');
@@ -47,7 +44,7 @@ INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,c
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A010108','복직','A0101',8,'N','','','','A010108','복직');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A010109','징검다리근무','A0101',9,'N','','','','A010109','징검다리근무');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('P0116','4급','P01',18,'Y','','','','P0118','6급');
-;
+
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A0107','기기 초기화','A01',5,'Y','','','','A0105','Initialize Device');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A09','현재상태','A',1,'Y','','','','A09','Presence');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A0602','화장실','A06',1,'Y','','','','A0602','화장실');
@@ -58,7 +55,7 @@ INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,c
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A0203','완료','A02',3,'Y','','','','A0203','완료');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A0305','재량 근로시간제','A03',5,'Y','','','','A0305','재량 근로시간제');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('P0112','차장','P01',12,'Y','','','','P0112','차장');
-;
+
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A08','이메일 상태','A',1,'Y','','','','A08','Email Status');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A010204','경조휴가','A0102',4,'Y','','','','A010204','경조휴가');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A0502','직원요청','A05',1,'Y','','','','A0502','직원 요청');
@@ -69,7 +66,7 @@ INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,c
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('P0117','5급','P01',17,'Y','','','','P0117','5급');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A0202','승인대기','A02',2,'Y','','','','A0202','Standby for approval');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A0201','진행 중','A02',1,'Y','','','','A0201','진행 중');
-;
+
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A010203','반차(오후)','A0102',3,'Y','','','','A010203','반차(오후)');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A0804','발송 오류','A08',1,'Y','','','','A0804','Send Error');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A010104','교육','A0101',4,'Y','','','','A010104','교육');
@@ -80,7 +77,7 @@ INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,c
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('P0101','회장','P01',1,'Y','','','','P0101','회장');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A0903','외근','A09',1,'Y','N','','','A0903','Presence');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('P0110','수석부장','P01',10,'Y','','','','P0110','수석부장');
-;
+
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A010602','출퇴근 시간 정정','A0106',1,'Y','','','','A010602','Off work modification');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A0904','휴식','A09',1,'Y','Y','','','A0904','Presence');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A0401','활성','A04',1,'Y','','','','A04','Activation');
@@ -91,7 +88,7 @@ INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,c
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A0402','비활성','A04',1,'Y','','','','A04','Inactive');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A03','근로시간제 분류','A',1,'Y','','','','A03','근로시간제 분류');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A0706','회원 가입','A07',6,'Y','','','','A0706','Member Registration');
-;
+
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A0303','선택적 근로시간제','A03',3,'Y','','','','A0303','선택적 근로시간제');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A010205','보건휴가','A0102',5,'Y','','','','A010205','보건휴가');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('P01','직위','A',1,'Y','','','','P01','position');
@@ -102,7 +99,7 @@ INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,c
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A0603','흡연','A06',1,'Y','','','','A0603','흡연');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A02','결재 상태','A',2,'Y','','','','A02','결재 상태');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A0106','정정','A01',6,'Y','','','','A0106','Modification');
-;
+
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('P0104','부사장','P01',4,'Y','','','','P0104','부사장');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A0901','근무 중','A09',1,'Y','Y','','','A0901','Presence');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A0906','출근 전','A09',1,'Y','N',NULL,NULL,'A0906','Before working');
@@ -113,7 +110,7 @@ INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,c
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A0104','외근','A01',4,'N','','','','A0104','Outing');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A0907','미출근','A09',NULL,'N','N',NULL,NULL,'A0907','Not going to work');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A0908','퇴근 기록 누락','A09',NULL,'Y','N',NULL,NULL,'A09','Missing off record');
-;
+
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A0909','결근','A09',NULL,'Y','N',NULL,NULL,'A0909','Absent');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A090501','회의','A0905',1,'Y','Y','','','A090501','Presence');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A090401','외출','A0904',1,'Y','N','','','A090401','Presence');
@@ -124,10 +121,8 @@ INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,c
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A090409','휴식','A0904',1,'Y','Y','','','A090409','Presence');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A0108','휴일','A01',7,'Y',NULL,NULL,NULL,'A0108','Holiday');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A010801','공휴일','A0108',1,'Y',NULL,NULL,NULL,'A010801','Public Holiday');
-;
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A090502','외근','A0905',1,'Y','Y','','','A090502','Presence');
 INSERT INTO sw_code (code_id,code_name,parent_code,code_order,use_yn,code_ref1,code_ref2,code_ref3,code_key,code_enm) VALUES ('A0910','자리비움(인정,비인정)-UI용','A09',1,'Y',NULL,NULL,NULL,'A0910','Away');
-;
 
 INSERT INTO sw_company (company_id,company_name,homepage,address,tel,enabled,employee_num,ceo_name,off_work_image,policy_id,agt_include_process,agt_exclude_process,agt_log_upload_type,work_place_id,wizard_step,sw52_gps_check_yn) VALUES ('public','','http://','서울',NULL,'Y',NULL,'',NULL,'P2019103017443850355',NULL,NULL,NULL,'COMPANY',NULL,NULL);
 

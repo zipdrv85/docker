@@ -104,7 +104,7 @@ create or replace PROCEDURE XEDRM5.WORK_STATISTIC
 AS
 BEGIN 
  -- 실제 근무 시간 갱신 
-	MERGE INTO sw_work  sw
+	MERGE INTO XEDRM5.sw_work  sw
     USING(
     		select sw.user_id, sw.work_day as work_day, sum(sgo.goout_time) as goout_time from 
 			( 
@@ -143,7 +143,7 @@ BEGIN
     ;
 
 	-- 실제 미인정 외출 시간 갱신
-    MERGE INTO sw_work A
+    MERGE INTO XEDRM5.sw_work A
     USING 
             (
             select sw_go_out.user_id, sw_go_out.work_day, sum(sw_go_out.goout_time) as goout_time 

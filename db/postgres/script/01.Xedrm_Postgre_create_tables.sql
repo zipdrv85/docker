@@ -1,4 +1,7 @@
-CREATE SEQUENCE ES_STICK MINVALUE 0 MAXVALUE 1295 START 1 INCREMENT 1 CYCLE;
+CREATE SEQUENCE ES_STICK MINVALUE 0 MAXVALUE 1295 START WITH 1 INCREMENT BY 1 CYCLE;
+grant select on sequence ES_STICK to XEDRM5;
+grant usage on sequence ES_STICK to XEDRM5; 
+grant update on sequence ES_STICK to XEDRM5;
 
 CREATE TABLE public.asyscontentelement (
     elementid character(16) NOT NULL,
@@ -17,7 +20,7 @@ CREATE TABLE public.asyscontentelement (
 );
 
 
-
+ALTER TABLE public.asyscontentelement OWNER TO XEDRM5;
 
 --
 -- TOC entry 197 (class 1259 OID 16779)
@@ -59,7 +62,7 @@ CREATE TABLE public.asyselement (
 );
 
 
-
+ALTER TABLE public.asyselement OWNER TO XEDRM5;
 
 --
 -- TOC entry 198 (class 1259 OID 16787)
@@ -80,7 +83,7 @@ CREATE TABLE public.asyselementattr (
 );
 
 
-
+ALTER TABLE public.asyselementattr OWNER TO XEDRM5;
 
 -- 20200910
 --
@@ -98,7 +101,7 @@ CREATE TABLE public.com_workflow_item (
 );
 
 
-
+ALTER TABLE public.com_workflow_item OWNER TO XEDRM5;
 
 -- 20200910
 --
@@ -117,7 +120,7 @@ CREATE TABLE public.com_workflow_list (
 );
 
 
-
+ALTER TABLE public.com_workflow_list OWNER TO XEDRM5;
 
 --
 -- TOC entry 202 (class 1259 OID 16809)
@@ -136,7 +139,7 @@ CREATE TABLE public.es_adhocauth (
 );
 
 
-
+ALTER TABLE public.es_adhocauth OWNER TO XEDRM5;
 
 --
 -- TOC entry 203 (class 1259 OID 16812)
@@ -156,7 +159,7 @@ CREATE TABLE public.es_adminmenu (
 );
 
 
-
+ALTER TABLE public.es_adminmenu OWNER TO XEDRM5;
 
 --
 -- TOC entry 204 (class 1259 OID 16818)
@@ -173,7 +176,7 @@ CREATE TABLE public.es_audit (
 );
 
 
-
+ALTER TABLE public.es_audit OWNER TO XEDRM5;
 
 --
 -- TOC entry 205 (class 1259 OID 16824)
@@ -193,7 +196,7 @@ CREATE TABLE public.es_bookmark (
 );
 
 
-
+ALTER TABLE public.es_bookmark OWNER TO XEDRM5;
 
 --
 -- TOC entry 206 (class 1259 OID 16830)
@@ -211,7 +214,7 @@ CREATE TABLE public.es_codes (
 );
 
 
-
+ALTER TABLE public.es_codes OWNER TO XEDRM5;
 
 --
 -- TOC entry 207 (class 1259 OID 16836)
@@ -231,7 +234,7 @@ CREATE TABLE public.es_comments (
 );
 
 
-
+ALTER TABLE public.es_comments OWNER TO XEDRM5;
 
 --
 -- TOC entry 208 (class 1259 OID 16842)
@@ -247,7 +250,7 @@ CREATE TABLE public.es_dashboard (
 );
 
 
-
+ALTER TABLE public.es_dashboard OWNER TO XEDRM5;
 
 --
 -- TOC entry 209 (class 1259 OID 16845)
@@ -265,7 +268,7 @@ CREATE TABLE public.es_dashboardwidget (
 );
 
 
-
+ALTER TABLE public.es_dashboardwidget OWNER TO XEDRM5;
 
 --
 -- TOC entry 210 (class 1259 OID 16848)
@@ -284,7 +287,7 @@ CREATE TABLE public.es_delegation (
 );
 
 
-
+ALTER TABLE public.es_delegation OWNER TO XEDRM5;
 
 --
 -- TOC entry 211 (class 1259 OID 16854)
@@ -301,7 +304,7 @@ CREATE TABLE public.es_docstat (
 );
 
 
-
+ALTER TABLE public.es_docstat OWNER TO XEDRM5;
 
 --
 -- TOC entry 212 (class 1259 OID 16860)
@@ -318,7 +321,7 @@ CREATE TABLE public.es_eclass (
 );
 
 
-
+ALTER TABLE public.es_eclass OWNER TO XEDRM5;
 
 --
 -- TOC entry 213 (class 1259 OID 16863)
@@ -332,7 +335,7 @@ CREATE TABLE public.es_eclassattribute (
 );
 
 
-
+ALTER TABLE public.es_eclassattribute OWNER TO XEDRM5;
 
 --
 -- TOC entry 214 (class 1259 OID 16866)
@@ -359,7 +362,7 @@ CREATE TABLE public.es_generic (
 );
 
 
-
+ALTER TABLE public.es_generic OWNER TO XEDRM5;
 
 --
 -- TOC entry 215 (class 1259 OID 16879)
@@ -409,7 +412,7 @@ CREATE TABLE public.es_history (
 );
 
 
-
+ALTER TABLE public.es_history OWNER TO XEDRM5;
 
 --
 -- TOC entry 216 (class 1259 OID 16885)
@@ -424,7 +427,7 @@ CREATE TABLE public.es_keyword (
 );
 
 
-
+ALTER TABLE public.es_keyword OWNER TO XEDRM5;
 
 --
 -- TOC entry 217 (class 1259 OID 16891)
@@ -439,7 +442,7 @@ CREATE TABLE public.es_listitems (
 );
 
 
-
+ALTER TABLE public.es_listitems OWNER TO XEDRM5;
 
 --
 -- TOC entry 218 (class 1259 OID 16897)
@@ -457,7 +460,7 @@ CREATE TABLE public.es_menu (
 );
 
 
-
+ALTER TABLE public.es_menu OWNER TO XEDRM5;
 
 --
 -- TOC entry 220 (class 1259 OID 16909)
@@ -471,7 +474,7 @@ CREATE TABLE public.es_menu_uuid (
 );
 
 
-
+ALTER TABLE public.es_menu_uuid OWNER TO XEDRM5;
 
 --
 -- TOC entry 219 (class 1259 OID 16906)
@@ -484,7 +487,7 @@ CREATE TABLE public.es_menurights (
 );
 
 
-
+ALTER TABLE public.es_menurights OWNER TO XEDRM5;
 
 --
 -- TOC entry 221 (class 1259 OID 16912)
@@ -501,7 +504,7 @@ CREATE TABLE public.es_recipient (
 );
 
 
-
+ALTER TABLE public.es_recipient OWNER TO XEDRM5;
 
 --
 -- TOC entry 222 (class 1259 OID 16918)
@@ -530,7 +533,7 @@ CREATE TABLE public.es_rewrite (
 );
 
 
-
+ALTER TABLE public.es_rewrite OWNER TO XEDRM5;
 
 --
 -- TOC entry 223 (class 1259 OID 16924)
@@ -543,7 +546,7 @@ CREATE TABLE public.es_rewritecc (
 );
 
 
-
+ALTER TABLE public.es_rewritecc OWNER TO XEDRM5;
 
 --
 -- TOC entry 224 (class 1259 OID 16927)
@@ -557,7 +560,7 @@ CREATE TABLE public.es_rewritedoc (
 );
 
 
-
+ALTER TABLE public.es_rewritedoc OWNER TO XEDRM5;
 
 --
 -- TOC entry 225 (class 1259 OID 16930)
@@ -574,7 +577,7 @@ CREATE TABLE public.es_rewriteprocess (
 );
 
 
-
+ALTER TABLE public.es_rewriteprocess OWNER TO XEDRM5;
 
 --
 -- TOC entry 226 (class 1259 OID 16937)
@@ -592,7 +595,7 @@ CREATE TABLE public.es_searches (
 );
 
 
-
+ALTER TABLE public.es_searches OWNER TO XEDRM5;
 
 --
 -- TOC entry 227 (class 1259 OID 16943)
@@ -608,7 +611,7 @@ CREATE TABLE public.es_secureaccess (
 );
 
 
-
+ALTER TABLE public.es_secureaccess OWNER TO XEDRM5;
 
 --
 -- TOC entry 228 (class 1259 OID 16946)
@@ -623,7 +626,7 @@ CREATE TABLE public.es_secureaccessext (
 );
 
 
-
+ALTER TABLE public.es_secureaccessext OWNER TO XEDRM5;
 
 --
 -- TOC entry 229 (class 1259 OID 16949)
@@ -638,7 +641,7 @@ CREATE TABLE public.es_secureclass (
 );
 
 
-
+ALTER TABLE public.es_secureclass OWNER TO XEDRM5;
 
 --
 -- TOC entry 230 (class 1259 OID 16952)
@@ -660,7 +663,7 @@ CREATE TABLE public.es_share (
 );
 
 
-
+ALTER TABLE public.es_share OWNER TO XEDRM5;
 
 --
 -- TOC entry 231 (class 1259 OID 16955)
@@ -674,7 +677,7 @@ CREATE TABLE public.es_shareaccess (
 );
 
 
-
+ALTER TABLE public.es_shareaccess OWNER TO XEDRM5;
 
 --
 -- TOC entry 232 (class 1259 OID 16958)
@@ -691,7 +694,7 @@ CREATE TABLE public.es_stat (
 );
 
 
-
+ALTER TABLE public.es_stat OWNER TO XEDRM5;
 
 --
 -- TOC entry 233 (class 1259 OID 16964)
@@ -715,7 +718,7 @@ CREATE TABLE public.es_sysmessage (
 );
 
 
-
+ALTER TABLE public.es_sysmessage OWNER TO XEDRM5;
 
 --
 -- TOC entry 234 (class 1259 OID 16970)
@@ -734,7 +737,7 @@ CREATE TABLE public.es_template (
 );
 
 
-
+ALTER TABLE public.es_template OWNER TO XEDRM5;
 
 --
 -- TOC entry 235 (class 1259 OID 16976)
@@ -758,7 +761,7 @@ CREATE TABLE public.es_template_ext (
 );
 
 
-
+ALTER TABLE public.es_template_ext OWNER TO XEDRM5;
 
 --
 -- TOC entry 209 (class 1259 OID 16845)
@@ -772,7 +775,7 @@ CREATE TABLE public.es_user_widget (
 );
 
 
-
+ALTER TABLE public.es_user_widget OWNER TO XEDRM5;
 
 
 --
@@ -788,7 +791,7 @@ CREATE TABLE public.es_version (
 );
 
 
-
+ALTER TABLE public.es_version OWNER TO XEDRM5;
 
 --
 -- TOC entry 237 (class 1259 OID 16985)
@@ -803,7 +806,7 @@ CREATE TABLE public.es_versionelement (
 );
 
 
-
+ALTER TABLE public.es_versionelement OWNER TO XEDRM5;
 
 --
 -- TOC entry 238 (class 1259 OID 16988)
@@ -826,7 +829,7 @@ CREATE TABLE public.es_volume (
 );
 
 
-
+ALTER TABLE public.es_volume OWNER TO XEDRM5;
 
 --
 -- TOC entry 239 (class 1259 OID 16991)
@@ -845,7 +848,7 @@ CREATE TABLE public.es_xref (
 );
 
 
-
+ALTER TABLE public.es_xref OWNER TO XEDRM5;
 
 --
 -- TOC entry 240 (class 1259 OID 16994)
@@ -858,7 +861,7 @@ CREATE TABLE public.hibernate_unique_key (
 );
 
 
-
+ALTER TABLE public.hibernate_unique_key OWNER TO XEDRM5;
 
 --
 -- TOC entry 241 (class 1259 OID 16997)
@@ -870,7 +873,7 @@ CREATE TABLE public.ht_asyselement (
 );
 
 
-
+ALTER TABLE public.ht_asyselement OWNER TO XEDRM5;
 
 -- 20200910
 --
@@ -910,7 +913,7 @@ CREATE TABLE public.pol_client (
 );
 
 
-
+ALTER TABLE public.pol_client OWNER TO XEDRM5;
 
 -- 20200910
 --
@@ -930,7 +933,7 @@ CREATE TABLE public.pol_list (
 );
 
 
-
+ALTER TABLE public.pol_list OWNER TO XEDRM5;
 
 -- 20200910
 --
@@ -965,7 +968,7 @@ CREATE TABLE public.sys_code (
 );
 
 
-
+ALTER TABLE public.sys_code OWNER TO XEDRM5;
 
 -- 20200910
 --
@@ -1005,7 +1008,7 @@ CREATE TABLE public.sys_group (
 );
 
 
-
+ALTER TABLE public.sys_group OWNER TO XEDRM5;
 
 -- 20200910
 --
@@ -1019,7 +1022,7 @@ CREATE TABLE public.sys_group_manager (
 );
 
 
-
+ALTER TABLE public.sys_group_manager OWNER TO XEDRM5;
 
 -- 20200910
 --
@@ -1035,7 +1038,7 @@ CREATE TABLE public.sys_group_member (
 );
 
 
-
+ALTER TABLE public.sys_group_member OWNER TO XEDRM5;
 
 -- 20200910
 --
@@ -1072,7 +1075,7 @@ CREATE TABLE public.sys_menu (
 );
 
 
-
+ALTER TABLE public.sys_menu OWNER TO XEDRM5;
 
 -- 20200910
 --
@@ -1120,7 +1123,7 @@ CREATE TABLE public.sys_pgm (
 );
 
 
-
+ALTER TABLE public.sys_pgm OWNER TO XEDRM5;
 
 -- 20200910: 컬럼 추가(LINK_COL), 컬럼 제거(SORT_TYPE, PINNED_TYPE, URL, FILTER_TYPE, FILTER_DEFAULT_DATA, FILTER_USE_YN, COMBO_DATA_ID)
 --
@@ -1177,7 +1180,7 @@ CREATE TABLE public.sys_pgm_column (
 );
 
 
-
+ALTER TABLE public.sys_pgm_column OWNER TO XEDRM5;
 
 -- 20200910
 --
@@ -1196,7 +1199,7 @@ CREATE TABLE public.sys_pgm_column_data (
 );
 
 
-
+ALTER TABLE public.sys_pgm_column_data OWNER TO XEDRM5;
 
 -- 20200910: 컬럼 추가(CASCADE_TYPE, GROUP_ID, GROUP_DATA, GROUP_OBJECT), 컬럼 제거(SUB_MAPPING_YN)
 --
@@ -1219,7 +1222,7 @@ CREATE TABLE public.sys_tree_node (
 );
 
 
-
+ALTER TABLE public.sys_tree_node OWNER TO XEDRM5;
 
 -- 20200910
 --
@@ -1248,7 +1251,7 @@ CREATE TABLE public.pol_schedule (
 );
 
 
-
+ALTER TABLE public.pol_schedule OWNER TO XEDRM5;
 
 -- 20200910
 --
@@ -1266,7 +1269,7 @@ CREATE TABLE public.pol_apply_client (
     chg_dt timestamp without time zone
 );
 
-
+ALTER TABLE public.pol_apply_client OWNER TO XEDRM5;
 
 -- 20200910
 --
@@ -1285,7 +1288,7 @@ CREATE TABLE public.pol_apply_user (
     user_nm character varying(256)
 );
 
-
+ALTER TABLE public.pol_apply_user OWNER TO XEDRM5;
 
 -- 20200910
 --
@@ -1313,7 +1316,7 @@ CREATE TABLE public.pat_list (
 	site_ver character varying(20)
 );
 
-
+ALTER TABLE public.pat_list OWNER TO XEDRM5;
 
 -- 20200910
 --
@@ -1330,7 +1333,7 @@ CREATE TABLE public.pat_object (
     patch_no character varying(20) NOT NULL
 );
 
-
+ALTER TABLE public.pat_object OWNER TO XEDRM5;
 
 -- 20200910
 --
@@ -1385,7 +1388,7 @@ CREATE TABLE public.sys_user (
 );
 
 
-
+ALTER TABLE public.sys_user OWNER TO XEDRM5;
 
 -- 20200910
 --
@@ -1401,7 +1404,7 @@ CREATE TABLE public.sys_user_attr (
 );
 
 
-
+ALTER TABLE public.sys_user_attr OWNER TO XEDRM5;
 
 --
 -- TOC entry 3024 (class 2606 OID 17134)
@@ -2126,7 +2129,7 @@ CREATE TABLE public.AGT_DISABLE
 	REQUEST_REASON character varying(256)
 );
 
-
+ALTER TABLE public.AGT_DISABLE OWNER TO XEDRM5;
 
 ALTER TABLE ONLY public.AGT_DISABLE
     ADD CONSTRAINT XPK_AGT_DISABLE PRIMARY KEY (REQUEST_IDX);
