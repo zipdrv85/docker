@@ -43,15 +43,15 @@ services:
         - oraclexe11gHA:/u01/app/oracle
         - ../db/oracle/script:/docker-entrypoint-initdb.d
       ports:
-        - "7190:1521"
-  nginxHA-oracle:
-    image: nginx
-    ports:
-      - "7183:80"
-    volumes:
-      - ../nginxLocal/nginx.oracle.conf:/etc/nginx/nginx.conf
-    depends_on:
-      - db-oracle
+        - "6729:1521"
+  #nginxHA-oracle:
+    #image: nginx
+    #ports:
+      #- "7183:80"
+    #volumes:
+      #- ../nginxLocal/nginx.oracle.conf:/etc/nginx/nginx.conf
+    #depends_on:
+      #- db-oracle
 
 volumes:
   oraclexe11gHA:

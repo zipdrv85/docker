@@ -1,0 +1,5 @@
+
+*.log
+*.bak
+
+edm/release.tar
