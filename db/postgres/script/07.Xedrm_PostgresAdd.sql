@@ -37,4 +37,6 @@ CREATE TABLE public."es_statsummary"
   ALTER TABLE only public."es_statsummary" alter column "es_event" SET NOT null ;
  
  --협업--
-insert into ASYSELEMENT (ELEMENTID,DESCR,USERSCLASS,ECLASSID,EXPIRATION,UUID,CREATOR,CREATED,MODIFIER,MODIFIED,ACCESSED,TRANSACTION_ID,DELETED,STATUS,PARENTACLID,PATH,FOLDERPATH,PARENTID) values ('Coop            ','Coop','NONE            ','FOLDER          ',null,null,'SUPER',to_date('17/02/10','YY/MM/DD'),'SUPER',to_date('17/01/20','YY/MM/DD'),to_date('17/01/20','YY/MM/DD'),null,0,0,null,'/Coop/','/','SPACE_ROOT      ');
+insert into public.ASYSELEMENT (ELEMENTID,DESCR,USERSCLASS,ECLASSID,EXPIRATION,UUID,CREATOR,CREATED,MODIFIER,MODIFIED,ACCESSED,TRANSACTION_ID,DELETED,STATUS,PARENTACLID,PATH,FOLDERPATH,PARENTID) values ('Coop            ','Coop','NONE            ','FOLDER          ',null,null,'SUPER',to_date('17/02/10','YY/MM/DD'),'SUPER',to_date('17/01/20','YY/MM/DD'),to_date('17/01/20','YY/MM/DD'),null,0,0,null,'/Coop/','/','SPACE_ROOT      ');
+
+COMMIT;

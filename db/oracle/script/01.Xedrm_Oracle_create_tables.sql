@@ -335,7 +335,7 @@
 	L4 NUMBER, 
 	L5 NUMBER, 
 	SERIALIZABLE BLOB, 
-	ES_IP VARCHAR2(20), 
+	ES_IP VARCHAR2(40),
 	ES_HOSTNAME VARCHAR2(200), 
 	ES_USERAGENT VARCHAR2(128), 
 	ES_MAC VARCHAR2(20), 
@@ -786,7 +786,8 @@
 
   CREATE TABLE XEDRM5.SYS_GROUP_MANAGER 
    (	GROUP_ID VARCHAR2(256), 
-	USER_ID VARCHAR2(256)
+	USER_ID VARCHAR2(256),
+	type NUMBER(19,0) DEFAULT 0
    )TABLESPACE "XEDRM5_TABLESPACE";
    
 -- 20200910   
@@ -1136,6 +1137,7 @@
 --------------------------------------------------------
 
   CREATE INDEX XEDRM5.ASYSE_DESCR ON XEDRM5.ASYSELEMENT (DESCR)TABLESPACE "XEDRM5_TABLESPACE";
+  
 --------------------------------------------------------
 --  DDL for Index ASYSE_MODIFIER
 --------------------------------------------------------
@@ -1431,7 +1433,7 @@
 --  DDL for Index XPK_SYS_GROUP_MANAGER
 --------------------------------------------------------
 
-  CREATE UNIQUE INDEX XEDRM5.XPK_SYS_GROUP_MANAGER ON XEDRM5.SYS_GROUP_MANAGER (GROUP_ID, USER_ID)TABLESPACE "XEDRM5_TABLESPACE";
+  CREATE UNIQUE INDEX XEDRM5.XPK_SYS_GROUP_MANAGER ON XEDRM5.SYS_GROUP_MANAGER (GROUP_ID, USER_ID, TYPE)TABLESPACE "XEDRM5_TABLESPACE";
 --------------------------------------------------------
 --  DDL for Index XPK_SYS_GROUP_MEMBER
 --------------------------------------------------------
@@ -2052,7 +2054,7 @@
  
   ALTER TABLE XEDRM5.SYS_GROUP_MANAGER MODIFY (USER_ID NOT NULL ENABLE);
  
-  ALTER TABLE XEDRM5.SYS_GROUP_MANAGER ADD CONSTRAINT XPK_SYS_GROUP_MANAGER PRIMARY KEY (GROUP_ID, USER_ID) ENABLE;
+  ALTER TABLE XEDRM5.SYS_GROUP_MANAGER ADD CONSTRAINT XPK_SYS_GROUP_MANAGER PRIMARY KEY (GROUP_ID, USER_ID, TYPE) ENABLE;
 --------------------------------------------------------
 --  Constraints for Table SYS_GROUP_MEMBER
 --------------------------------------------------------
@@ -2287,24 +2289,6 @@ CREATE INDEX XEDRM5.SYSUA_USERID ON XEDRM5.sys_user_attr (USER_ID) TABLESPACE "X
 	"USER_NM" VARCHAR2(256 BYTE)
    ) TABLESPACE "XEDRM5_TABLESPACE";
 
---------------------------------------------------------
---  DDL for Index XPK_POL_SCHEDULE
---------------------------------------------------------
-
-  CREATE UNIQUE INDEX XEDRM5."XPK_POL_SCHEDULE" ON "POL_SCHEDULE" ("SCHED_IDX") TABLESPACE "XEDRM5_TABLESPACE"
-  ;
---------------------------------------------------------
---  DDL for Index XPK_POL_APPLY_CLIENT
---------------------------------------------------------
-
-  CREATE UNIQUE INDEX XEDRM5."XPK_POL_APPLY_CLIENT" ON "POL_APPLY_CLIENT" ("CLIENT_IDX") TABLESPACE "XEDRM5_TABLESPACE"
-  ;
---------------------------------------------------------
---  DDL for Index XPK_POL_APPLY_USER
---------------------------------------------------------
-
-  CREATE UNIQUE INDEX XEDRM5."XPK_POL_APPLY_USER" ON "POL_APPLY_USER" ("USER_CL", "USER_ID") TABLESPACE "XEDRM5_TABLESPACE"
-  ;
 
 --------------------------------------------------------
 --  Constraints for Table POL_SCHEDULE
@@ -2330,5 +2314,15 @@ CREATE INDEX XEDRM5.SYSUA_USERID ON XEDRM5.sys_user_attr (USER_ID) TABLESPACE "X
  
   ALTER TABLE XEDRM5."POL_APPLY_USER" ADD CONSTRAINT "XPK_POL_APPLY_USER" PRIMARY KEY ("USER_CL", "USER_ID") ENABLE;
 
+--------------------------------------------------------
+--  DDL for Index T1_IDX1 
+--  ** SYSTEM 계정으로 실행해야 함. 
+--------------------------------------------------------
+  
+  create index T1_IDX1 on XEDRM5."ASYSELEMENT"(DESCR) indextype is ctxsys.context parameters ('sync(on commit)');
+  
+  exec ctx_ddl.create_preference ( 'mystore', 'BASIC_STORAGE'); 
+  exec ctx_ddl.set_attribute ( 'mystore', 'STAGE_ITAB', 'YES');
+  
 
 	

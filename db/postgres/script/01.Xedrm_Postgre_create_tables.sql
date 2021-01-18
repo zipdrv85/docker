@@ -402,7 +402,7 @@ CREATE TABLE public.es_history (
     l4 numeric(38,0),
     l5 numeric(38,0),
     serializable bytea,
-    es_ip character varying(20),
+    es_ip character varying(40),
     es_hostname character varying(200),
     es_useragent character varying(128),
     es_mac character varying(20),
@@ -1018,7 +1018,8 @@ ALTER TABLE public.sys_group OWNER TO XEDRM5;
 
 CREATE TABLE public.sys_group_manager (
     group_id character varying(256) NOT NULL,
-    user_id character varying(256) NOT NULL
+    user_id character varying(256) NOT NULL,
+    type numeric(19,0) DEFAULT 0
 );
 
 
@@ -1654,7 +1655,7 @@ ALTER TABLE ONLY public.sys_group
 --
 
 ALTER TABLE ONLY public.sys_group_manager
-    ADD CONSTRAINT xpk_sys_group_manager PRIMARY KEY (group_id, user_id);
+    ADD CONSTRAINT xpk_sys_group_manager PRIMARY KEY (group_id, user_id, type);
 
 
 --
@@ -2134,4 +2135,9 @@ ALTER TABLE public.AGT_DISABLE OWNER TO XEDRM5;
 ALTER TABLE ONLY public.AGT_DISABLE
     ADD CONSTRAINT XPK_AGT_DISABLE PRIMARY KEY (REQUEST_IDX);
 
-
+    --
+-- TOC entry 3010 (class 1259 OID 17123)
+-- Name: asyse_descr; Type: INDEX; Schema: public; Owner: XEDRM5
+--
+CREATE EXTENSION pg_trgm SCHEMA public;
+CREATE INDEX idx_text ON public.asyselement USING GIN("descr" gin_trgm_ops);
