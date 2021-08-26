@@ -18,7 +18,7 @@ services:
         #- oraclexe11gHA:/u01/app/oracle
         - ../db/oracle/script:/docker-entrypoint-initdb.d
       ports:
-        - "6729:1521"
+        - "11521:1521"
 
   db-postgres:
     image: postgres:13-alpine
@@ -33,7 +33,7 @@ services:
       #- postgres13HA:/var/lib/postgresql/data
       - ../db/postgres/script:/docker-entrypoint-initdb.d
     ports:
-      - "7081:5432"
+      - "15432:5432"
         #networks:
         #- backend-postgres
         #nginxHA-postgres:
