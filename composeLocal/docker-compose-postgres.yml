@@ -45,32 +45,32 @@ services:
     container_name: postgres13HA-database
     restart: always 
     environment:
-      - POSTGRES_PASSWORD=#Inzent@2020
+      - POSTGRES_PASSWORD=1234
     volumes:
-      - postgres13HA:/var/lib/postgresql/data
+      #- postgres13HA:/var/lib/postgresql/data
       - ../db/postgres/script:/docker-entrypoint-initdb.d
     ports:
       - "7081:5432"
-    networks:
-      - backend-postgres
-  nginxHA-postgres:
-    image: nginx
-    ports:
-      - "7083:80"
-    volumes:
-      - ../nginxLocal/nginx.postgres.conf:/etc/nginx/nginx.conf
-    networks:
-      - backend-postgres
-    depends_on:
-      - db-postgres
+        #networks:
+        #- backend-postgres
+        #nginxHA-postgres:
+          #image: nginx
+    #ports:
+            #- "7083:80"
+        #volumes:
+        #- ../nginxLocal/nginx.postgres.conf:/etc/nginx/nginx.conf
+    #networks:
+      #- backend-postgres
+    #depends_on:
+      #- db-postgres
 
-volumes:
-  postgres13HA:
+#volumes:
+  #postgres13HA:
     #driver: local
     #driver_opts:
       #type: none
       #device: /docker/db/postgres13/data
       #o: bind
-networks:
-  backend-postgres:
-    driver: bridge
+#networks:
+  #backend-postgres:
+    #driver: bridge

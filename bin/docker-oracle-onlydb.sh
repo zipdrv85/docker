@@ -1,8 +1,8 @@
 #!/bin/bash
 
 case "$1" in
-    'start')  # Start docker postgres
-	echo "Starting Docker PostgresHA Service...: "
+    'start')  # Start docker oracle
+	echo "Starting Docker OracleHA Service...: "
 	
 	docker-compose -f ../composeLocal/docker-compose-oracle.yml up --build -d
 	
@@ -11,16 +11,16 @@ case "$1" in
 	exit $RVAL
 	    ;;
 		
-    'stop')   # Stop docker postgres
-	echo "Stop Docker PostgresHA Service...: "
+    'stop')   # Stop docker oracle
+	echo "Stop Docker OracleHA Service...: "
 	
 	docker-compose -f ../composeLocal/docker-compose-oracle.yml down
 	
 	exit $RVAL
 	;;
 	
-    'restart')   # Stop docker postgres
-	echo "Restarting Docker PostgresHA Service...: "
+    'restart')   # Stop docker oracle
+	echo "Restarting Docker OracleHA Service...: "
 
 	docker-compose -f ../composeLocal/docker-compose-oracle.yml restart -d
 

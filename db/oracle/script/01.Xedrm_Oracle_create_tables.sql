@@ -41,12 +41,15 @@
 	TRANSACTION_ID NUMBER(38,0), 
 	DELETED NUMBER(19,0) DEFAULT 0, 
 	STATUS NUMBER(19,0) DEFAULT 0, 
+	RATING DECIMAL(38, 1) DEFAULT 0 NOT NULL,
 	PARENTACLID CHAR(16), 
 	PATH VARCHAR2(4000), 
-	FOLDERPATH VARCHAR2(4000), 
+	FOLDERPATH VARCHAR2(4000),
+	RCUPATH VARCHAR2(64), 
 	PRODUCER VARCHAR2(256), 
 	PARENTID CHAR(16), 
 	FILESIZE NUMBER(38,0), 
+	ENCRYPTFILESIZE NUMBER(38,0), 
 	DEADLINE DATE, 
 	RULEID CHAR(16), 
 	COMMENTSID CHAR(16), 
@@ -57,8 +60,24 @@
 	INDEXED NUMBER, 
 	VERSION VARCHAR2(36), 
 	TEMPLATEID NUMBER(18,0), 
-	DESCRIPTION VARCHAR2(4000)
+	DESCRIPTION VARCHAR2(4000),
+	ADMIN_ID VARCHAR2(256 BYTE), 
+	PRIV_OWNER varchar2(20), 
+	PRIV_GROUP varchar2(20), 
+	PRIV_OTHER varchar2(20), 
+	PRIV_ADMIN varchar2(20)
    )TABLESPACE "XEDRM5_TABLESPACE";
+   
+
+   COMMENT ON COLUMN XEDRM5."ASYSELEMENT"."ADMIN_ID" IS 'ADMIN 아이디';
+ 
+   COMMENT ON COLUMN XEDRM5."ASYSELEMENT"."PRIV_OWNER" IS 'OWNER 권한(CREATOR)';
+ 
+   COMMENT ON COLUMN XEDRM5."ASYSELEMENT"."PRIV_GROUP" IS 'GROUP 권한';
+ 
+   COMMENT ON COLUMN XEDRM5."ASYSELEMENT"."PRIV_OTHER" IS 'OTHER 권한';
+ 
+   COMMENT ON COLUMN XEDRM5."ASYSELEMENT"."PRIV_ADMIN" IS 'ADMIN 권한';   
 --------------------------------------------------------
 --  DDL for Table ASYSELEMENTATTR
 --------------------------------------------------------
@@ -120,20 +139,6 @@
 	POLICY_ID VARCHAR2(20), 
 	CHG_ID VARCHAR2(256), 
 	CHG_DT DATE
-   )TABLESPACE "XEDRM5_TABLESPACE";
---------------------------------------------------------
---  DDL for Table ES_ADHOCAUTH
---------------------------------------------------------
-
-  CREATE TABLE XEDRM5.ES_ADHOCAUTH 
-   (	ELEMENTID CHAR(16), 
-	USERROLE VARCHAR2(256), 
-	PRIVILEGE NUMBER, 
-	PRIVILEGETYPE NUMBER(*,0), 
-	DESCR VARCHAR2(64), 
-	STARTDATE DATE, 
-	ENDDATE DATE,
-	INDEXED NUMBER
    )TABLESPACE "XEDRM5_TABLESPACE";
 --------------------------------------------------------
 --  DDL for Table ES_ADMINMENU
@@ -203,7 +208,8 @@
 	CREATED TIMESTAMP (6), 
 	DELETED NUMBER(38,0), 
 	LASTMODIFIED TIMESTAMP (6), 
-	VERSION VARCHAR2(36)
+	VERSION VARCHAR2(36),
+	RATEVALUE NUMBER(3,1) DEFAULT 0
    )TABLESPACE "XEDRM5_TABLESPACE";
 --------------------------------------------------------
 --  DDL for Table ES_DASHBOARD
@@ -472,37 +478,6 @@
 	ES_ELEMENTID VARCHAR2(16)
    )TABLESPACE "XEDRM5_TABLESPACE";
 --------------------------------------------------------
---  DDL for Table ES_SECUREACCESS
---------------------------------------------------------
-
-  CREATE TABLE XEDRM5.ES_SECUREACCESS 
-   (	SECURECLASSID CHAR(16), 
-	ROLEID CHAR(16), 
-	PRIVILEDGE NUMBER(*,0), 
-	STARTDATE DATE, 
-	ENDDATE DATE
-   )TABLESPACE "XEDRM5_TABLESPACE";
---------------------------------------------------------
---  DDL for Table ES_SECUREACCESSEXT
---------------------------------------------------------
-
-  CREATE TABLE XEDRM5.ES_SECUREACCESSEXT 
-   (	AUTHMNGRID CHAR(16), 
-	SECURECLASSID CHAR(16), 
-	ROLEID CHAR(32), 
-	PRIVILEDGE NUMBER(*,0)
-   )TABLESPACE "XEDRM5_TABLESPACE";
---------------------------------------------------------
---  DDL for Table ES_SECURECLASS
---------------------------------------------------------
-
-  CREATE TABLE XEDRM5.ES_SECURECLASS 
-   (	SECURECLASSID CHAR(16), 
-	DESCR VARCHAR2(64), 
-	SECURETYPE NUMBER(*,0), 
-	ADMINSCLASS CHAR(16)
-   )TABLESPACE "XEDRM5_TABLESPACE";
---------------------------------------------------------
 --  DDL for Table ES_SHARE
 --------------------------------------------------------
 
@@ -514,8 +489,6 @@
 	ES_USERID VARCHAR2(64), 
 	ELEMENTID CHAR(16), 
 	ES_CREATION TIMESTAMP (6), 
-	ES_EXPIRED TIMESTAMP (6), 
-	ES_COUNT NUMBER(*,0), 
 	ES_VERSION VARCHAR2(20),
 	ANONYMOUS NUMBER(19,0) DEFAULT 0
    )TABLESPACE "XEDRM5_TABLESPACE";
@@ -526,8 +499,27 @@
   CREATE TABLE XEDRM5.ES_SHAREACCESS 
    (	SHAREID NUMBER(38,0), 
 	ROLEID VARCHAR2(64), 
-	PRIVILEGE VARCHAR2(20)
+	TEMPLATEID VARCHAR2(20),
+	PRIVILEGE VARCHAR2(20),
+	START_DT DATE, 
+	END_DT DATE, 
+	ES_COUNT NUMBER(38,0), 
+	PRIVILEGETYPE NUMBER(38,0), 
+	ELEMENTID CHAR(16 BYTE), 
+	DESCR VARCHAR2(64 BYTE)
    )TABLESPACE "XEDRM5_TABLESPACE";
+   
+   COMMENT ON COLUMN XEDRM5.ES_SHAREACCESS.START_DT IS '권한유효기간 시작일';
+
+   COMMENT ON COLUMN XEDRM5.ES_SHAREACCESS.END_DT IS '권한유효기간 만기일';
+ 
+   COMMENT ON COLUMN XEDRM5.ES_SHAREACCESS.ES_COUNT IS '접근가능회수';
+ 
+   COMMENT ON COLUMN XEDRM5.ES_SHAREACCESS.PRIVILEGETYPE IS '권한유형 (사용자:1, 그룹:2, USER_OWNER(엑스톰에서 사용):3, GROUP_OWNER(엑스톰에서 사용):4, 결재승인권한:5, 편집불가한 권한그룹:6, 편집가능한 권한그룹:7, 공유권한:8)';
+ 
+   COMMENT ON COLUMN XEDRM5.ES_SHAREACCESS.ELEMENTID IS '엘리먼트 아이디';
+ 
+   COMMENT ON COLUMN XEDRM5.ES_SHAREACCESS.DESCR IS '설명';
 --------------------------------------------------------
 --  DDL for Table ES_STAT
 --------------------------------------------------------
@@ -696,16 +688,15 @@
 	PATCH_DELAY_CNT NUMBER(3,0)
    )TABLESPACE "XEDRM5_TABLESPACE";
    
--- 20200910
+-- 20210628
 --------------------------------------------------------
 --  DDL for Table POL_LIST
 --------------------------------------------------------
 
   CREATE TABLE XEDRM5.POL_LIST 
    (	POLICY_ID VARCHAR2(20), 
-	POLICY_NM VARCHAR2(64), 
-	DESCR VARCHAR2(256), 
-	DEFAULT_POLICY_YN CHAR(1), 
+	POLICY_NM VARCHAR2(256), 
+	DESCR VARCHAR2(256),  
 	USE_YN CHAR(1), 
 	POLICY_YMDTIME CHAR(14), 
 	CHG_ID VARCHAR2(256), 
@@ -750,7 +741,10 @@
 
   CREATE TABLE XEDRM5.SYS_GROUP 
    (	GROUP_ID VARCHAR2(256), 
-	GROUP_NM VARCHAR2(128), 
+	GROUP_NM VARCHAR2(128),
+    HR CHAR(1) DEFAULT 0,
+	OWNER VARCHAR2(256),
+	ROLE_ID NUMBER(19),
 	GROUP_ENM VARCHAR2(128), 
 	GROUP_TYPE NUMBER(19,0), 
 	GROUP_ORDER NUMBER(6,0), 
@@ -761,7 +755,8 @@
 	REG_ID VARCHAR2(256), 
 	REG_DT DATE, 
 	CHG_ID VARCHAR2(256), 
-	CHG_DT DATE, 
+	CHG_DT DATE,
+    RANK NUMBER(38,0),
 	S1 VARCHAR2(256), 
 	S2 VARCHAR2(256), 
 	S3 VARCHAR2(256), 
@@ -787,6 +782,7 @@
   CREATE TABLE XEDRM5.SYS_GROUP_MANAGER 
    (	GROUP_ID VARCHAR2(256), 
 	USER_ID VARCHAR2(256),
+    HR CHAR(1) DEFAULT 0,
 	type NUMBER(19,0) DEFAULT 0
    )TABLESPACE "XEDRM5_TABLESPACE";
    
@@ -798,7 +794,8 @@
   CREATE TABLE XEDRM5.SYS_GROUP_MEMBER 
    (	GROUP_ID VARCHAR2(256), 
 	MEMBER_ID VARCHAR2(256), 
-	MEMBER_TYPE NUMBER(38,0) DEFAULT 1, 
+	MEMBER_TYPE NUMBER(38,0) DEFAULT 1,
+    HR CHAR(1) DEFAULT 0,
 	ES_EXPIRED DATE
    )TABLESPACE "XEDRM5_TABLESPACE";
    
@@ -972,7 +969,8 @@
   CREATE TABLE XEDRM5.SYS_USER 
    (	USER_ID VARCHAR2(256), 
 	USER_NM VARCHAR2(128), 
-	EMAIL VARCHAR2(256), 
+	EMAIL VARCHAR2(256),
+    HR CHAR(1) DEFAULT 0,
 	USER_PRIORITY NUMBER(38,0), 
 	LAST_PASSWD_CHG_DT DATE, 
 	LOGIN_DT DATE, 
@@ -994,7 +992,8 @@
 	REG_ID VARCHAR2(256), 
 	REG_DT DATE, 
 	CHG_ID VARCHAR2(256), 
-	CHG_DT DATE, 
+	CHG_DT DATE,
+    RANK NUMBER(38,0),
 	S1 VARCHAR2(256), 
 	S2 VARCHAR2(256), 
 	S3 VARCHAR2(256), 
@@ -1093,6 +1092,90 @@
    )TABLESPACE "XEDRM5_TABLESPACE" ;
 
 --------------------------------------------------------
+--  DDL for Table ES_ECM_FILE
+--------------------------------------------------------
+
+  CREATE TABLE XEDRM5.ES_ECM_FILE
+   (
+	ECMID CHAR(20),
+	ELEMENTID CHAR(16),
+	STATUS NUMBER(*,0),
+	CREATED TIMESTAMP (6),
+	EXPIRATION TIMESTAMP (6)
+   )TABLESPACE "XEDRM5_TABLESPACE";
+
+   --------------------------------------------------------
+--  DDL for Table ES_EFFECTIVE_ACCESS
+--------------------------------------------------------
+
+CREATE TABLE XEDRM5.ES_EFFECTIVE_ACCESS
+   (	
+   	ELEMENTID CHAR(16 BYTE), 
+	USERROLE VARCHAR2(256 BYTE), 
+	PRIVILEGE VARCHAR2(30 BYTE), 
+	TEMPLATEID VARCHAR2(20 BYTE), 
+	PRIVILEGETYPE NUMBER(*,0), 
+	DESCR VARCHAR2(64 BYTE), 
+	STARTDATE DATE, 
+	ENDDATE DATE,
+	INDEXED VARCHAR2(20 BYTE),
+	PRIV_ID NUMBER(*,0)
+   ) TABLESPACE "XEDRM5_TABLESPACE" 
+  ;
+  
+--------------------------------------------------------
+--  Constraints for Table ES_EFFECTIVE_ACCESS
+--------------------------------------------------------
+  ALTER TABLE XEDRM5.ES_EFFECTIVE_ACCESS MODIFY (PRIVILEGETYPE NOT NULL ENABLE);
+  ALTER TABLE XEDRM5.ES_EFFECTIVE_ACCESS MODIFY (USERROLE NOT NULL ENABLE);
+  ALTER TABLE XEDRM5.ES_EFFECTIVE_ACCESS MODIFY (ELEMENTID NOT NULL ENABLE);
+
+  --------------------------------------------------------
+--  DDL for View ES_SECUREACCESS
+--------------------------------------------------------
+
+CREATE OR REPLACE VIEW XEDRM5.ES_SECUREACCESS AS
+SELECT * FROM XEDRM5.ES_EFFECTIVE_ACCESS;
+
+--------------------------------------------------------
+--  DDL for Table ES_PRIV_TEMPLATE
+--------------------------------------------------------
+
+  CREATE TABLE XEDRM5."ES_PRIV_TEMPLATE" 
+   (	"TEMPLATEID" VARCHAR2(20 BYTE), 
+    "TEMPLATE_NM" VARCHAR2(64),
+	"PRIV_VAL" NUMBER, 
+	"PRIV_MODIFY_YN" CHAR(1 BYTE) DEFAULT 'Y',
+	"PRIV_TYPE" varchar2(20)
+   ) TABLESPACE "XEDRM5_TABLESPACE" ;
+ 
+
+   COMMENT ON COLUMN XEDRM5."ES_PRIV_TEMPLATE"."TEMPLATEID" IS '템플릿 아이디';
+ 
+   COMMENT ON COLUMN XEDRM5."ES_PRIV_TEMPLATE"."PRIV_VAL" IS '권한';
+ 
+   COMMENT ON COLUMN XEDRM5."ES_PRIV_TEMPLATE"."PRIV_MODIFY_YN" IS '권한 수정 가능 여부';
+   
+   COMMENT ON COLUMN XEDRM5."ES_PRIV_TEMPLATE"."PRIV_TYPE" IS '권한 템플릿 구분';
+
+--------------------------------------------------------
+--  DDL for Table ES_ROLE
+--------------------------------------------------------
+
+	CREATE TABLE XEDRM5.ES_ROLE (
+		"ROLE_ID" NUMBER(19,0),
+		"ROLE_NAME" VARCHAR(255),
+		"ROLE_AUTH" VARCHAR(255)
+	) TABLESPACE "XEDRM5_TABLESPACE" ;
+ 
+
+   COMMENT ON COLUMN XEDRM5."ES_ROLE"."ROLE_ID" IS '';
+ 
+   COMMENT ON COLUMN XEDRM5."ES_ROLE"."ROLE_NAME" IS 'ROLE_NAME 에 대한 권한';
+ 
+   COMMENT ON COLUMN XEDRM5."ES_ROLE"."ROLE_AUTH" IS 'ROLE_AUTH 에 대한 권한';
+   
+--------------------------------------------------------
 --  DDL for Index ASYSCE_CCLASSID_ELEMENTID
 --------------------------------------------------------
 
@@ -1106,7 +1189,7 @@
 --  DDL for Index ASYSCE_ELEMENTID
 --------------------------------------------------------
 
-  CREATE INDEX XEDRM5.ASYSCE_ELEMENTID ON XEDRM5.ASYSCONTENTELEMENT (ELEMENTID)TABLESPACE "XEDRM5_TABLESPACE";
+  CREATE UNIQUE INDEX XEDRM5.ASYSCE_ELEMENTID ON XEDRM5.ASYSCONTENTELEMENT (ELEMENTID)TABLESPACE "XEDRM5_TABLESPACE";
 --------------------------------------------------------
 --  DDL for Index ASYSCE_FILEKEY
 --------------------------------------------------------
@@ -1148,6 +1231,16 @@
 -------------------------------------------------------- 
 
   CREATE INDEX XEDRM5.ASYSE_PARENTID ON XEDRM5.ASYSELEMENT (parentid)TABLESPACE "XEDRM5_TABLESPACE";
+ 
+--------------------------------------------------------
+--  DDL for Index ASYSE_CREATED, ASYSE_MODIFIED
+-------------------------------------------------------- 
+ 
+  CREATE INDEX XEDRM5.ASYSE_CREATED ON XEDRM5.ASYSELEMENT (created)TABLESPACE "XEDRM5_TABLESPACE";
+	
+  CREATE INDEX XEDRM5.ASYSE_MODIFIED ON XEDRM5.ASYSELEMENT (modified)TABLESPACE "XEDRM5_TABLESPACE";
+  
+  CREATE INDEX XEDRM5.ASYSE_PATH ON XEDRM5.ASYSELEMENT (PATH ) TABLESPACE "XEDRM5_TABLESPACE";
 --------------------------------------------------------
 --  DDL for Index ES_DOCSTAT_DATE
 --------------------------------------------------------
@@ -1178,6 +1271,9 @@
 --------------------------------------------------------
 
   CREATE INDEX XEDRM5.ES_HIST_UID ON XEDRM5.ES_HISTORY (ES_USERID)TABLESPACE "XEDRM5_TABLESPACE";
+  
+  CREATE INDEX XEDRM5.ES_HIST_FOLDERID ON XEDRM5.ES_HISTORY (ES_FOLDERID)TABLESPACE "XEDRM5_TABLESPACE";  
+  CREATE INDEX XEDRM5.ES_HIST_DELETED ON XEDRM5.ES_HISTORY (ES_DELETED)TABLESPACE "XEDRM5_TABLESPACE"; 
 --------------------------------------------------------
 --  DDL for Index ES_KEYWORD_DOCID
 --------------------------------------------------------
@@ -1288,6 +1384,13 @@
 --------------------------------------------------------
 
   CREATE UNIQUE INDEX XEDRM5.ES_PK_TEMPLATEEXT ON XEDRM5.ES_TEMPLATE_EXT (ES_TEMPLATEID, ES_NAME)TABLESPACE "XEDRM5_TABLESPACE";
+  
+--------------------------------------------------------
+--  DDL for Index ES_TEMPLATEID_UNIQUE
+--------------------------------------------------------
+
+  CREATE UNIQUE INDEX XEDRM5."ES_TEMPLATEID_UNIQUE" ON XEDRM5."ES_PRIV_TEMPLATE" ("TEMPLATEID") TABLESPACE "XEDRM5_TABLESPACE" ;
+  
 --------------------------------------------------------
 --  DDL for Index ES_RECIPIENT_ADDRESS_READ
 --------------------------------------------------------
@@ -1384,11 +1487,6 @@
 
   CREATE UNIQUE INDEX XEDRM5.PK_COMMENTID ON XEDRM5.ES_COMMENTS (COMMENTID)TABLESPACE "XEDRM5_TABLESPACE";
 --------------------------------------------------------
---  DDL for Index PK_ESSECURECLASS
---------------------------------------------------------
-
-  CREATE UNIQUE INDEX XEDRM5.PK_ESSECURECLASS ON XEDRM5.ES_SECURECLASS (SECURECLASSID)TABLESPACE "XEDRM5_TABLESPACE";
---------------------------------------------------------
 --  DDL for Index PK_ES_VERSION
 --------------------------------------------------------
 
@@ -1429,6 +1527,7 @@
 --------------------------------------------------------
 
   CREATE UNIQUE INDEX XEDRM5.XPK_SYS_GROUP ON XEDRM5.SYS_GROUP (GROUP_ID)TABLESPACE "XEDRM5_TABLESPACE";
+
 --------------------------------------------------------
 --  DDL for Index XPK_SYS_GROUP_MANAGER
 --------------------------------------------------------
@@ -1487,6 +1586,12 @@
 --------------------------------------------------------
   
   CREATE UNIQUE INDEX XEDRM5.XPK_PAT_OBJECT ON XEDRM5.PAT_OBJECT (PATCH_NO, OBJECT_IDX)TABLESPACE "XEDRM5_TABLESPACE";
+
+--------------------------------------------------------
+--  DDL for Index ES_PK_ECM_LINK
+--------------------------------------------------------
+
+  CREATE UNIQUE INDEX XEDRM5.ES_PK_ECM_FILE ON XEDRM5.ES_ECM_FILE (ECMID)TABLESPACE "XEDRM5_TABLESPACE";
 
 --------------------------------------------------------
 --  Constraints for Table ASYSCONTENTELEMENT
@@ -1558,15 +1663,6 @@
   ALTER TABLE XEDRM5.COM_WORKFLOW_LIST MODIFY (LIST_IDX NOT NULL ENABLE);
  
   ALTER TABLE XEDRM5.COM_WORKFLOW_LIST ADD CONSTRAINT XPK_COM_WORKFLOW_LIST PRIMARY KEY (LIST_IDX) ENABLE;
---------------------------------------------------------
---  Constraints for Table ES_ADHOCAUTH
---------------------------------------------------------
-
-  ALTER TABLE XEDRM5.ES_ADHOCAUTH MODIFY (ELEMENTID NOT NULL ENABLE);
- 
-  ALTER TABLE XEDRM5.ES_ADHOCAUTH MODIFY (USERROLE NOT NULL ENABLE);
- 
-  ALTER TABLE XEDRM5.ES_ADHOCAUTH MODIFY (PRIVILEGETYPE NOT NULL ENABLE);
 --------------------------------------------------------
 --  Constraints for Table ES_ADMINMENU
 --------------------------------------------------------
@@ -1837,37 +1933,6 @@
  
   ALTER TABLE XEDRM5.ES_SEARCHES MODIFY (ES_ID NOT NULL ENABLE);
 --------------------------------------------------------
---  Constraints for Table ES_SECUREACCESS
---------------------------------------------------------
-
-  ALTER TABLE XEDRM5.ES_SECUREACCESS MODIFY (SECURECLASSID NOT NULL ENABLE);
- 
-  ALTER TABLE XEDRM5.ES_SECUREACCESS MODIFY (ROLEID NOT NULL ENABLE);
- 
-  ALTER TABLE XEDRM5.ES_SECUREACCESS MODIFY (PRIVILEDGE NOT NULL ENABLE);
---------------------------------------------------------
---  Constraints for Table ES_SECUREACCESSEXT
---------------------------------------------------------
-
-  ALTER TABLE XEDRM5.ES_SECUREACCESSEXT MODIFY (AUTHMNGRID NOT NULL ENABLE);
- 
-  ALTER TABLE XEDRM5.ES_SECUREACCESSEXT MODIFY (SECURECLASSID NOT NULL ENABLE);
- 
-  ALTER TABLE XEDRM5.ES_SECUREACCESSEXT MODIFY (ROLEID NOT NULL ENABLE);
- 
-  ALTER TABLE XEDRM5.ES_SECUREACCESSEXT MODIFY (PRIVILEDGE NOT NULL ENABLE);
---------------------------------------------------------
---  Constraints for Table ES_SECURECLASS
---------------------------------------------------------
-
-  ALTER TABLE XEDRM5.ES_SECURECLASS ADD CONSTRAINT PK_ESSECURECLASS PRIMARY KEY (SECURECLASSID) ENABLE;
- 
-  ALTER TABLE XEDRM5.ES_SECURECLASS MODIFY (SECURECLASSID NOT NULL ENABLE);
- 
-  ALTER TABLE XEDRM5.ES_SECURECLASS MODIFY (DESCR NOT NULL ENABLE);
- 
-  ALTER TABLE XEDRM5.ES_SECURECLASS MODIFY (SECURETYPE NOT NULL ENABLE);
---------------------------------------------------------
 --  Constraints for Table ES_SHARE
 --------------------------------------------------------
 
@@ -1888,8 +1953,6 @@
 --  Constraints for Table ES_SHAREACCESS
 --------------------------------------------------------
 
-  ALTER TABLE XEDRM5.ES_SHAREACCESS MODIFY (SHAREID NOT NULL ENABLE);
- 
   ALTER TABLE XEDRM5.ES_SHAREACCESS MODIFY (ROLEID NOT NULL ENABLE);
  
   ALTER TABLE XEDRM5.ES_SHAREACCESS MODIFY (PRIVILEGE NOT NULL ENABLE);
@@ -2151,6 +2214,20 @@
   ALTER TABLE XEDRM5.PAT_OBJECT MODIFY (OBJECT_IDX NOT NULL ENABLE);
   
   ALTER TABLE XEDRM5.PAT_OBJECT ADD CONSTRAINT XPK_PAT_OBJECT PRIMARY KEY (PATCH_NO, OBJECT_IDX) ENABLE;
+
+  
+--------------------------------------------------------
+--  Constraints for Table ES_ECM_FILE
+--------------------------------------------------------
+
+  ALTER TABLE XEDRM5.ES_ECM_FILE ADD CONSTRAINT ES_PK_ECM_FILE PRIMARY KEY (ECMID) ENABLE;
+  
+  ALTER TABLE XEDRM5.ES_ECM_FILE MODIFY (ECMID NOT NULL ENABLE);
+ 
+  ALTER TABLE XEDRM5.ES_ECM_FILE MODIFY (ELEMENTID NOT NULL ENABLE);
+ 
+  ALTER TABLE XEDRM5.ES_ECM_FILE MODIFY (STATUS NOT NULL ENABLE);
+  
   
 --------------------------------------------------------
 --  Ref Constraints for Table COM_WORKFLOW_LIST
@@ -2206,6 +2283,15 @@
 
   ALTER TABLE XEDRM5.PAT_OBJECT ADD CONSTRAINT R_81 FOREIGN KEY (PATCH_NO)
 	  REFERENCES XEDRM5.PAT_LIST (PATCH_NO) ENABLE;
+
+--------------------------------------------------------
+--  Constraints for Table ES_PRIV_TEMPLATE
+--------------------------------------------------------
+
+  ALTER TABLE XEDRM5."ES_PRIV_TEMPLATE" ADD CONSTRAINT "ES_TEMPLATEID_UNIQUE" UNIQUE ("TEMPLATEID");
+ 
+  ALTER TABLE XEDRM5."ES_PRIV_TEMPLATE" MODIFY ("PRIV_MODIFY_YN" NOT NULL ENABLE);
+
 	  
 -- 20200910
 --------------------------------------------------------
@@ -2257,14 +2343,38 @@ CREATE INDEX XEDRM5.SYSUA_USERID ON XEDRM5.sys_user_attr (USER_ID) TABLESPACE "X
 	"CHG_DT" DATE, 
 	"USE_YN" CHAR(1 BYTE)
    ) TABLESPACE "XEDRM5_TABLESPACE";
+
+-- 20210628
+--------------------------------------------------------
+--  DDL for Table POL_ENVIRONMENT
+--------------------------------------------------------
+
+  CREATE TABLE XEDRM5."POL_ENVIRONMENT" 
+   ( 
+    "ENV_CD" VARCHAR2(64 BYTE),
+    "IP_ADDR" VARCHAR2(2048 BYTE),
+    "DEFAULT_POLICY_ID" VARCHAR2(20 BYTE)
+   ) TABLESPACE "XEDRM5_TABLESPACE";
+
+-- 20210628
+--------------------------------------------------------
+--  DDL for Table POL_APPLY
+--------------------------------------------------------
+
+  CREATE TABLE XEDRM5."POL_APPLY" 
+   (	"POLICY_ID" VARCHAR2(20 BYTE), 
+    "ENV_CD" VARCHAR2(64 BYTE)
+   ) TABLESPACE "XEDRM5_TABLESPACE";
    
--- 20200910
+-- 20210628
 --------------------------------------------------------
 --  DDL for Table POL_APPLY_CLIENT
 --------------------------------------------------------
 
   CREATE TABLE XEDRM5."POL_APPLY_CLIENT" 
-   (	"POLICY_ID" VARCHAR2(20 BYTE), 
+   (	
+    "ENV_CD" VARCHAR2(64 BYTE),
+    "POLICY_ID" VARCHAR2(20 BYTE), 
 	"CLIENT_IDX" NUMBER(38,0), 
 	"IP_ADDR" VARCHAR2(40 BYTE), 
 	"MAC_ADDR" VARCHAR2(20 BYTE), 
@@ -2273,14 +2383,15 @@ CREATE INDEX XEDRM5.SYSUA_USERID ON XEDRM5.sys_user_attr (USER_ID) TABLESPACE "X
 	"CHG_DT" DATE
    ) TABLESPACE "XEDRM5_TABLESPACE";
    
--- 20200910
+-- 20210628
 --------------------------------------------------------
 --  DDL for Table POL_APPLY_USER
 --------------------------------------------------------
 
   CREATE TABLE XEDRM5."POL_APPLY_USER" 
    (	"POLICY_ID" VARCHAR2(20 BYTE), 
-	"USER_ID" VARCHAR2(256 BYTE), 
+    "ENV_CD" VARCHAR2(64 BYTE),
+    "USER_ID" VARCHAR2(256 BYTE), 
 	"USER_CL" VARCHAR2(8 BYTE), 
 	"SUB_DATA_CHECK_YN" CHAR(1 BYTE), 
 	"CHG_ID" VARCHAR2(256 BYTE), 
@@ -2298,6 +2409,22 @@ CREATE INDEX XEDRM5.SYSUA_USERID ON XEDRM5.sys_user_attr (USER_ID) TABLESPACE "X
  
   ALTER TABLE XEDRM5."POL_SCHEDULE" ADD CONSTRAINT "XPK_POL_SCHEDULE" PRIMARY KEY ("SCHED_IDX") ENABLE;
 --------------------------------------------------------
+--  Constraints for Table POL_ENVIRONMENT
+--------------------------------------------------------
+
+  ALTER TABLE XEDRM5."POL_ENVIRONMENT" MODIFY ("ENV_CD" NOT NULL ENABLE);
+ 
+  ALTER TABLE XEDRM5."POL_ENVIRONMENT" ADD CONSTRAINT "XPK_POL_ENVIRONMENT" PRIMARY KEY ("ENV_CD") ENABLE;
+--------------------------------------------------------
+--  Constraints for Table POL_APPLY
+--------------------------------------------------------
+
+  ALTER TABLE XEDRM5."POL_APPLY" MODIFY ("POLICY_ID" NOT NULL ENABLE);
+  
+  ALTER TABLE XEDRM5."POL_APPLY" MODIFY ("ENV_CD" NOT NULL ENABLE);
+ 
+  ALTER TABLE XEDRM5."POL_APPLY" ADD CONSTRAINT "XPK_POL_APPLY" PRIMARY KEY ("ENV_CD", "POLICY_ID") ENABLE;
+--------------------------------------------------------
 --  Constraints for Table POL_APPLY_CLIENT
 --------------------------------------------------------
 
@@ -2308,21 +2435,123 @@ CREATE INDEX XEDRM5.SYSUA_USERID ON XEDRM5.sys_user_attr (USER_ID) TABLESPACE "X
 --  Constraints for Table POL_APPLY_USER
 --------------------------------------------------------
 
+  ALTER TABLE XEDRM5."POL_APPLY_USER" MODIFY ("ENV_CD" NOT NULL ENABLE);
+  
   ALTER TABLE XEDRM5."POL_APPLY_USER" MODIFY ("USER_ID" NOT NULL ENABLE);
  
   ALTER TABLE XEDRM5."POL_APPLY_USER" MODIFY ("USER_CL" NOT NULL ENABLE);
  
-  ALTER TABLE XEDRM5."POL_APPLY_USER" ADD CONSTRAINT "XPK_POL_APPLY_USER" PRIMARY KEY ("USER_CL", "USER_ID") ENABLE;
+  ALTER TABLE XEDRM5."POL_APPLY_USER" ADD CONSTRAINT "XPK_POL_APPLY_USER" PRIMARY KEY ("ENV_CD", "USER_CL", "USER_ID") ENABLE;
 
 --------------------------------------------------------
---  DDL for Index T1_IDX1 
---  ** SYSTEM 계정으로 실행해야 함. 
+--  Ref Constraints for Table POL_APPLY
 --------------------------------------------------------
-  
-  create index T1_IDX1 on XEDRM5."ASYSELEMENT"(DESCR) indextype is ctxsys.context parameters ('sync(on commit)');
-  
-  exec ctx_ddl.create_preference ( 'mystore', 'BASIC_STORAGE'); 
-  exec ctx_ddl.set_attribute ( 'mystore', 'STAGE_ITAB', 'YES');
-  
 
-	
+  ALTER TABLE XEDRM5.POL_APPLY ADD CONSTRAINT R_83 FOREIGN KEY (POLICY_ID)
+	  REFERENCES XEDRM5.POL_LIST (POLICY_ID) ENABLE;
+	  
+  ALTER TABLE XEDRM5.POL_APPLY ADD CONSTRAINT R_84 FOREIGN KEY (ENV_CD)
+	  REFERENCES XEDRM5.POL_ENVIRONMENT (ENV_CD) ENABLE;
+	  
+--------------------------------------------------------
+--  Ref Constraints for Table POL_APPLY_CLIENT
+--------------------------------------------------------
+
+  ALTER TABLE XEDRM5.POL_APPLY_CLIENT ADD CONSTRAINT R_87 FOREIGN KEY (ENV_CD,POLICY_ID)
+	  REFERENCES XEDRM5.POL_APPLY (ENV_CD,POLICY_ID) ENABLE;
+	  
+--------------------------------------------------------
+--  Ref Constraints for Table POL_APPLY_USER
+--------------------------------------------------------
+
+  ALTER TABLE XEDRM5.POL_APPLY_USER ADD CONSTRAINT R_86 FOREIGN KEY (ENV_CD,POLICY_ID)
+	  REFERENCES XEDRM5.POL_APPLY (ENV_CD,POLICY_ID) ENABLE;
+	    
+--------------------------------------------------------
+--  20210223: 성능개선용 인덱스 추가
+--------------------------------------------------------
+-- ASYSELEMENT : PARENTID & LOWER("DESCR")
+CREATE INDEX XEDRM5.ASYSE_LOWER_DESCR_PARENTID ON XEDRM5.ASYSELEMENT (PARENTID ASC, LOWER("DESCR") ASC)TABLESPACE "XEDRM5_TABLESPACE";
+-- ES_VERSIONELEMENT : COMPELEMENT
+CREATE INDEX XEDRM5.ES_VERSIONELEMENT_COMPELEMENT ON XEDRM5.ES_VERSIONELEMENT (COMPELEMENT ASC)TABLESPACE "XEDRM5_TABLESPACE";
+
+--------------------------------------------------------
+--  20210304: DDL for Table SYS_THEME
+--------------------------------------------------------
+
+CREATE TABLE XEDRM5.SYS_THEME (
+	THEME_ID VARCHAR2(128) NOT NULL ENABLE,
+	THEME_TYPE CHAR(1),
+	THEME_VALUE VARCHAR2(128),
+	THEME_FILEYN CHAR(1),
+	THEME_FILENAME VARCHAR2(128),
+	THEME_EXT VARCHAR(10),
+    THEME_SERIALIZABLE BLOB,
+	S1 VARCHAR2(256),
+	S2 VARCHAR2(256),
+	S3 VARCHAR2(256),
+	LAST_CHG_DT TIMESTAMP,
+	CONSTRAINT XPK_SYS_THEME PRIMARY KEY (THEME_ID, THEME_TYPE)
+);
+
+--------------------------------------------------------
+--  20210514: 성능개선용 인덱스, 제약 조건 추가
+--------------------------------------------------------
+CREATE UNIQUE INDEX XEDRM5.es_volume_idx_vid ON XEDRM5.ES_VOLUME(volumeId) TABLESPACE "XEDRM5_TABLESPACE";
+CREATE INDEX XEDRM5.es_effective_access_idx_eid ON XEDRM5.ES_EFFECTIVE_ACCESS(elementid) TABLESPACE "XEDRM5_TABLESPACE";
+ALTER TABLE XEDRM5.ES_VOLUME ADD CONSTRAINT es_volume_pk PRIMARY KEY (volumeid);
+
+--------------------------------------------------------
+--  20210618: ASYSELEMENT 4개 column FK 추가
+--------------------------------------------------------
+ALTER TABLE XEDRM5.ASYSELEMENT add FOREIGN KEY(PRIV_OWNER) REFERENCES XEDRM5.ES_PRIV_TEMPLATE(TEMPLATEID);
+ALTER TABLE XEDRM5.ASYSELEMENT add FOREIGN KEY(PRIV_GROUP) REFERENCES XEDRM5.ES_PRIV_TEMPLATE(TEMPLATEID);
+ALTER TABLE XEDRM5.ASYSELEMENT add FOREIGN KEY(PRIV_OTHER) REFERENCES XEDRM5.ES_PRIV_TEMPLATE(TEMPLATEID);
+ALTER TABLE XEDRM5.ASYSELEMENT add FOREIGN KEY(PRIV_ADMIN) REFERENCES XEDRM5.ES_PRIV_TEMPLATE(TEMPLATEID);
+
+-----------2020.05.18 대시보드 통계기능 관련 테이블 추가-----------
+CREATE TABLE XEDRM5."ES_STATLOGICVOLUME"
+  (
+    "ELEMENTID" CHAR(16),
+    "USERID"    VARCHAR2(256),
+    "GROUPID"   VARCHAR2(256),
+    "FOLDER"    NUMBER(14,0),
+    "DOC"       NUMBER(14,0),
+    "FILESIZE"  NUMBER(19,0)
+  ) TABLESPACE "XEDRM5_TABLESPACE";
+CREATE TABLE XEDRM5."ES_STATPHYVOLUME"
+  (
+    "VOLUMEID"    CHAR(16),
+    "REGDATE"     VARCHAR2(10),
+    "USEDSPACE"   NUMBER(14,0),
+    "TOTAL"       NUMBER(14,0),
+    "USABLESPACE" NUMBER(14,0)
+  )  TABLESPACE "XEDRM5_TABLESPACE";
+CREATE TABLE XEDRM5."ES_STATSUMMARY"
+  (
+    "ES_EVENT" VARCHAR2(255),
+    "USERID"   VARCHAR2(256),
+    "ROLEID"   VARCHAR2(256),
+    "SUMMARY"  NUMBER(19,0)
+  )  TABLESPACE "XEDRM5_TABLESPACE";
+  
+  ALTER TABLE XEDRM5."ES_STATLOGICVOLUME" MODIFY ("FILESIZE" NOT NULL ENABLE);
+  ALTER TABLE XEDRM5."ES_STATLOGICVOLUME" MODIFY ("DOC" NOT NULL ENABLE);
+  ALTER TABLE XEDRM5."ES_STATLOGICVOLUME" MODIFY ("FOLDER" NOT NULL ENABLE);
+  ALTER TABLE XEDRM5."ES_STATLOGICVOLUME" MODIFY ("ELEMENTID" NOT NULL ENABLE);
+  ALTER TABLE XEDRM5."ES_STATPHYVOLUME" MODIFY ("USABLESPACE" NOT NULL ENABLE);
+  ALTER TABLE XEDRM5."ES_STATPHYVOLUME" MODIFY ("TOTAL" NOT NULL ENABLE);
+  ALTER TABLE XEDRM5."ES_STATPHYVOLUME" MODIFY ("USEDSPACE" NOT NULL ENABLE);
+  ALTER TABLE XEDRM5."ES_STATPHYVOLUME" MODIFY ("REGDATE" NOT NULL ENABLE);
+  ALTER TABLE XEDRM5."ES_STATPHYVOLUME" MODIFY ("VOLUMEID" NOT NULL ENABLE);
+  ALTER TABLE XEDRM5."ES_STATSUMMARY" MODIFY ("SUMMARY" NOT NULL ENABLE);
+  ALTER TABLE XEDRM5."ES_STATSUMMARY" MODIFY ("ES_EVENT" NOT NULL ENABLE);
+  
+  -- 20210705 : #980 캐시용 테이블 추가
+CREATE TABLE XEDRM5.es_cache (CACHE_ID VARCHAR2(256), CREATE_YMDTIME VARCHAR2(14));
+ALTER TABLE XEDRM5.es_cache ADD CONSTRAINT XPK_ES_CACHE PRIMARY KEY (cache_id);
+
+--------------------------------------------------------
+--  20210708: SYS_GROUP PARENT_ID 인덱스 추가
+--------------------------------------------------------
+CREATE INDEX XEDRM5.SYS_GROUP_PARENTID ON XEDRM5.SYS_GROUP (PARENT_ID)TABLESPACE "XEDRM5_TABLESPACE";

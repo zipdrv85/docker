@@ -20,6 +20,25 @@ services:
       ports:
         - "6729:1521"
 
+  db-postgres:
+    image: postgres:13-alpine
+    #build:
+      #context: ../db/postgres/
+      #dockerfile: DockerfileAlpine13
+    container_name: postgres13HA-database
+    restart: always
+    environment:
+      - POSTGRES_PASSWORD=1234
+    volumes:
+      #- postgres13HA:/var/lib/postgresql/data
+      - ../db/postgres/script:/docker-entrypoint-initdb.d
+    ports:
+      - "7081:5432"
+        #networks:
+        #- backend-postgres
+        #nginxHA-postgres:
+          #image: nginx
+
 #volumes:
   #oraclexe11gHA:
     #driver: local
