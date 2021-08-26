@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<tmax_license>
+	<license version="1.0">
+		<product version="6">Tibero</product>
+		<serial_ID>1629980075</serial_ID>
+		<issue_date>2021/08/26</issue_date>
+		<licensee>docker_tibero</licensee>
+		<edition>enterprise</edition>
+		<type>demo</type>
+		<demo_duration>184</demo_duration>
+		<identified_by_host>docker_tibero</identified_by_host>
+		<signature>wvMcPpY1eUEr4RE2fKh5FP1Q/h3bQ6WxuVHzJwQetUI=</signature>
+	</license>
+</tmax_license>
+

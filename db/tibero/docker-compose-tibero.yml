@@ -1,0 +1,38 @@
+# docker-compose.yml
+
+version: "3"
+
+services:
+  db:
+    image: chanhi2000/tibero6:latest
+    container_name: db
+    hostname: docker_tibero
+    # hostname: <HOSTNMAE_YOU_LIKE>
+    stdin_open: true
+    environment:
+      - TB_MAX_SESSION_COUNT=100
+      - TB_MEMORY_TARGET=4G
+      - TB_TOTAL_SHM_SIZE=2G
+      # specify all below for triggering tbimport from '/opt/tibero/dump'
+      - TB_IMPORT_ENABLE=true # default `false`
+      - TB_IMPORT_SID=TIBERO
+      - TB_IMPORT_PORT=8629
+      - TB_IMPORT_USERNAME=XEDRM5
+      - TB_IMPORT_PASSWORD=1234
+      - TB_IMPORT_SCRIPT=y
+      - TB_IMPORT_IGNORE=y
+      - TB_IMPORT_ROWS=y
+      - TB_IMPORT_CONSTRAINT=y
+      - TB_IMPORT_INDEX=y
+      - TB_IMPORT_TRIGGER=y
+      - TB_IMPORT_SYNONYM=n
+      - TB_IMPORT_SEQUENCE=y
+      - TB_IMPORT_USER=XEDRM5
+    volumes:
+      - ./tibero/database:/home/tibero/tibero6/database
+      - ./tibero/init/:/opt/tibero/init
+      - ./tibero/license:/opt/tibero/license
+      - ./tibero/dump:/opt/tibero/dump
+    ports:
+      - "8629:8629"
+
