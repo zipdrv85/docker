@@ -3,3 +3,4 @@
 *.bak
 
 edm/release.tar
+db/tibero/tibero/database/

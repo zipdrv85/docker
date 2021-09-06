@@ -22,7 +22,10 @@ case "$1" in
     'restart')   # Stop docker oracle & postgres
 	echo "Restarting Docker OracleHA & postgres Service...: "
 
-	docker-compose -f ../composeLocal/docker-compose-db.yml restart -d
+	#docker-compose -f ../composeLocal/docker-compose-db.yml restart -d
+	docker-compose -f ../composeLocal/docker-compose-db.yml down
+	
+        docker-compose -f ../composeLocal/docker-compose-db.yml up --build -d
 
 	RVAL=$?
 	echo $RVAL

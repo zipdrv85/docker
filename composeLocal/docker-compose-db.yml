@@ -38,8 +38,11 @@ services:
         #- backend-postgres
         #nginxHA-postgres:
           #image: nginx
-  tiberoHA-database:
-    image: chanhi2000/tibero6:latest
+  db-tibero:
+          #image: chanhi2000/tibero6:latest
+    build:
+      context: ../db/tibero/tibero-docker/
+      dockerfile: Dockerfile
     container_name: tiberoHA-database
     hostname: docker_tibero
     # hostname: <HOSTNMAE_YOU_LIKE>

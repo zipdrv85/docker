@@ -1,0 +1,1222 @@
+#! /bin/sh
+
+prog=`basename $0`
+char_set="UTF8"
+nchar_set="UTF16"
+
+base_env_file=`dirname $0`/base_env.sh
+if [ ! -f $base_env_file ];then
+    echo "$base_env_file not found" >&2
+    exit -1
+else
+    . $base_env_file
+fi
+
+svr_env_file=`dirname $0`/svr_env.sh
+if [ ! -f $svr_env_file ];then
+    echo "$svr_env_file not found" >&2
+    exit -1
+else
+    . $svr_env_file
+fi
+
+
+if [ "$prog" = "nbctl" ];then
+    fn_svr_env_nanobase
+fi
+
+tab="	"
+rawsp='\\ \\	'
+
+sp="[$rawsp]"
+
+USER=`whoami`
+
+fn_set_dbname() {
+    DB_DIR=`( sed -n -e 's/"//g' -e 's/^[ ]*DB_CREATE_FILE_DEST[ ]*=[ ]*\(.\+\).*$/\1/ p' $svr_home/config/$svr_sid.tip ) 2> /dev/null`
+    DB_NAME=`( grep DB_NAME $svr_home/config/$svr_sid.tip |
+              grep -v \# | cut -d= -f2 ) 2> /dev/null`
+    
+    test -z "$DB_NAME" && DB_NAME=$svr_sid
+    
+    if test -z "$DB_DIR"
+    then
+        DB_DIR="$svr_home/database/$DB_NAME"
+    fi
+}
+
+fn_set_dbname
+DATA_REQ="$DB_DIR/*.ctl $DB_DIR/*.dtf $DB_DIR/*.lmf"
+DATA="$DATA_REQ $DB_DIR/*.arc"
+DATA_RES="*.ctl *.dtf *.lmf"
+COLUMNS=512
+clean_db=1
+crypto=0
+
+fn_attachpid () {
+    cmd="$1"
+    UNIX95=1
+    export UNIX95
+    ps -eopid,user:16,stat,comm,args | \
+        grep "`whoami`$sp*Sl$sp*$cmd.*-SVR_SID$sp*$svr_sid" | grep WT002 | \
+        awk '{print $1}'
+}
+
+fn_pid () {
+    cmd="$1"
+    if [ x"$cmd" != "x" ];then
+         cmd=`basename $cmd`
+    fi
+    UNIX95=1
+    export UNIX95
+    ps -eopid,user:16,comm,args | \
+        grep "`whoami`$sp*$cmd.*-SVR_SID$sp*$svr_sid" | \
+        awk '{print $1}'
+}
+
+fn_down () {
+    down_usage="Usage: `basename $svr_down` [-h] [[-t] DOWNMODE]"
+    downmode="NORMAL"
+
+    case "$1" in
+        -h|--help)
+            echo $down_usage
+            exit
+            ;;
+
+        -t)
+            downmode="$2"
+            ;;
+
+        NORMAL|ABORT|IMMEDIATE|POST_TX|normal|abort|immediate|post_tx)
+            downmode="$1"
+            ;;
+
+        "") ;;
+
+        *)
+            echo "Invalid option" >&2
+            echo
+            echo $down_usage
+            exit 1
+            ;;
+    esac
+
+    $svr_bin down $downmode
+}
+
+fn_clean_cm() {
+    NID=1
+    while [ $NID -le $nodes ]
+    do
+        sid=${original_sid}$NID
+        export CM_SID=cm.${sid_prefix}$NID
+        $svr_cm_name -d  > /dev/null 2>&1
+        NID=`expr $NID + 1`
+    done
+}
+
+fn_clean () {
+    if test -n "`fn_pid`"
+    then
+        $svr_down -t ABORT
+    fi
+    
+    if test -f "$svr_home/instance/$svr_sid/.proc.list"
+    then
+        $svr_down -t ABNORMAL
+    fi
+
+    rm -rf $svr_home/instance/$svr_sid
+    if [ -z "$1" ]; then 
+        rm -rf $DB_DIR
+    fi
+}
+
+fn_nomount () {
+    fn_clean
+    $svr_boot -t NOMOUNT $* || exit 1
+}
+
+fn_boot () {
+    $svr_boot -c  
+}
+
+test -d ~/.tbctl || mkdir ~/.tbctl
+echo "-----------------------------------------------" >> ~/.tbctl/$svr_sid.log
+
+log() {
+    echo "`date` $1" >> ~/.tbctl/$svr_sid.log
+}
+
+min() {
+    echo $(($1<$2?$1:$2))
+}
+
+get_cm_port() {
+    if ! test -f $1
+    then
+        echo "Tip file not found. $1"
+        exit 1
+    fi
+
+    cm_port=`( grep CM_PORT $1 | grep -v \# | cut -d= -f2 ) 2> /dev/null`
+    if [ -z "$cm_port" ];then 
+        echo "CM_PORT not found in the tip($1)"
+        exit 1
+    fi
+
+    # CM_PORT in svr tip is CM_UI_PORT
+    cm_port=`expr $cm_port - 5`
+}
+
+get_cm_res_path() {
+    if ! test -f $1
+    then
+        echo "CM Tip file not found. $1"
+        exit 1
+    fi
+    cm_res_path=`( grep CM_RESOURCE_FILE $1 | grep -v \# | cut -d= -f2 ) 2> /dev/null`
+}
+
+fn_init () {
+
+    if test $clean_db -eq 0
+    then
+        if test -d $DB_DIR
+        then
+            echo "ERROR: a database created already in $DB_DIR."
+            exit -1
+        fi
+    fi
+
+    # 
+    # Default values 
+    #
+    # from now, every $xxx_size is in MB
+    #
+    UNDOTBL=UNDO
+    UNDOFILE=undo001
+    size=50M
+    next_size=10M
+
+    max_datafile=100
+    max_loggroup=255
+    max_logmember=8
+    log_group=3
+    log_file=1
+    log_size=50M
+
+    undo_size=200M
+    undo_next_size=10M
+    undo_autoextend=y
+    undo_maxsize=unlimited
+
+    temp_size=100M
+    temp_next_size=10M
+    temp_autoextend=y
+    temp_maxsize=unlimited
+
+    system_size=100M
+    system_next_size=10M
+    system_autoextend=y
+    system_maxsize=unlimited
+
+    usr_size=100M
+    usr_next_size=10M
+    usr_autoextend=y
+    usr_maxsize=unlimited
+
+    syssub_size=10M
+    syssub_next_size=10M
+    syssub_autoextend=y
+    syssub_maxsize=unlimited
+
+    sys_id=sys
+    sys_password=$svr_sys_password
+
+    #processing options
+    while [ -n "$1" ]; do
+        case "$1" in 
+            --max-datafile)
+                max_datafile="$2"
+                shift
+                ;;
+            --max-loggroup)
+                max_loggroup="$2"
+                shift
+                ;;
+            --max-logmember)
+                max_logmember="$2"
+                shift
+                ;;
+            --log-size)
+                log_size="$2"
+                shift
+                ;;
+            --log-group)
+                log_group="$2"
+                shift
+                ;;
+            --log-file)
+                log_file="$2"
+                shift
+                ;;
+            --undo-size)
+                undo_size="$2"
+                shift
+                ;;
+            --undo-nextsize)
+                undo_next_size="$2"
+                shift
+                ;;
+            --temp-size)
+                temp_size="$2"
+                shift
+                ;;
+            --temp-nextsize)
+                temp_next_size="$2"
+                shift
+                ;;
+            --sys-size)
+                system_size="$2"
+                shift
+                ;;
+            --sys-nextsize)
+                system_next_size="$2"
+                shift
+                ;;
+            --usr-size)
+                usr_size="$2"
+                shift
+                ;;
+            --usr-nextsize)
+                usr_next_size="$2"
+                shift
+                ;;
+            --syssub-size)
+                syssub_size="$2"
+                shift
+                ;;
+            --syssub-nextsize)
+                syssub_next_size="$2"
+                shift
+                ;;
+            --sys-dir)
+                system_dir="$2"
+                shift
+                ;;
+            --temp-dir)
+                temp_dir="$2"
+                shift
+                ;;
+            --undo-dir)
+                undo_dir="$2"
+                shift
+                ;;
+            --usr-dir)
+                usr_dir="$2"
+                shift
+                ;;
+            --log-dir)
+                log_dir="$2"
+                shift
+                ;;
+            --syssub-dir)
+                syssub_dir="$2"
+                shift
+                ;;
+            --sys-autoextend)
+                system_autoextend="$2"
+                shift
+                ;;
+            --temp-autoextend)
+                temp_autoextend="$2"
+                shift
+                ;;
+            --undo-autoextend)
+                undo_autoextend="$2"
+                shift
+                ;;
+            --usr-autoextend)
+                usr_autoextend="$2"
+                shift
+                ;;
+            --syssub-autoextend)
+                syssub_autoextend="$2"
+                shift
+                ;;
+            --sys-maxsize)
+                system_maxsize="$2"
+                shift
+                ;;
+            --temp-maxsize)
+                temp_maxsize="$2"
+                shift
+                ;;
+            --undo-maxsize)
+                undo_maxsize="$2"
+                shift
+                ;;
+            --usr-maxsize)
+                usr_maxsize="$2"
+                shift
+                ;;
+            --syssub-maxsize)
+                syssub_maxsize="$2"
+                shift
+                ;;
+            --backup-ctrlfile)
+                backup_ctrlfile="$2"
+                shift
+                ;;
+            -ch)
+                if test -z "$2"
+                then 
+                    echo "Characterset is not specified." >&2
+                    exit 1
+                fi
+                char_set="$2"
+                shift
+                ;;
+            -nch)
+                if test -z "$2"
+                then 
+                    echo "National characterset is not specified." >&2
+                    exit 1
+                fi
+                nchar_set="$2"
+                shift
+                ;;
+            -s)
+                if test -z "$2"
+                then 
+                    echo "SID is not specified." >&2
+                    exit 1
+                fi
+                sid_prefix="$2"
+                shift
+                ;;
+            -n)
+                if test -z "$2"
+                then 
+                    echo "Node count for active cluster is not specified." >&2
+                    exit 1
+                fi
+                nodes="$2"
+                shift
+                ;;
+            -e)
+                print_on_error=error
+                ;;
+            -sod)
+                sod="$2"
+                sys_id="sysadm"
+                sys_password="sysadm"
+
+                if test "$3" = "-syslock"
+                then
+                    syslock="$4"
+                    shift
+                    shift
+                else
+                    syslock="Y"
+                fi
+                shift
+                ;;
+            -crypto)
+                crypto="$2"
+                shift
+                ;;
+            big|BIG) 
+                size="100M"
+                next_size="100M"
+                undo_size=$size
+                undo_next_size=$next_size
+                temp_size=$size
+                temp_next_size=$next_size
+                system_size=$size
+                system_next_size=$next_size
+                usr_size=$size
+                usr_next_size=$next_size
+                syssub_size=$size
+                syssub_next_size=$next_size
+                ;;
+            tiny|TINY|2mb|2MB)
+                size="2M"
+                next_size="8M"
+                log_size=$size
+                undo_size=$size
+                undo_next_size=$next_size
+                temp_size=$size
+                temp_next_size=$next_size
+                system_size=$size
+                system_next_size=$next_size
+                usr_size=$size
+                usr_next_size=$next_size
+                syssub_size=$size
+                syssub_next_size=$next_size
+                ;;
+            -v)
+                verbose=yes
+                ;;
+            -h)
+    echo "create_db option:
+    -ch                 : set character set ( default : $char_set )
+    -nch                : set national character set ( default : $nchar_set )
+    --max-datafile      : set data file max count ( default : $max_datafile )
+    --max-loggroup      : set log group max count ( default : $max_loggroup )
+    --max-logmember     : set log file max count in log group ( default : $max_logmember )
+    --log-size          : set log file size ( default : $log_size )
+    --log-group         : set log group count ( default : $log_group )
+    --log-file          : set log file count in log group ( default : $log_file )
+    --log-dir           : set REDO LOG file directory ( default : $DB_DIR )
+    --sys-size          : set SYSTEM tablespace default size ( default : $system_size )
+    --sys-dir           : set SYSTEM datafile directory ( default : $DB_DIR )
+    --sys-autoextend    : set SYSTEM autoextend (y/n) ( default :$system_autoextend )
+    --sys-nextsize      : set SYSTEM next extend size ( default : $system_next_size )
+    --sys-maxsize       : set SYSTEM datafile max size ( default : $system_maxsize )
+    --temp-size         : set TEMP tablespace default size ( default : $temp_size )
+    --temp-dir          : set TEMP datafile directory ( default : $DB_DIR )
+    --temp-autoextend   : set TEMP autoextend (y/n) ( default : $temp_autoextend )
+    --temp-nextsize     : set TEMP next extend size ( default : $temp_next_size )
+    --temp-maxsize      : set TEMP datafile max size ( default : $temp_maxsize )
+    --undo-size         : set UNDO tablespace default size ( default : $undo_size )
+    --undo-dir          : set UNDO datafile directory ( default : $DB_DIR )
+    --undo-autoextend   : set UNDO autoextend (y/n) ( default : $undo_autoextend )
+    --undo-nextsize     : set UNDO next extend size ( default : $undo_next_size )
+    --undo-maxsize      : set UNDO datafile max size ( default : $undo_maxsize )
+    --usr-size          : set USR tablespace default size ( default : $usr_size )
+    --usr-dir           : set USR datafile directory ( default : $DB_DIR )
+    --usr-autoextend    : set USR autoextend (y/n) ( default : $usr_autoextend )
+    --usr-nextsize      : set USR next extend size ( default : $usr_next_size )
+    --usr-maxsize       : set USR datafile max size ( default : $usr_maxsize )
+    --syssub-size       : set SYSSUB tablespace default size ( default : $syssub_size )
+    --syssub-dir        : set SYSSUB datafile directory ( default : $DB_DIR )
+    --syssub-autoextend : set SYSSUB autoextend (y/n) ( default : $syssub_autoextend )
+    --syssub-nextsize   : set SYSSUB next extend size ( default : $syssub_next_size )
+    --syssub-maxsize    : set SYSSUB datafile max size ( default : $syssub_maxsize )
+    --backup-ctrlfile   : set backup control file.
+            "
+            exit 0
+            ;;
+        esac
+        shift
+    done
+
+    if [ ! -z "$nodes" ]; then
+        # active cluster db
+        UNDOTBL=${UNDOTBL}1;
+        UNDOFILE=undo101
+
+        if [ -z "$sid_prefix" ]; then
+            original_sid=$svr_sid
+        else 
+            original_sid=$sid_prefix
+        fi
+        # sid seq for active cluster starts with 1
+        export $svr_sid_name=$original_sid"1"
+        svr_sid=$original_sid"1"
+        fn_set_dbname
+
+        cmfile_dir=$svr_home/cmfile/$original_sid
+        cmfile=$cmfile_dir/cmdata
+        cls_name=cls_$original_sid
+
+        fn_clean_cm
+
+        mkdir -p $cmfile_dir
+        rm -f $cmfile > /dev/null 2>&1
+    fi
+
+    [ -z "$log_dir"    ] && log_dir=$DB_DIR
+    [ -z "$undo_dir"   ] && undo_dir=$DB_DIR
+    [ -z "$temp_dir"   ] && temp_dir=$DB_DIR
+    [ -z "$system_dir" ] && system_dir=$DB_DIR
+    [ -z "$syssub_dir" ] && syssub_dir=$DB_DIR
+    [ -z "$usr_dir"    ] && usr_dir=$DB_DIR
+
+    groupid=1
+    logid=1
+    cur_max_log=$log_file
+
+    while [ "$groupid" -le "$log_group" ];
+    do
+        log_sql="$log_sql
+      group $groupid ("
+        while [ "$logid" -le "$cur_max_log" ];
+        do
+            if [ "$groupid" != "$log_group" -a  "$logid" = "$cur_max_log" ];then
+                log_sql="$log_sql'$log_dir/log00$logid.log') size $log_size,"
+            elif [ "$groupid" != "$log_group" -a "$logid" != "$cur_max_log" ];then
+                log_sql="$log_sql'$log_dir/log00$logid.log', "
+            elif [ "$groupid" = "$log_group" -a "$logid" = "$cur_max_log" ];then
+                log_sql="$log_sql'$log_dir/log00$logid.log') size $log_size"
+            elif [ "$groupid" = "$log_group" -a "$logid" != "$cur_max_log" ];then
+                log_sql="$log_sql'$log_dir/log00$logid.log', "
+            fi
+            logid=`expr $logid + 1`
+        done
+        cur_max_log=`expr $log_file + $cur_max_log`
+        groupid=`expr $groupid + 1`
+    done
+
+    if [ "$system_autoextend" = "y" ];then
+        system_sql="on next $system_next_size maxsize $system_maxsize "
+    else
+        system_sql="off"
+    fi
+
+    if [ "$temp_autoextend" = "y" ];then
+        temp_sql="on next $temp_next_size maxsize $temp_maxsize "
+    else
+        temp_sql="off"
+    fi
+
+    if [ "$undo_autoextend" = "y" ];then
+        undo_sql="on next $undo_next_size maxsize $undo_maxsize "
+    else
+        undo_sql="off"
+    fi
+
+    if [ "$usr_autoextend" = "y" ];then
+        usr_sql="on next $usr_next_size maxsize $usr_maxsize "
+    else
+        usr_sql="off"
+    fi
+
+    if [ "$syssub_autoextend" = "y" ];then
+        syssub_sql="on next $syssub_next_size maxsize $syssub_maxsize "
+    else
+        syssub_sql="off"
+    fi
+
+    newmount_sql="create database \"$DB_NAME\"
+  user sys identified by $svr_sys_password
+  maxinstances 8
+  maxdatafiles $max_datafile
+  character set $char_set
+  national character set $nchar_set
+  logfile $log_sql
+    maxloggroups $max_loggroup
+    maxlogmembers $max_logmember
+    noarchivelog
+  datafile '$system_dir/system001.dtf' size $system_size
+    autoextend $system_sql
+  SYSSUB 
+    datafile '$syssub_dir/syssub001.dtf' size $syssub_size
+    autoextend $syssub_sql
+  default temporary tablespace TEMP
+    tempfile '$temp_dir/temp001.dtf' size $temp_size
+    autoextend $temp_sql
+    extent management local autoallocate
+  undo tablespace $UNDOTBL
+    datafile '$undo_dir/$UNDOFILE.dtf' size $undo_size
+    autoextend $undo_sql
+    extent management local autoallocate
+  default tablespace USR 
+    datafile  '$usr_dir/usr001.dtf' size $usr_size
+    autoextend $usr_sql
+    extent management local autoallocate;"
+
+
+    if [ ! -z "$nodes" ]; then
+        # active cluster db
+        export CM_SID=cm.${sid_prefix}1
+        get_cm_port "$svr_home/config/$svr_sid.tip"
+        get_cm_res_path "$svr_home/config/$CM_SID.tip"
+
+        $svr_cm_name -d  > /dev/null 2>&1
+
+        rm -f $cm_res_path
+        $svr_cm_name -b 
+
+        if [ ! -z "$verbose" ]; then
+            echo "$svr_cmrctl_name add network --nettype private --ipaddr 127.0.0.1 --portno $cm_port --name inc1"
+            echo "$svr_cmrctl_name add cluster --incnet inc1 --cfile $cmfile --name $cls_name"
+            echo "$svr_cmrctl_name start cluster --name $cls_name"
+            echo "$svr_cmrctl_name add service --name $DB_NAME --cname $cls_name"
+            echo "$svr_cmrctl_name add db --name $svr_sid --svcname $DB_NAME --dbhome $svr_home "
+        fi
+
+        $svr_cmrctl_name add network --nettype private --ipaddr 127.0.0.1 --portno $cm_port --name inc1
+        $svr_cmrctl_name add cluster --incnet inc1 --cfile $cmfile --name $cls_name
+        $svr_cmrctl_name start cluster --name $cls_name
+        $svr_cmrctl_name add service --name $DB_NAME --cname $cls_name
+        $svr_cmrctl_name add db --name $svr_sid --svcname $DB_NAME --dbhome $svr_home 
+
+        sleep 1
+    fi
+
+    fn_nomount -c
+    echo "+----------------------------- size -------------------------------+"
+    echo " system size = $system_size (next $system_next_size)"
+    echo " syssub size = $system_size (next $system_next_size)"
+    echo "   undo size = $undo_size (next $undo_next_size)"
+    echo "   temp size = $temp_size (next $temp_next_size)"
+    echo "    usr size = $usr_size (next $usr_next_size)"
+    echo "    log size = $log_size"
+    echo ""
+    echo "+--------------------------- directory ----------------------------+"
+    echo " system directory = $system_dir"
+    echo " syssub directory = $syssub_dir"
+    echo "   undo directory = $undo_dir"
+    echo "   temp directory = $temp_dir"
+    echo "    log directory = $log_dir"
+    echo "    usr directory = $usr_dir"
+    echo ""
+    echo "+========================== newmount sql ==========================+"
+    echo " $newmount_sql "
+    echo "+==================================================================+"
+
+    $svr_sql -i -s $sys_id/$sys_password@$svr_sid <<EOF
+$newmount_sql
+quit
+EOF
+
+    sleep 2
+
+    fn_boot 
+
+    if [ ! -z "$nodes" ]; then
+        # active cluster db
+        NID=2
+        max_group=$log_group
+
+        while [ $NID -le $nodes ]
+        do
+            undo_ts_sql="create UNDO TABLESPACE UNDO$NID
+datafile '$undo_dir/undo${NID}01.dtf' size $undo_size
+autoextend $undo_sql
+extent management local autoallocate;"
+
+            logid=1
+            cur_max_log=$log_file
+            max_group=`expr $max_group + $log_group`
+            log_sql_cnt=0
+            redo_thread=`expr $NID - 1`
+
+            while [ "$groupid" -le "$max_group" ];
+            do
+                log_sqls[$log_sql_cnt]="alter database add logfile THREAD $redo_thread group $groupid 
+  ("
+                while [ "$logid" -le "$cur_max_log" ];
+                do
+                    if [ "$logid" = "$cur_max_log" ];then
+                        log_sqls[$log_sql_cnt]="${log_sqls[$log_sql_cnt]}'$log_dir/log$NID""0$logid.log') size $log_size;"
+                    else 
+                        log_sqls[$log_sql_cnt]="${log_sqls[$log_sql_cnt]}'$log_dir/log$NID""0$logid.log', "
+                    fi
+                    logid=`expr $logid + 1`
+                done
+                cur_max_log=`expr $log_file + $cur_max_log`
+                groupid=`expr $groupid + 1`
+                log_sql_cnt=`expr $log_sql_cnt + 1`
+            done
+
+            enable_sql="alter database ENABLE PUBLIC THREAD $redo_thread;"
+
+            echo "+------------------------- additional sql -------------------------+"
+            echo " $undo_ts_sql "
+            for sql in "${log_sqls[@]}"
+            do
+                echo "$sql"
+            done
+            echo "$enable_sql"
+            echo "+------------------------------------------------------------------+"
+
+            $svr_sql -i -s sys/$svr_sys_password@$svr_sid <<EOF
+$undo_ts_sql
+quit
+EOF
+            for sql in "${log_sqls[@]}"
+            do
+            $svr_sql -i -s sys/$svr_sys_password@$svr_sid <<EOF
+$sql
+quit
+EOF
+            done
+            $svr_sql -i -s sys/$svr_sys_password@$svr_sid <<EOF
+$enable_sql
+quit
+EOF
+            NID=`expr $NID + 1`
+        done
+
+
+        NID=2
+        while [ $NID -le $nodes ]
+        do
+            export $svr_sid_name=$original_sid$NID
+            svr_sid=$original_sid$NID
+            export CM_SID=cm.${sid_prefix}$NID
+            get_cm_port "$svr_home/config/$svr_sid.tip" 
+            get_cm_res_path "$svr_home/config/$CM_SID.tip"
+
+            fn_clean $svr_sid
+
+            $svr_cm_name -d  > /dev/null 2>&1
+
+            rm -f $cm_res_path
+            $svr_cm_name -b 
+
+            if [ ! -z "$verbose" ]; then
+                echo "$svr_cmrctl_name add network --nettype private --ipaddr 127.0.0.1 --portno $cm_port --name inc$NID"
+                echo "$svr_cmrctl_name add cluster --incnet inc$NID --cfile $cmfile --name $cls_name"
+                echo "$svr_cmrctl_name start cluster --name $cls_name"
+                echo "$svr_cmrctl_name add db --name $svr_sid --svcname $DB_NAME --dbhome $svr_home "
+            fi
+
+            $svr_cmrctl_name add network --nettype private --ipaddr 127.0.0.1 --portno $cm_port --name inc$NID
+            $svr_cmrctl_name add cluster --incnet inc$NID --cfile $cmfile --name $cls_name
+            $svr_cmrctl_name start cluster --name $cls_name
+            $svr_cmrctl_name add db --name $svr_sid --svcname $DB_NAME --dbhome $svr_home 
+
+            sleep 1
+
+            fn_boot
+            NID=`expr $NID + 1`
+        done
+        svr_sid=${original_sid}1
+    fi
+}
+
+fn_backup_ctrlfile () {
+    $svr_sql -i -s sys/$svr_sys_password@$svr_sid <<EOF
+alter database backup controlfile to trace as '$backup_ctrlfile' reuse NORESETLOGS;
+quit
+EOF
+}
+
+fn_create_db_ () {
+    fn_init $*
+    fn_systemsql
+
+    if [ ! -z "$backup_ctrlfile" ]; then
+        fn_backup_ctrlfile
+    fi
+ 
+    cat <<EOF >&2
+
+**************************************************
+* $svr_string Database '$DB_NAME' is created successfully on `date`.
+*     $svr_string home directory (\$$svr_home_name) =
+*         $svr_home
+*     $svr_string service ID (\$$svr_sid_name) = $svr_sid
+*     $svr_string binary path =
+*         $svr_home/bin:$svr_home/client/bin
+*     Initialization parameter file =
+*         $svr_home/config/$svr_sid.tip
+*
+* Make sure that you always set up environment variables \$$svr_home_name and
+* \$$svr_sid_name properly before you run $svr_string.
+**************************************************
+
+EOF
+}
+
+fn_create_db () {
+    clean_db=0
+    fn_create_db_ $*
+}
+
+fn_newmount () {
+    clean_db=1
+    fn_create_db_ $*
+}
+
+fn_pkg () {
+    if test -d $svr_home/instance/$svr_sid/log
+    then
+        LOG="$svr_home/instance/$svr_sid/log/system_init.log"
+    else
+        LOG="system_init.log"
+    fi
+
+    $svr_sql -i -s sys/$svr_sys_password@$svr_sid >> $LOG <<EOF
+        set define off
+        @$svr_home/scripts/create_dba_gen.sql
+        quit
+EOF
+
+    if [ "$sod" = "Y" ]
+    then
+    $svr_sql -i -s sys/$svr_sys_password@$svr_sid >> $LOG <<EOF
+        set define off
+        @$svr_home/scripts/system_users_sod.sql
+        quit
+EOF
+    else
+    $svr_sql -i -s sys/$svr_sys_password@$svr_sid >> $LOG <<EOF
+        set define off
+        @$svr_home/scripts/system_users.sql
+        @$svr_home/scripts/example_users.sql
+        quit
+EOF
+    fi
+
+    $svr_sql -i -s sys/$svr_sys_password@$svr_sid >> $LOG <<EOF
+        set define off
+        @$svr_home/scripts/vt_create_gen.sql
+        @$svr_home/scripts/vt_dual.sql
+        @$svr_home/scripts/create_seq.sql
+        @$svr_home/scripts/dpvx.sql
+        @$svr_home/scripts/outln.sql
+
+        @$svr_home/scripts/pkg/pkg_standard.sql
+        @$svr_home/scripts/pkg/pkg_standard_extension.sql
+        @$svr_home/scripts/pkg/pkg_clobxmlinterface.sql
+        @$svr_home/scripts/pkg/pkg_dbms_standard.sql
+        @$svr_home/scripts/pkg/pkg_udt_meta.sql
+        @$svr_home/scripts/pkg/pkg_dbms_types.sql
+        @$svr_home/scripts/pkg/anydata.sql
+        @$svr_home/scripts/pkg/pkg_dbms_output.sql
+        @$svr_home/scripts/pkg/pkg_dbms_lob.sql
+        @$svr_home/scripts/pkg/pkg_dbms_utility.sql
+        @$svr_home/scripts/pkg/_pkg_dbms_utility.tbw
+        @$svr_home/scripts/pkg/pkg_dbms_obfuscation.sql
+        @$svr_home/scripts/pkg/pkg_dbms_transaction.sql
+        @$svr_home/scripts/pkg/pkg_dbms_space_admin.sql
+        @$svr_home/scripts/pkg/pkg_dbms_space.sql
+        @$svr_home/scripts/pkg/pkg_dbms_random.sql
+        @$svr_home/scripts/pkg/pkg_dbms_lock.sql
+        @$svr_home/scripts/pkg/pkg_dbms_system.sql
+        @$svr_home/scripts/pkg/pkg_dbms_job.sql
+        @$svr_home/scripts/pkg/pkg_utl_raw.sql
+        @$svr_home/scripts/pkg/pkg_utl_i18n.sql
+        @$svr_home/scripts/pkg/_pkg_utl_i18n.tbw
+        @$svr_home/scripts/pkg/pkg_utl_file.sql
+        @$svr_home/scripts/pkg/pkg_utl_str.sql
+        @$svr_home/scripts/pkg/_pkg_utl_str.tbw
+        @$svr_home/scripts/pkg/pkg_tb_utility.sql
+        @$svr_home/scripts/pkg/pkg_dbms_sql.sql
+        @$svr_home/scripts/pkg/pkg_dbms_rowid.sql
+        @$svr_home/scripts/pkg/pkg_dbms_repair.sql
+        @$svr_home/scripts/pkg/pkg_dbms_application_info.sql
+        @$svr_home/scripts/pkg/pkg_dbms_java.sql
+        @$svr_home/scripts/pkg/pkg_utl_encode.sql
+        @$svr_home/scripts/pkg/pkg_utl_url.sql
+        @$svr_home/scripts/pkg/pkg_utl_http.sql
+        @$svr_home/scripts/pkg/_pkg_utl_http.tbw
+        @$svr_home/scripts/pkg/pkg_utl_tcp.sql
+        @$svr_home/scripts/pkg/pkg_dbms_session.sql
+        @$svr_home/scripts/pkg/_pkg_dbms_session.tbw
+        @$svr_home/scripts/pkg/pkg_dbms_crypto.sql
+        @$svr_home/scripts/pkg/pkg_psm_sql_result_cache.sql
+        @$svr_home/scripts/pkg/pkg_text.sql
+        @$svr_home/scripts/pkg/_pkg_text.tbw
+        @$svr_home/scripts/pkg/pkg_htp.sql
+        @$svr_home/scripts/pkg/_pkg_htp.tbw
+        @$svr_home/scripts/pkg/pkg_dbms_pipe.sql
+        @$svr_home/scripts/pkg/pkg_dbms_result_cache.sql
+        @$svr_home/scripts/pkg/pkg_dbms_flashback.sql
+        @$svr_home/scripts/pkg/pkg_seaf.sql
+        @$svr_home/scripts/pkg/pkg_dbms_rls.sql
+        @$svr_home/scripts/pkg/pkg_dbms_debug.sql
+        @$svr_home/scripts/pkg/pkg_dbms_debug_jdwp.sql
+        @$svr_home/scripts/pkg/pkg_dbms_expression.sql
+        @$svr_home/scripts/pkg/pkg_tudiconst.sql
+        @$svr_home/scripts/pkg/pkg_dbms_xmlgen.sql
+        @$svr_home/scripts/pkg/pkg_dbms_xmldom.sql
+        @$svr_home/scripts/pkg/pkg_dbms_xmlquery.sql
+        @$svr_home/scripts/pkg/pkg_dbms_verify.sql
+        @$svr_home/scripts/pkg/pkg_dbms_db_version.sql
+        @$svr_home/scripts/pkg/pkg_dbms_geom.sql
+        @$svr_home/scripts/pkg/pkg_utl_compress.sql
+        @$svr_home/scripts/pkg/pkg_dbms_monitor.sql
+        @$svr_home/scripts/pkg/pkg_dbms_ctx_ddl.sql
+        @$svr_home/scripts/pkg/pkg_utl_ref.sql
+        @$svr_home/scripts/pkg/pkg_owa_util.sql
+        @$svr_home/scripts/pkg/pkg_client_internal.sql
+        @$svr_home/scripts/pkg/pkg_diutil.sql
+        @$svr_home/scripts/pkg/pkg_dbms_xslprocessor.sql
+        @$svr_home/scripts/pkg/_pkg_dbms_xslprocessor.tbw
+        @$svr_home/scripts/pkg/pkg_dbms_xmlparser.sql                            
+        @$svr_home/scripts/pkg/_pkg_dbms_xmlparser.tbw
+        @$svr_home/scripts/pkg/pkg_dbms_xmlsave.sql
+
+
+        @$svr_home/scripts/pkg/pkg_synonym.sql
+        @$svr_home/scripts/pkg/pkg_utl_match.sql
+        @$svr_home/scripts/systbl_gen.sql
+        @$svr_home/scripts/systbl_job.sql
+        @$svr_home/scripts/sys_tbl.sql
+        @$svr_home/scripts/sys_profile.sql
+        @$svr_home/scripts/pkg/pkg_utl_smtp.sql
+        @$svr_home/scripts/pkg/pkg_db2_standard.sql
+        @$svr_home/scripts/pkg/pkg_text_japanese_lexer.sql
+        @$svr_home/scripts/pkg_utl_recomp.sql
+        @$svr_home/scripts/_pkg_utl_recomp.tbw
+        @$svr_home/scripts/uda_wm_concat.sql
+        @$svr_home/scripts/pkg/pkg_utl_of.sql
+        quit
+EOF
+
+    $svr_sql -i -s syscat/syscat@$svr_sid >> $LOG <<EOF
+        set define off
+        @$svr_home/scripts/catalogview.sql
+        quit
+EOF
+
+    $svr_sql -i -s sys/$svr_sys_password@$svr_sid >> $LOG <<EOF
+        set define off
+        @$svr_home/scripts/stat_hist.sql
+        @$svr_home/scripts/pkg/pkg_sys_util.sql
+        @$svr_home/scripts/pkg/pkg_dbms_stats_util.sql
+        @$svr_home/scripts/pkg/pkg_dbms_stats.sql
+        @$svr_home/scripts/pkg/_pkg_dbms_stats_util.tbw
+        @$svr_home/scripts/pkg/_pkg_dbms_stats.tbw
+        @$svr_home/scripts/rewrite_table.sql
+        @$svr_home/scripts/pkg/pkg_dbms_mview_util.sql
+        @$svr_home/scripts/pkg/_pkg_dbms_mview_util.tbw
+        @$svr_home/scripts/pkg/pkg_dbms_mview.sql
+        @$svr_home/scripts/pkg/_pkg_dbms_mview.tbw
+        @$svr_home/scripts/pkg/pkg_dbms_mview_refresh_util.sql
+        @$svr_home/scripts/pkg/_pkg_dbms_mview_refresh_util.tbw
+        @$svr_home/scripts/pkg/pkg_dbms_redefinition_stats.sql
+        @$svr_home/scripts/pkg/_pkg_dbms_redefinition_stats.tbw
+        @$svr_home/scripts/pkg/pkg_dbms_redefinition.sql
+        @$svr_home/scripts/pkg/pkg_dbms_errlog.sql
+        @$svr_home/scripts/pkg/_pkg_dbms_errlog.tbw
+
+        @$svr_home/scripts/pkg/pkg_dbms_assert.sql
+        @$svr_home/scripts/pkg/_pkg_dbms_assert.tbw
+
+        @$svr_home/scripts/pkg/pkg_dbms_aq.sql
+        @$svr_home/scripts/pkg/pkg_dbms_aq.sql
+        @$svr_home/scripts/pkg/pkg_dbms_aq_utl.sql
+        @$svr_home/scripts/pkg/pkg_dbms_aqadm.sql
+        @$svr_home/scripts/pkg/_pkg_dbms_aq.tbw
+        @$svr_home/scripts/pkg/_pkg_dbms_aq_utl.tbw
+        @$svr_home/scripts/pkg/_pkg_dbms_aqadm.tbw
+
+        @$svr_home/scripts/pkg/pkg_dbms_sph.sql
+        @$svr_home/scripts/pkg/_pkg_dbms_sph.tbw
+
+        @$svr_home/scripts/pkg/pkg_dbms_metadata.sql
+        @$svr_home/scripts/pkg/_pkg_dbms_metadata.tbw
+
+        @$svr_home/scripts/pkg/_pkg_db2_standard.tbw
+     quit
+EOF
+
+    sh $svr_home/scripts/sph_create_obj.sh "$svr_home" "$svr_sid" "sys/$svr_sys_password" "$svr_sql" "$LOG"
+
+    $svr_sql -i -s sys/$svr_sys_password@$svr_sid >> $LOG <<EOF
+        set define off
+        @$svr_home/scripts/sys_job.sql
+
+        @$svr_home/scripts/pkg/pkg_synonym2.sql
+
+        @$svr_home/scripts/iparam_desc_gen.sql
+        @$svr_home/scripts/trace_event_desc_gen.sql
+
+        @$svr_home/scripts/dpv.sql
+        @$svr_home/scripts/pkg/create_pkg_text_tbl.sql
+     quit
+EOF
+
+    $svr_sql -i -s sys/$svr_sys_password@$svr_sid >> $LOG <<EOF
+        set define off
+        @$svr_home/scripts/tpr_drop.sql
+     quit
+EOF
+
+    sh $svr_home/scripts/tpr_create_obj.sh "$svr_home" "$svr_sid" "sys/$svr_sys_password" "$svr_sql" "$LOG"
+
+    $svr_sql -i -s sys/$svr_sys_password@$svr_sid >> $LOG <<EOF
+        set define off
+        @$svr_home/scripts/tpr.sql
+     quit
+EOF
+
+    $svr_sql -i -s sys/$svr_sys_password@$svr_sid >> $LOG <<EOF
+        set define off
+        @$svr_home/scripts/pkg/_pkg_dbms_tpr.tbw
+     quit
+EOF
+}
+
+fn_initwithpkg () {
+    fn_init $*
+    fn_pkg
+}
+
+fn_ipcrm () {
+    tipfile="$svr_home/config/$svr_sid.tip"
+    test -f "$tipfile" || { echo "$tipfile does not exist"; exit 1; }
+
+    shm_base=`cat $tipfile | grep SHM_KEY | \
+        sed "s/^.*SHM_KEY$sp*=$sp*\([0-9]*\).*\$/\\1/"`
+
+    ipcrm -M $shm_base
+}
+
+fn_kill () {
+    for proc in $svr_bin $svr_listener
+    do
+        PID=`fn_pid "$proc"`
+        if test -n "$PID"
+        then
+            kill $PID
+        fi
+    done
+}
+
+fn_backup () {
+    for file in $DATA_REQ
+    do
+        test -f "$file" || { echo "$file do not exist"; exit 1; }
+    done
+
+    i=0
+    while test -e "$DB_DIR/bak.$i"
+    do
+        i=`expr $i + 1`
+    done
+    BAK_DIR="$DB_DIR/bak.$i"
+
+    echo "Backup to $BAK_DIR"
+
+    mkdir $BAK_DIR
+
+    for file in $DATA
+    do
+        test -f "$file" && { echo "Backup: $file"; cp $file "$BAK_DIR"; }
+    done
+
+
+    test -d "$DB_DIR/psm" && cp -R "$DB_DIR/psm" "$BAK_DIR"
+    test -d "$DB_DIR/archive" && cp -R "$DB_DIR/archive" "$BAK_DIR/"
+}
+
+fn_restore () {
+    if test -z "$1"
+    then
+        echo "Usage: $prog restore <index for bak.*>"
+        exit
+    fi
+
+    BAK_DIR="$DB_DIR/bak.$1"
+    if test ! -d "$BAK_DIR"
+    then
+        echo "$BAK_DIR does not exist"
+        exit
+    fi
+
+    echo "Recover from $BAK_DIR"
+
+    fn_clean
+
+    cd "$BAK_DIR"
+
+    for file in $DATA_RES
+    do
+        test -f $file && { echo "Restore: $file"; cp $file ..; }
+    done
+
+    if test -d "$BAK_DIR/psm"
+    then
+        test -e "$DB_DIR/psm" && rm -rf "$DB_DIR/psm"
+        cp -R "$BAK_DIR/psm" "$DB_DIR"
+    fi
+
+    if test -d "$BAK_DIR/archive"
+    then
+        test -e "$DB_DIR/archive" && rm -rf "$DB_DIR/archive"
+        cp -R "$BAK_DIR/archive" "$DB_DIR"
+    fi
+}
+
+fn_systemsql () {
+    echo $svr_bin
+    
+    if [ "$sod" = "Y" ]; then
+        $svr_home/scripts/system.sh -p1 $svr_sys_password -p2 syscat -a1 Y -a2 Y -a3 Y -a4 Y -sod Y -syslock $syslock -crypto $crypto $print_on_error 
+    else
+        $svr_home/scripts/system.sh -p1 $svr_sys_password -p2 syscat -a1 Y -a2 Y -a3 Y -a4 Y -crypto $crypto $print_on_error 
+    fi
+}
+
+fn_snewmount () {
+    echo "======================="
+    echo "STORAGE SERVER NEWMOUNT"
+    echo "======================="
+
+    fn_clean
+   
+    $ssvr_boot NOMOUNT
+
+    if test -d $svr_home/instance/$svr_sid/log
+    then
+        LOG="$svr_home/instance/$svr_sid/log/system_init.log"
+    else
+        LOG="system_init.log"
+    fi
+
+    $svr_sql sys/$svr_sys_password@$svr_sid >> $LOG <<EOF
+        create storage server;
+     quit
+EOF
+
+    $ssvr_down
+    $ssvr_boot
+}
+
+
+cmd_list="
+    create_db down attachpid pid clean nomount init systemsql newmount ipcrm kill backup restore initwithpkg pkg snewmount"
+usage="\
+Usage: $prog [<options>] [<cmd>]
+
+-vg : use valgrind for `basename \"$svr_boot\"`
+
+Available commands : $cmd_list"
+
+while test $# != 0; do
+    arg=$1
+    case "$arg" in
+        -h|--help)
+            echo "$usage"
+            exit;
+            ;;
+
+        -vg)
+            svr_boot="valgrind $svr_boot"
+            shift
+            ;;
+
+        -*)
+            echo "$prog: invalid option $arg" >&2
+            echo
+            echo "$usage"
+            exit 1
+            ;;
+
+        *)
+            break
+            ;;
+    esac
+done
+
+case " $cmd_list " in
+    "")
+        echo "$usage"
+        exit 1
+        ;;
+
+    *" $1 "*) ;;
+
+    *)
+        echo "Unknown command \"$1\"" >&2
+        echo "$usage"
+        exit 1
+        ;;
+esac
+
+cmd=$1
+shift
+
+fn_$cmd $*
+
+#eof

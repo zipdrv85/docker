@@ -1,125 +1,125 @@
-CREATE OR REPLACE FUNCTION XEDRM5.es_admindelgroup(sroleid character varying, itype smallint)
+CREATE OR REPLACE FUNCTION XEDRM6.es_admindelgroup(sroleid character varying, itype smallint)
  RETURNS void
  LANGUAGE plpgsql
 AS $function$
 BEGIN
-  	delete from XEDRM5.SYS_GROUP_MEMBER where GROUP_ID=sRoleId or (Member_Id=sRoleId and Member_Type=iType);
-  	delete from XEDRM5.SYS_GROUP_MANAGER where GROUP_ID=sRoleId or (USER_ID=sRoleId);
-  	delete from XEDRM5.SYS_GROUP where GROUP_ID=sRoleId;
-	delete from XEDRM5.es_shareAccess where RoleId=sRoleId;
+  	delete from XEDRM6.SYS_GROUP_MEMBER where GROUP_ID=sRoleId or (Member_Id=sRoleId and Member_Type=iType);
+  	delete from XEDRM6.SYS_GROUP_MANAGER where GROUP_ID=sRoleId or (USER_ID=sRoleId);
+  	delete from XEDRM6.SYS_GROUP where GROUP_ID=sRoleId;
+	delete from XEDRM6.es_shareAccess where RoleId=sRoleId;
 END;
 $function$
 ;
 
-CREATE OR REPLACE FUNCTION XEDRM5.es_admindeluser(suserid character varying, itype smallint, sencuserid character varying)
+CREATE OR REPLACE FUNCTION XEDRM6.es_admindeluser(suserid character varying, itype smallint, sencuserid character varying)
  RETURNS void
  LANGUAGE plpgsql
 AS $function$
 BEGIN
-  	delete from XEDRM5.SYS_GROUP_MANAGER where USER_ID=sUserId;
-	delete from XEDRM5.SYS_GROUP_MEMBER where Member_Id=sUserId and Member_Type=iType;
-	delete from XEDRM5.SYS_GROUP_MEMBER where group_Id='_user_' || sUserId;   
-    delete from XEDRM5.sys_user_attr where User_Id=sUserId;
-	delete from XEDRM5.SYS_USER where User_Id=sUserId;
-  	delete from XEDRM5.SYS_GROUP where GROUP_ID='_user_' || sUserId;
-	delete from XEDRM5.es_shareAccess where RoleId='_user_' || sUserId;
+  	delete from XEDRM6.SYS_GROUP_MANAGER where USER_ID=sUserId;
+	delete from XEDRM6.SYS_GROUP_MEMBER where Member_Id=sUserId and Member_Type=iType;
+	delete from XEDRM6.SYS_GROUP_MEMBER where group_Id='_user_' || sUserId;   
+    delete from XEDRM6.sys_user_attr where User_Id=sUserId;
+	delete from XEDRM6.SYS_USER where User_Id=sUserId;
+  	delete from XEDRM6.SYS_GROUP where GROUP_ID='_user_' || sUserId;
+	delete from XEDRM6.es_shareAccess where RoleId='_user_' || sUserId;
 END;
 $function$
 ;
 
-create or replace FUNCTION XEDRM5.sp_asysAddContentElement
+create or replace FUNCTION XEDRM6.sp_asysAddContentElement
 (sElementId character varying, sVolumeId character varying, sFileKey character varying, iFileSize bigint, dtCreateDate character varying, dtLastAccess character varying, iContentType bigint, sContentClassId character varying, iCheckHint bigint, dtWriteDate character varying, iRetention bigint, sCheckSum character varying)
 returns void
 AS $$ 
 BEGIN
-insert into XEDRM5.asysContentElement
+insert into XEDRM6.asysContentElement
  (ElementId, VolumeId, FileKey, FileSize, CreateDate, LastAccess, ContentType, ContentClassId, CheckHint, WriteDate, Retention, CheckSum)
  values (sElementId, sVolumeId, sFileKey, iFileSize, dtCreateDate::date, dtLastAccess::date, iContentType, sContentClassId, iCheckHint, dtWriteDate::date, iRetention, sCheckSum);
 END;
 $$LANGUAGE plpgsql;
 
-create or replace FUNCTION XEDRM5.sp_asysAddContentElementEx
+create or replace FUNCTION XEDRM6.sp_asysAddContentElementEx
 (sElementId character varying, sVolumeId character varying, sFileKey character varying, iFileSize bigint, dtCreateDate character varying, dtLastAccess character varying, iContentType bigint, sContentClassId character varying, iCheckHint bigint, dtWriteDate character varying, iRetention bigint, sCheckSum character varying)
 returns void
 AS $$ 
 BEGIN
-insert into XEDRM5.asysContentElement
+insert into XEDRM6.asysContentElement
  (ElementId, VolumeId, FileKey, FileSize, CreateDate, LastAccess, ContentType, ContentClassId, CheckHint, WriteDate, Retention, CheckSum)
  values (sElementId, sVolumeId, sFileKey, iFileSize, dtCreateDate::date, dtLastAccess::date, iContentType, sContentClassId, iCheckHint, dtWriteDate::date, iRetention, sCheckSum);
 END;
 $$LANGUAGE plpgsql;
 
-create or replace FUNCTION XEDRM5.sp_asysAddElement 
+create or replace FUNCTION XEDRM6.sp_asysAddElement 
 (sElementId character, sDescr character varying, sUserSClass character, sEClassId character)
 returns void
 AS $$ 
 BEGIN
-   insert into XEDRM5.asysElement (ElementId, Descr, UserSClass, EClassId) 
+   insert into XEDRM6.asysElement (ElementId, Descr, UserSClass, EClassId) 
 	   values (sElementId, sDescr, sUserSClass, sEClassId); 
 END;
 $$ LANGUAGE plpgsql;
 
-create or replace FUNCTION XEDRM5.sp_es_DelElement 
+create or replace FUNCTION XEDRM6.sp_es_DelElement 
 (sElementId character varying, srElementId character varying)
 returns void
 AS $$ 
 BEGIN
-   delete from XEDRM5.asysContentElement where ElementId=sElementId;
-   delete from XEDRM5.asysElementAttr where ElementId=sElementId or ElementId=srElementId;
-   delete from XEDRM5.es_shareaccess where ElementId=sElementId;
-   delete from XEDRM5.es_rewritedoc where elementId=sElementId;
-   delete from XEDRM5.es_comments where ElementId=sElementId;
+   delete from XEDRM6.asysContentElement where ElementId=sElementId;
+   delete from XEDRM6.asysElementAttr where ElementId=sElementId or ElementId=srElementId;
+   delete from XEDRM6.es_shareaccess where ElementId=sElementId;
+   delete from XEDRM6.es_rewritedoc where elementId=sElementId;
+   delete from XEDRM6.es_comments where ElementId=sElementId;
    
-   delete from XEDRM5.asysElement where ElementId=sElementId;
-   delete from XEDRM5.es_VersionElement where ElementId=sElementId;
-   delete from XEDRM5.es_Version where ElementId=sElementId;
-   delete from XEDRM5.es_XRef where ElementId=sElementId or AttachId=sElementId;
-   delete from XEDRM5.es_bookmark where es_targetId=sElementId;
-   delete from XEDRM5.es_share where elementId=sElementId;
-   delete from XEDRM5.es_listItems where id=sElementId;
+   delete from XEDRM6.asysElement where ElementId=sElementId;
+   delete from XEDRM6.es_VersionElement where ElementId=sElementId;
+   delete from XEDRM6.es_Version where ElementId=sElementId;
+   delete from XEDRM6.es_XRef where ElementId=sElementId or AttachId=sElementId;
+   delete from XEDRM6.es_bookmark where es_targetId=sElementId;
+   delete from XEDRM6.es_share where elementId=sElementId;
+   delete from XEDRM6.es_listItems where id=sElementId;
 END;
 $$LANGUAGE plpgsql;
 
 --------------------------------------------------------
 --  DDL for FUNCTION fn_TR_DELETE_CACHE_ACL
 --------------------------------------------------------
-create or replace FUNCTION XEDRM5.fn_TR_DELETE_CACHE_ACL()
+create or replace FUNCTION XEDRM6.fn_TR_DELETE_CACHE_ACL()
   returns trigger AS
 $$
 DECLARE
 BEGIN
 	IF (OLD.SHAREID IS NOT NULL) THEN
-		DELETE FROM XEDRM5.ES_EFFECTIVE_ACCESS WHERE ELEMENTID=OLD.ELEMENTID AND PRIV_ID=OLD.SHAREID AND USERROLE = OLD.ROLEID and privilegetype = old.privilegetype ;
+		DELETE FROM XEDRM6.ES_EFFECTIVE_ACCESS WHERE ELEMENTID=OLD.ELEMENTID AND PRIV_ID=OLD.SHAREID AND USERROLE = OLD.ROLEID and privilegetype = old.privilegetype ;
 	ELSE
-		DELETE FROM XEDRM5.ES_EFFECTIVE_ACCESS WHERE ELEMENTID=OLD.ELEMENTID AND PRIV_ID IS null AND USERROLE = OLD.ROLEID and privilegetype = old.privilegetype ;
+		DELETE FROM XEDRM6.ES_EFFECTIVE_ACCESS WHERE ELEMENTID=OLD.ELEMENTID AND PRIV_ID IS null AND USERROLE = OLD.ROLEID and privilegetype = old.privilegetype ;
 	END IF;
 RETURN NULL;	
 END;
 $$ LANGUAGE PLPGSQL;
 
-DROP TRIGGER IF EXISTS TR_DELETE_CACHE_ACL ON XEDRM5.ES_SHAREACCESS CASCADE;
+DROP TRIGGER IF EXISTS TR_DELETE_CACHE_ACL ON XEDRM6.ES_SHAREACCESS CASCADE;
 
 CREATE TRIGGER TR_DELETE_CACHE_ACL
-AFTER DELETE ON XEDRM5.ES_SHAREACCESS
+AFTER DELETE ON XEDRM6.ES_SHAREACCESS
 FOR EACH ROW
 EXECUTE PROCEDURE fn_TR_DELETE_CACHE_ACL();
 
 --------------------------------------------------------
 --  DDL for FUNCTION fn_TR_DELETE_SECUREACCESS
 --------------------------------------------------------
-create or replace FUNCTION XEDRM5.fn_TR_DELETE_SECUREACCESS()
+create or replace FUNCTION XEDRM6.fn_TR_DELETE_SECUREACCESS()
   returns trigger AS
 $$
 DECLARE
 BEGIN
-	DELETE FROM XEDRM5.ES_SHAREACCESS WHERE ELEMENTID=OLD.ELEMENTID AND SHAREID IS null and roleid = old.userrole and privilegetype = old.privilegetype;
+	DELETE FROM XEDRM6.ES_SHAREACCESS WHERE ELEMENTID=OLD.ELEMENTID AND SHAREID IS null and roleid = old.userrole and privilegetype = old.privilegetype;
 RETURN NULL;	
 END;
 $$ LANGUAGE PLPGSQL;
 
-drop trigger if exists TR_DELETE_SECUREACCESS on XEDRM5.ES_SECUREACCESS CASCADE;
+drop trigger if exists TR_DELETE_SECUREACCESS on XEDRM6.ES_SECUREACCESS CASCADE;
 CREATE TRIGGER TR_DELETE_SECUREACCESS
-INSTEAD OF DELETE ON XEDRM5.ES_SECUREACCESS
+INSTEAD OF DELETE ON XEDRM6.ES_SECUREACCESS
 FOR EACH ROW
 EXECUTE PROCEDURE fn_TR_DELETE_SECUREACCESS();
 
@@ -127,21 +127,21 @@ EXECUTE PROCEDURE fn_TR_DELETE_SECUREACCESS();
 --  DDL for Trigger TR_INSERT_CACHE_ACL
 --------------------------------------------------------
 
-create or replace FUNCTION XEDRM5.fn_TR_INSERT_CACHE_ACL()
+create or replace FUNCTION XEDRM6.fn_TR_INSERT_CACHE_ACL()
   returns trigger AS
 $$
 DECLARE
 BEGIN
-   INSERT INTO XEDRM5.ES_EFFECTIVE_ACCESS (ELEMENTID, USERROLE, PRIVILEGETYPE, ENDDATE, PRIV_ID, TEMPLATEID, STARTdate, PRIVILEGE)
-   SELECT new.ELEMENTID, new.ROLEID, new.PRIVILEGETYPE, new.END_DT, new.SHAREID, new.PRIVILEGE, new.START_DT, (SELECT PRIV_VAL FROM XEDRM5.ES_PRIV_TEMPLATE WHERE TEMPLATEID =new.PRIVILEGE ) AS PRIVILEGE;
+   INSERT INTO XEDRM6.ES_EFFECTIVE_ACCESS (ELEMENTID, USERROLE, PRIVILEGETYPE, ENDDATE, PRIV_ID, TEMPLATEID, STARTdate, PRIVILEGE)
+   SELECT new.ELEMENTID, new.ROLEID, new.PRIVILEGETYPE, new.END_DT, new.SHAREID, new.PRIVILEGE, new.START_DT, (SELECT PRIV_VAL FROM XEDRM6.ES_PRIV_TEMPLATE WHERE TEMPLATEID =new.PRIVILEGE ) AS PRIVILEGE;
 RETURN new;
 END;
 $$ LANGUAGE PLPGSQL;
 
-drop trigger if exists TR_INSERT_CACHE_ACL on XEDRM5.ES_EFFECTIVE_ACCESS CASCADE;
+drop trigger if exists TR_INSERT_CACHE_ACL on XEDRM6.ES_EFFECTIVE_ACCESS CASCADE;
 
 CREATE TRIGGER TR_INSERT_CACHE_ACL
-AFTER INSERT ON XEDRM5.ES_SHAREACCESS 
+AFTER INSERT ON XEDRM6.ES_SHAREACCESS 
 FOR EACH row 
 EXECUTE PROCEDURE fn_TR_INSERT_CACHE_ACL();
 
@@ -149,27 +149,27 @@ EXECUTE PROCEDURE fn_TR_INSERT_CACHE_ACL();
 --  DDL for Trigger TR_INSERT_SECUREACCESS
 --------------------------------------------------------
 
-drop trigger if exists TR_INSERT_SECUREACCESS on XEDRM5.ES_SECUREACCESS;
+drop trigger if exists TR_INSERT_SECUREACCESS on XEDRM6.ES_SECUREACCESS;
 
 create or replace function instead_of_secureaccess()
 returns trigger as 
 $$
 BEGIN
-  INSERT INTO XEDRM5.ES_SHAREACCESS (ROLEID, PRIVILEGE, START_DT, END_DT, PRIVILEGETYPE, ELEMENTID)
+  INSERT INTO XEDRM6.ES_SHAREACCESS (ROLEID, PRIVILEGE, START_DT, END_DT, PRIVILEGETYPE, ELEMENTID)
   VALUES(new.USERROLE, new.TEMPLATEID, new.STARTDATE, new.ENDDATE, new.PRIVILEGETYPE, new.ELEMENTID);
  return new;
 END;
 $$ LANGUAGE PLPGSQL;
 
 create TRIGGER TR_INSERT_SECUREACCESS
-INSTEAD OF INSERT ON XEDRM5.ES_SECUREACCESS
+INSTEAD OF INSERT ON XEDRM6.ES_SECUREACCESS
 for each row
 execute procedure instead_of_secureaccess();
 
 --------------------------------------------------------
 --  DDL for Procedure ES_EFFECTIVE_ACCESS_COPY
 --------------------------------------------------------
-create or replace procedure XEDRM5.ES_EFFECTIVE_ACCESS_COPY
+create or replace procedure XEDRM6.ES_EFFECTIVE_ACCESS_COPY
 (parentEid VARCHAR)
 AS $$
 DECLARE
@@ -232,7 +232,7 @@ LANGUAGE PLPGSQL;
 --  DDL for Procedure FUNC_GET_GROUP_PERMISSION_PRIV 
 --------------------------------------------------------
 
-create or replace function XEDRM5.FUNC_GET_GROUP_PERMISSION_PRIV (f_bit numeric, f_userId char, f_elementId CHAR)
+create or replace function XEDRM6.FUNC_GET_GROUP_PERMISSION_PRIV (f_bit numeric, f_userId char, f_elementId CHAR)
  returns numeric
  language plpgsql
 as $function$
@@ -276,11 +276,11 @@ begin
 end;
 $function$
 ;
--- FUNCTION: XEDRM5.func_get_permission_priv(numeric, character, character)
+-- FUNCTION: XEDRM6.func_get_permission_priv(numeric, character, character)
 
--- DROP FUNCTION XEDRM5.func_get_permission_priv(numeric, character, character);
+-- DROP FUNCTION XEDRM6.func_get_permission_priv(numeric, character, character);
 
-CREATE OR REPLACE FUNCTION XEDRM5.func_get_permission_priv(
+CREATE OR REPLACE FUNCTION XEDRM6.func_get_permission_priv(
 	f_bit numeric,
 	f_userid character,
 	f_elementid character)

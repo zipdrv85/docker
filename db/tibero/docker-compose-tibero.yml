@@ -3,9 +3,11 @@
 version: "3"
 
 services:
-  tiberoHA-database:
-    image: chanhi2000/tibero6:latest
-    container_name: tiberoHA-database
+  tiberodatabase:
+    build:
+      context: tibero-docker/
+      dockerfile: Dockerfile
+    container_name: tiberodatabase
     hostname: docker_tibero
     # hostname: <HOSTNMAE_YOU_LIKE>
     stdin_open: true
@@ -35,5 +37,5 @@ services:
       - ./tibero/dump:/opt/tibero/dump
       - ./script:/scripts
     ports:
-      - "18629:8629"
+      - "18630:8629"
 
