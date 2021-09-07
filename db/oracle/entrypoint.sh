@@ -98,6 +98,7 @@ case "$1" in
                 echo "oracle user password settings ================================================================== $JDBC_USERNAME"
                 echo "oracle user password settings ================================================================== $JDBC_PASSWORD"
                 /setUserPassword.sh $JDBC_USERNAME '$JDBC_PASSWORD'
+                /setUserPassword.sh $JDBC_USERNAME1 '$JDBC_PASSWORD1'
 
 		echo "Database ready to use. Enjoy! ;)"
 

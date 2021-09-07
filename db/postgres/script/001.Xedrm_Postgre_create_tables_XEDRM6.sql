@@ -1,3 +1,4 @@
+\c xedrm6 xedrm6;
 CREATE SEQUENCE ES_STICK MINVALUE 0 MAXVALUE 1295 START WITH 1 INCREMENT BY 1 CYCLE;
 grant select on sequence ES_STICK to XEDRM6;
 grant usage on sequence ES_STICK to XEDRM6; 
@@ -8,7 +9,7 @@ grant select on sequence es_volume_history_stick to XEDRM6;
 grant usage on sequence es_volume_history_stick to XEDRM6; 
 grant update on sequence es_volume_history_stick to XEDRM6;
 
-CREATE TABLE XEDRM6.asyscontentelement (
+CREATE TABLE public.asyscontentelement (
     elementid character(16) NOT NULL,
     volumeid character(16) NOT NULL,
     filekey character varying(64) NOT NULL,
@@ -25,14 +26,14 @@ CREATE TABLE XEDRM6.asyscontentelement (
 );
 
 
-ALTER TABLE XEDRM6.asyscontentelement OWNER TO XEDRM6;
+ALTER TABLE public.asyscontentelement OWNER TO XEDRM6;
 
 --
 -- TOC entry 197 (class 1259 OID 16779)
--- Name: asyselement; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: asyselement; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.asyselement (
+CREATE TABLE public.asyselement (
     elementid character(16) NOT NULL,
     descr character varying(4000) NOT NULL,
     usersclass character(16) NOT NULL,
@@ -69,27 +70,27 @@ CREATE TABLE XEDRM6.asyselement (
 );
 
 
-ALTER TABLE XEDRM6.asyselement OWNER TO XEDRM6;
+ALTER TABLE public.asyselement OWNER TO XEDRM6;
 
-ALTER TABLE XEDRM6.ASYSELEMENT ADD COLUMN ADMIN_ID character varying(256);
-ALTER TABLE XEDRM6.ASYSELEMENT ADD COLUMN PRIV_OWNER character varying(20);
-ALTER TABLE XEDRM6.ASYSELEMENT ADD COLUMN PRIV_GROUP character varying(20);
-ALTER TABLE XEDRM6.ASYSELEMENT ADD COLUMN PRIV_OTHER character varying(20);
-ALTER TABLE XEDRM6.ASYSELEMENT ADD COLUMN PRIV_ADMIN character varying(20);
-ALTER TABLE XEDRM6.ASYSELEMENT ADD rcupath character varying(64);
+ALTER TABLE public.ASYSELEMENT ADD COLUMN ADMIN_ID character varying(256);
+ALTER TABLE public.ASYSELEMENT ADD COLUMN PRIV_OWNER character varying(20);
+ALTER TABLE public.ASYSELEMENT ADD COLUMN PRIV_GROUP character varying(20);
+ALTER TABLE public.ASYSELEMENT ADD COLUMN PRIV_OTHER character varying(20);
+ALTER TABLE public.ASYSELEMENT ADD COLUMN PRIV_ADMIN character varying(20);
+ALTER TABLE public.ASYSELEMENT ADD rcupath character varying(64);
 
-COMMENT ON COLUMN XEDRM6.ASYSELEMENT.ADMIN_ID IS 'ADMIN 아이디';
-COMMENT ON COLUMN XEDRM6.ASYSELEMENT.PRIV_OWNER IS 'OWNER 권한(CREATOR)';
-COMMENT ON COLUMN XEDRM6.ASYSELEMENT.PRIV_GROUP IS 'GROUP 권한';
-COMMENT ON COLUMN XEDRM6.ASYSELEMENT.PRIV_OTHER IS 'OTHER 권한';
-COMMENT ON COLUMN XEDRM6.ASYSELEMENT.PRIV_ADMIN IS 'ADMIN 권한';
+COMMENT ON COLUMN public.ASYSELEMENT.ADMIN_ID IS 'ADMIN 아이디';
+COMMENT ON COLUMN public.ASYSELEMENT.PRIV_OWNER IS 'OWNER 권한(CREATOR)';
+COMMENT ON COLUMN public.ASYSELEMENT.PRIV_GROUP IS 'GROUP 권한';
+COMMENT ON COLUMN public.ASYSELEMENT.PRIV_OTHER IS 'OTHER 권한';
+COMMENT ON COLUMN public.ASYSELEMENT.PRIV_ADMIN IS 'ADMIN 권한';
 
 --
 -- TOC entry 198 (class 1259 OID 16787)
--- Name: asyselementattr; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: asyselementattr; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.asyselementattr (
+CREATE TABLE public.asyselementattr (
     elementid character(16) NOT NULL,
     attrname character varying(64) NOT NULL,
     attrvalue character varying(4000),
@@ -103,15 +104,15 @@ CREATE TABLE XEDRM6.asyselementattr (
 );
 
 
-ALTER TABLE XEDRM6.asyselementattr OWNER TO XEDRM6;
+ALTER TABLE public.asyselementattr OWNER TO XEDRM6;
 
 -- 20200910
 --
 -- TOC entry 200 (class 1259 OID 16800)
--- Name: com_workflow_item; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: com_workflow_item; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.com_workflow_item (
+CREATE TABLE public.com_workflow_item (
     item_idx numeric(5,0) NOT NULL,
     item_nm character varying(64),
     chg_id character varying(256),
@@ -121,15 +122,15 @@ CREATE TABLE XEDRM6.com_workflow_item (
 );
 
 
-ALTER TABLE XEDRM6.com_workflow_item OWNER TO XEDRM6;
+ALTER TABLE public.com_workflow_item OWNER TO XEDRM6;
 
 -- 20200910
 --
 -- TOC entry 201 (class 1259 OID 16806)
--- Name: com_workflow_list; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: com_workflow_list; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.com_workflow_list (
+CREATE TABLE public.com_workflow_list (
     item_idx numeric(5,0),
     list_idx numeric(5,0) NOT NULL,
     workflow_cl character varying(32),
@@ -140,14 +141,14 @@ CREATE TABLE XEDRM6.com_workflow_list (
 );
 
 
-ALTER TABLE XEDRM6.com_workflow_list OWNER TO XEDRM6;
+ALTER TABLE public.com_workflow_list OWNER TO XEDRM6;
 
 
 -- TOC entry 203 (class 1259 OID 16812)
--- Name: es_adminmenu; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_adminmenu; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_adminmenu (
+CREATE TABLE public.es_adminmenu (
     es_id numeric(19,0) NOT NULL,
     es_lastmodified timestamp without time zone NOT NULL,
     es_deleted numeric(38,0) NOT NULL,
@@ -160,14 +161,14 @@ CREATE TABLE XEDRM6.es_adminmenu (
 );
 
 
-ALTER TABLE XEDRM6.es_adminmenu OWNER TO XEDRM6;
+ALTER TABLE public.es_adminmenu OWNER TO XEDRM6;
 
 --
 -- TOC entry 204 (class 1259 OID 16818)
--- Name: es_audit; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_audit; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_audit (
+CREATE TABLE public.es_audit (
     es_type numeric(38,0) NOT NULL,
     es_targetid character varying(20) NOT NULL,
     es_parentid character varying(20),
@@ -177,14 +178,14 @@ CREATE TABLE XEDRM6.es_audit (
 );
 
 
-ALTER TABLE XEDRM6.es_audit OWNER TO XEDRM6;
+ALTER TABLE public.es_audit OWNER TO XEDRM6;
 
 --
 -- TOC entry 205 (class 1259 OID 16824)
--- Name: es_bookmark; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_bookmark; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_bookmark (
+CREATE TABLE public.es_bookmark (
     es_id numeric(19,0) NOT NULL,
     es_lastmodified timestamp without time zone NOT NULL,
     es_deleted numeric(38,0) NOT NULL,
@@ -197,14 +198,14 @@ CREATE TABLE XEDRM6.es_bookmark (
 );
 
 
-ALTER TABLE XEDRM6.es_bookmark OWNER TO XEDRM6;
+ALTER TABLE public.es_bookmark OWNER TO XEDRM6;
 
 --
 -- TOC entry 206 (class 1259 OID 16830)
--- Name: es_codes; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_codes; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_codes (
+CREATE TABLE public.es_codes (
     es_id numeric(19,0) NOT NULL,
     es_lastmodified timestamp without time zone NOT NULL,
     es_deleted numeric(38,0) NOT NULL,
@@ -215,14 +216,14 @@ CREATE TABLE XEDRM6.es_codes (
 );
 
 
-ALTER TABLE XEDRM6.es_codes OWNER TO XEDRM6;
+ALTER TABLE public.es_codes OWNER TO XEDRM6;
 
 --
 -- TOC entry 207 (class 1259 OID 16836)
--- Name: es_comments; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_comments; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_comments (
+CREATE TABLE public.es_comments (
     commentid numeric(19,0) NOT NULL,
     elementid character(16) NOT NULL,
     es_comment character varying(4000) NOT NULL,
@@ -236,14 +237,14 @@ CREATE TABLE XEDRM6.es_comments (
 );
 
 
-ALTER TABLE XEDRM6.es_comments OWNER TO XEDRM6;
+ALTER TABLE public.es_comments OWNER TO XEDRM6;
 
 --
 -- TOC entry 208 (class 1259 OID 16842)
--- Name: es_dashboard; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_dashboard; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_dashboard (
+CREATE TABLE public.es_dashboard (
     es_id numeric(19,0) NOT NULL,
     es_deleted numeric(38,0) NOT NULL,
     es_userid character varying(20) NOT NULL,
@@ -252,14 +253,14 @@ CREATE TABLE XEDRM6.es_dashboard (
 );
 
 
-ALTER TABLE XEDRM6.es_dashboard OWNER TO XEDRM6;
+ALTER TABLE public.es_dashboard OWNER TO XEDRM6;
 
 --
 -- TOC entry 209 (class 1259 OID 16845)
--- Name: es_dashboardwidget; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_dashboardwidget; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_dashboardwidget (
+CREATE TABLE public.es_dashboardwidget (
     es_widgettype character varying(64) NOT NULL,
     es_widgetname character varying(64) NOT NULL,
     es_widgeticon character varying(64) NOT NULL,
@@ -270,14 +271,14 @@ CREATE TABLE XEDRM6.es_dashboardwidget (
 );
 
 
-ALTER TABLE XEDRM6.es_dashboardwidget OWNER TO XEDRM6;
+ALTER TABLE public.es_dashboardwidget OWNER TO XEDRM6;
 
 --
 -- TOC entry 210 (class 1259 OID 16848)
--- Name: es_delegation; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_delegation; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_delegation (
+CREATE TABLE public.es_delegation (
     es_id numeric(19,0),
     es_lastmodified timestamp without time zone,
     es_deleted numeric(38,0),
@@ -289,14 +290,14 @@ CREATE TABLE XEDRM6.es_delegation (
 );
 
 
-ALTER TABLE XEDRM6.es_delegation OWNER TO XEDRM6;
+ALTER TABLE public.es_delegation OWNER TO XEDRM6;
 
 --
 -- TOC entry 211 (class 1259 OID 16854)
--- Name: es_docstat; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_docstat; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_docstat (
+CREATE TABLE public.es_docstat (
     es_creationdate character(8) NOT NULL,
     es_creationuserid character varying(20) NOT NULL,
     es_doctypeid numeric(19,0),
@@ -306,14 +307,14 @@ CREATE TABLE XEDRM6.es_docstat (
 );
 
 
-ALTER TABLE XEDRM6.es_docstat OWNER TO XEDRM6;
+ALTER TABLE public.es_docstat OWNER TO XEDRM6;
 
 --
 -- TOC entry 212 (class 1259 OID 16860)
--- Name: es_eclass; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_eclass; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_eclass (
+CREATE TABLE public.es_eclass (
     eclassid character(16) NOT NULL,
     descr character varying(64) NOT NULL,
     internalcontainer numeric(38,0) NOT NULL,
@@ -323,28 +324,28 @@ CREATE TABLE XEDRM6.es_eclass (
 );
 
 
-ALTER TABLE XEDRM6.es_eclass OWNER TO XEDRM6;
+ALTER TABLE public.es_eclass OWNER TO XEDRM6;
 
 --
 -- TOC entry 213 (class 1259 OID 16863)
--- Name: es_eclassattribute; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_eclassattribute; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_eclassattribute (
+CREATE TABLE public.es_eclassattribute (
     eclassid character(16) NOT NULL,
     attrname character varying(64) NOT NULL,
     attrvalue character varying(255) NOT NULL
 );
 
 
-ALTER TABLE XEDRM6.es_eclassattribute OWNER TO XEDRM6;
+ALTER TABLE public.es_eclassattribute OWNER TO XEDRM6;
 
 --
 -- TOC entry 214 (class 1259 OID 16866)
--- Name: es_generic; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_generic; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_generic (
+CREATE TABLE public.es_generic (
     es_id numeric(19,0) NOT NULL,
     es_lastmodified timestamp without time zone NOT NULL,
     es_deleted numeric(38,0) NOT NULL,
@@ -364,14 +365,14 @@ CREATE TABLE XEDRM6.es_generic (
 );
 
 
-ALTER TABLE XEDRM6.es_generic OWNER TO XEDRM6;
+ALTER TABLE public.es_generic OWNER TO XEDRM6;
 
 --
 -- TOC entry 215 (class 1259 OID 16879)
--- Name: es_history; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_history; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_history (
+CREATE TABLE public.es_history (
     es_id numeric(19,0) NOT NULL,
     es_lastmodified timestamp without time zone NOT NULL,
     es_deleted numeric(38,0) NOT NULL,
@@ -414,14 +415,14 @@ CREATE TABLE XEDRM6.es_history (
 );
 
 
-ALTER TABLE XEDRM6.es_history OWNER TO XEDRM6;
+ALTER TABLE public.es_history OWNER TO XEDRM6;
 
 --
 -- TOC entry 216 (class 1259 OID 16885)
--- Name: es_keyword; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_keyword; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_keyword (
+CREATE TABLE public.es_keyword (
     elementid character(16) NOT NULL,
     eclassid character(16) NOT NULL,
     type numeric(19,0) NOT NULL,
@@ -429,14 +430,14 @@ CREATE TABLE XEDRM6.es_keyword (
 );
 
 
-ALTER TABLE XEDRM6.es_keyword OWNER TO XEDRM6;
+ALTER TABLE public.es_keyword OWNER TO XEDRM6;
 
 --
 -- TOC entry 217 (class 1259 OID 16891)
--- Name: es_listitems; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_listitems; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_listitems (
+CREATE TABLE public.es_listitems (
     id character varying(36),
     name character varying(256),
     seq numeric(38,0),
@@ -444,14 +445,14 @@ CREATE TABLE XEDRM6.es_listitems (
 );
 
 
-ALTER TABLE XEDRM6.es_listitems OWNER TO XEDRM6;
+ALTER TABLE public.es_listitems OWNER TO XEDRM6;
 
 --
 -- TOC entry 218 (class 1259 OID 16897)
--- Name: es_menu; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_menu; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_menu (
+CREATE TABLE public.es_menu (
     es_id character varying(20) NOT NULL,
     es_title character varying(255),
     es_parentid character varying(20) NOT NULL,
@@ -462,41 +463,41 @@ CREATE TABLE XEDRM6.es_menu (
 );
 
 
-ALTER TABLE XEDRM6.es_menu OWNER TO XEDRM6;
+ALTER TABLE public.es_menu OWNER TO XEDRM6;
 
 --
 -- TOC entry 220 (class 1259 OID 16909)
--- Name: es_menu_uuid; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_menu_uuid; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_menu_uuid (
+CREATE TABLE public.es_menu_uuid (
     es_menuid character varying(20),
     es_user_or_group_id character varying(36),
     es_user_or_group_type character varying(36)
 );
 
 
-ALTER TABLE XEDRM6.es_menu_uuid OWNER TO XEDRM6;
+ALTER TABLE public.es_menu_uuid OWNER TO XEDRM6;
 
 --
 -- TOC entry 219 (class 1259 OID 16906)
--- Name: es_menurights; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_menurights; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_menurights (
+CREATE TABLE public.es_menurights (
     es_menuid numeric(19,0),
     es_securityref numeric(19,0)
 );
 
 
-ALTER TABLE XEDRM6.es_menurights OWNER TO XEDRM6;
+ALTER TABLE public.es_menurights OWNER TO XEDRM6;
 
 --
 -- TOC entry 221 (class 1259 OID 16912)
--- Name: es_recipient; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_recipient; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_recipient (
+CREATE TABLE public.es_recipient (
     es_messageid numeric(19,0) NOT NULL,
     es_name character varying(255) NOT NULL,
     es_address character varying(255) NOT NULL,
@@ -506,14 +507,14 @@ CREATE TABLE XEDRM6.es_recipient (
 );
 
 
-ALTER TABLE XEDRM6.es_recipient OWNER TO XEDRM6;
+ALTER TABLE public.es_recipient OWNER TO XEDRM6;
 
 --
 -- TOC entry 222 (class 1259 OID 16918)
--- Name: es_rewrite; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_rewrite; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_rewrite (
+CREATE TABLE public.es_rewrite (
     es_id numeric(19,0) NOT NULL,
     es_deleted numeric(38,0) NOT NULL,
     es_authorid character varying(20) NOT NULL,
@@ -535,41 +536,41 @@ CREATE TABLE XEDRM6.es_rewrite (
 );
 
 
-ALTER TABLE XEDRM6.es_rewrite OWNER TO XEDRM6;
+ALTER TABLE public.es_rewrite OWNER TO XEDRM6;
 
 --
 -- TOC entry 223 (class 1259 OID 16924)
--- Name: es_rewritecc; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_rewritecc; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_rewritecc (
+CREATE TABLE public.es_rewritecc (
     es_rewriteid numeric(19,0) NOT NULL,
     es_rewriterccid character varying(20) NOT NULL
 );
 
 
-ALTER TABLE XEDRM6.es_rewritecc OWNER TO XEDRM6;
+ALTER TABLE public.es_rewritecc OWNER TO XEDRM6;
 
 --
 -- TOC entry 224 (class 1259 OID 16927)
--- Name: es_rewritedoc; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_rewritedoc; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_rewritedoc (
+CREATE TABLE public.es_rewritedoc (
     rewriteid numeric(19,0) NOT NULL,
     elementid character(16) NOT NULL,
     version character varying(20)
 );
 
 
-ALTER TABLE XEDRM6.es_rewritedoc OWNER TO XEDRM6;
+ALTER TABLE public.es_rewritedoc OWNER TO XEDRM6;
 
 --
 -- TOC entry 225 (class 1259 OID 16930)
--- Name: es_rewriteprocess; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_rewriteprocess; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_rewriteprocess (
+CREATE TABLE public.es_rewriteprocess (
     es_rewriteid numeric(19,0) NOT NULL,
     es_rewriterid character varying(20) NOT NULL,
     es_comment character varying(4000),
@@ -579,14 +580,14 @@ CREATE TABLE XEDRM6.es_rewriteprocess (
 );
 
 
-ALTER TABLE XEDRM6.es_rewriteprocess OWNER TO XEDRM6;
+ALTER TABLE public.es_rewriteprocess OWNER TO XEDRM6;
 
 --
 -- TOC entry 226 (class 1259 OID 16937)
--- Name: es_searches; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_searches; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_searches (
+CREATE TABLE public.es_searches (
     es_id numeric(19,0) NOT NULL,
     es_lastmodified timestamp without time zone NOT NULL,
     es_deleted numeric(38,0) NOT NULL,
@@ -597,14 +598,14 @@ CREATE TABLE XEDRM6.es_searches (
 );
 
 
-ALTER TABLE XEDRM6.es_searches OWNER TO XEDRM6;
+ALTER TABLE public.es_searches OWNER TO XEDRM6;
 
 --
 -- TOC entry 230 (class 1259 OID 16952)
--- Name: es_share; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_share; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_share (
+CREATE TABLE public.es_share (
     es_id numeric(38,0) NOT NULL,
     es_lastmodified timestamp without time zone NOT NULL,
     es_deleted numeric(38,0) NOT NULL,
@@ -617,46 +618,46 @@ CREATE TABLE XEDRM6.es_share (
 );
 
 
-ALTER TABLE XEDRM6.es_share OWNER TO XEDRM6;
+ALTER TABLE public.es_share OWNER TO XEDRM6;
 
 --
 -- TOC entry 231 (class 1259 OID 16955)
--- Name: es_shareaccess; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_shareaccess; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_shareaccess (
+CREATE TABLE public.es_shareaccess (
     shareid numeric(38,0),
     roleid character varying(64) NOT NULL,
     privilege character varying(20) NOT NULL
 );
 
 
-ALTER TABLE XEDRM6.es_shareaccess OWNER TO XEDRM6;
+ALTER TABLE public.es_shareaccess OWNER TO XEDRM6;
 
-ALTER TABLE XEDRM6.ES_SHAREACCESS ADD COLUMN templateId character varying(20);
-ALTER TABLE XEDRM6.ES_SHAREACCESS ADD COLUMN START_DT timestamp without time zone;
-ALTER TABLE XEDRM6.ES_SHAREACCESS ADD COLUMN END_DT timestamp without time zone;
-ALTER TABLE XEDRM6.ES_SHAREACCESS ADD COLUMN ES_COUNT numeric(38,0);
-ALTER TABLE XEDRM6.ES_SHAREACCESS ADD COLUMN PRIVILEGETYPE numeric(38,0);
-ALTER TABLE XEDRM6.ES_SHAREACCESS ADD COLUMN ELEMENTID  character varying(16);
-ALTER TABLE XEDRM6.ES_SHAREACCESS ADD COLUMN DESCR  character varying(64);
+ALTER TABLE public.ES_SHAREACCESS ADD COLUMN templateId character varying(20);
+ALTER TABLE public.ES_SHAREACCESS ADD COLUMN START_DT timestamp without time zone;
+ALTER TABLE public.ES_SHAREACCESS ADD COLUMN END_DT timestamp without time zone;
+ALTER TABLE public.ES_SHAREACCESS ADD COLUMN ES_COUNT numeric(38,0);
+ALTER TABLE public.ES_SHAREACCESS ADD COLUMN PRIVILEGETYPE numeric(38,0);
+ALTER TABLE public.ES_SHAREACCESS ADD COLUMN ELEMENTID  character varying(16);
+ALTER TABLE public.ES_SHAREACCESS ADD COLUMN DESCR  character varying(64);
 
-COMMENT ON COLUMN XEDRM6.ES_SHAREACCESS.START_DT IS '권한유효기간 시작일';
-COMMENT ON COLUMN XEDRM6.ES_SHAREACCESS.END_DT IS '권한유효기간 만기일';
-COMMENT ON COLUMN XEDRM6.ES_SHAREACCESS.ES_COUNT IS '접근가능회수';
-COMMENT ON COLUMN XEDRM6.ES_SHAREACCESS.PRIVILEGETYPE IS '권한유형 (사용자:1, 그룹:2, USER_OWNER(엑스톰에서 사용):3, GROUP_OWNER(엑스톰에서 사용):4, 결재승인권한:5, 편집불가한 권한그룹:6, 편집가능한 권한그룹:7, 공유권한:8)';
-COMMENT ON COLUMN XEDRM6.ES_SHAREACCESS.ELEMENTID IS '엘리먼트 아이디';
-COMMENT ON COLUMN XEDRM6.ES_SHAREACCESS.DESCR IS '설명';
+COMMENT ON COLUMN public.ES_SHAREACCESS.START_DT IS '권한유효기간 시작일';
+COMMENT ON COLUMN public.ES_SHAREACCESS.END_DT IS '권한유효기간 만기일';
+COMMENT ON COLUMN public.ES_SHAREACCESS.ES_COUNT IS '접근가능회수';
+COMMENT ON COLUMN public.ES_SHAREACCESS.PRIVILEGETYPE IS '권한유형 (사용자:1, 그룹:2, USER_OWNER(엑스톰에서 사용):3, GROUP_OWNER(엑스톰에서 사용):4, 결재승인권한:5, 편집불가한 권한그룹:6, 편집가능한 권한그룹:7, 공유권한:8)';
+COMMENT ON COLUMN public.ES_SHAREACCESS.ELEMENTID IS '엘리먼트 아이디';
+COMMENT ON COLUMN public.ES_SHAREACCESS.DESCR IS '설명';
 
-ALTER TABLE XEDRM6.ES_SHAREACCESS alter column SHAREID set default NULL;
-ALTER TABLE XEDRM6.es_shareaccess ALTER COLUMN shareid DROP NOT NULL;
+ALTER TABLE public.ES_SHAREACCESS alter column SHAREID set default NULL;
+ALTER TABLE public.es_shareaccess ALTER COLUMN shareid DROP NOT NULL;
 
 --
 -- TOC entry 232 (class 1259 OID 16958)
--- Name: es_stat; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_stat; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_stat (
+CREATE TABLE public.es_stat (
     es_regdate character(8) NOT NULL,
     es_event character varying(255) NOT NULL,
     es_doctypeid character varying(20),
@@ -666,14 +667,14 @@ CREATE TABLE XEDRM6.es_stat (
 );
 
 
-ALTER TABLE XEDRM6.es_stat OWNER TO XEDRM6;
+ALTER TABLE public.es_stat OWNER TO XEDRM6;
 
 --
 -- TOC entry 233 (class 1259 OID 16964)
--- Name: es_sysmessage; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_sysmessage; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_sysmessage (
+CREATE TABLE public.es_sysmessage (
     es_id numeric(19,0) NOT NULL,
     es_lastmodified timestamp without time zone NOT NULL,
     es_deleted numeric(38,0) NOT NULL,
@@ -690,14 +691,14 @@ CREATE TABLE XEDRM6.es_sysmessage (
 );
 
 
-ALTER TABLE XEDRM6.es_sysmessage OWNER TO XEDRM6;
+ALTER TABLE public.es_sysmessage OWNER TO XEDRM6;
 
 --
 -- TOC entry 234 (class 1259 OID 16970)
--- Name: es_template; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_template; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_template (
+CREATE TABLE public.es_template (
     es_id numeric(19,0) NOT NULL,
     es_lastmodified timestamp without time zone NOT NULL,
     es_deleted numeric(38,0) NOT NULL,
@@ -709,14 +710,14 @@ CREATE TABLE XEDRM6.es_template (
 );
 
 
-ALTER TABLE XEDRM6.es_template OWNER TO XEDRM6;
+ALTER TABLE public.es_template OWNER TO XEDRM6;
 
 --
 -- TOC entry 235 (class 1259 OID 16976)
--- Name: es_template_ext; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_template_ext; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_template_ext (
+CREATE TABLE public.es_template_ext (
     es_templateid numeric(19,0) NOT NULL,
     es_name character varying(255) NOT NULL,
     es_label character varying(255) NOT NULL,
@@ -733,29 +734,29 @@ CREATE TABLE XEDRM6.es_template_ext (
 );
 
 
-ALTER TABLE XEDRM6.es_template_ext OWNER TO XEDRM6;
+ALTER TABLE public.es_template_ext OWNER TO XEDRM6;
 
 --
 -- TOC entry 209 (class 1259 OID 16845)
--- Name: es_user_widget; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_user_widget; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_user_widget (
+CREATE TABLE public.es_user_widget (
     es_widgettext character varying(64) NOT NULL,
     user_id character varying(256) NOT NULL,
     enabled numeric(2,0) NOT NULL
 );
 
 
-ALTER TABLE XEDRM6.es_user_widget OWNER TO XEDRM6;
+ALTER TABLE public.es_user_widget OWNER TO XEDRM6;
 
 
 --
 -- TOC entry 236 (class 1259 OID 16982)
--- Name: es_version; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_version; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_version (
+CREATE TABLE public.es_version (
     elementid character(16) NOT NULL,
     currentversion character varying(64) NOT NULL,
     currentrevision character varying(64) NOT NULL,
@@ -763,14 +764,14 @@ CREATE TABLE XEDRM6.es_version (
 );
 
 
-ALTER TABLE XEDRM6.es_version OWNER TO XEDRM6;
+ALTER TABLE public.es_version OWNER TO XEDRM6;
 
 --
 -- TOC entry 237 (class 1259 OID 16985)
--- Name: es_versionelement; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_versionelement; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_versionelement (
+CREATE TABLE public.es_versionelement (
     elementid character(16) NOT NULL,
     compelement character(16),
     version character varying(64) NOT NULL,
@@ -778,14 +779,14 @@ CREATE TABLE XEDRM6.es_versionelement (
 );
 
 
-ALTER TABLE XEDRM6.es_versionelement OWNER TO XEDRM6;
+ALTER TABLE public.es_versionelement OWNER TO XEDRM6;
 
 --
 -- TOC entry 238 (class 1259 OID 16988)
--- Name: es_volume; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_volume; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_volume (
+CREATE TABLE public.es_volume (
     volumeid character(16) NOT NULL,
     descr character varying(64) NOT NULL,
     maxspace numeric(14,0) NOT NULL,
@@ -801,14 +802,14 @@ CREATE TABLE XEDRM6.es_volume (
 );
 
 
-ALTER TABLE XEDRM6.es_volume OWNER TO XEDRM6;
+ALTER TABLE public.es_volume OWNER TO XEDRM6;
 
 --
 -- TOC entry 239 (class 1259 OID 16991)
--- Name: es_xref; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_xref; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_xref (
+CREATE TABLE public.es_xref (
     elementid character(16) NOT NULL,
     attachid character(16) NOT NULL,
     descr character varying(64) NOT NULL,
@@ -820,40 +821,40 @@ CREATE TABLE XEDRM6.es_xref (
 );
 
 
-ALTER TABLE XEDRM6.es_xref OWNER TO XEDRM6;
+ALTER TABLE public.es_xref OWNER TO XEDRM6;
 
 --
 -- TOC entry 240 (class 1259 OID 16994)
--- Name: hibernate_unique_key; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: hibernate_unique_key; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.hibernate_unique_key (
+CREATE TABLE public.hibernate_unique_key (
     tablename character varying(40) NOT NULL,
     next_hi numeric(19,0) NOT NULL
 );
 
 
-ALTER TABLE XEDRM6.hibernate_unique_key OWNER TO XEDRM6;
+ALTER TABLE public.hibernate_unique_key OWNER TO XEDRM6;
 
 --
 -- TOC entry 241 (class 1259 OID 16997)
--- Name: ht_asyselement; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: ht_asyselement; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.ht_asyselement (
+CREATE TABLE public.ht_asyselement (
     elementid character varying(255) NOT NULL
 );
 
 
-ALTER TABLE XEDRM6.ht_asyselement OWNER TO XEDRM6;
+ALTER TABLE public.ht_asyselement OWNER TO XEDRM6;
 
 -- 20200910
 --
 -- TOC entry 242 (class 1259 OID 17000)
--- Name: pol_client; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: pol_client; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.pol_client (
+CREATE TABLE public.pol_client (
     prod_no character(23) NOT NULL,
     prod_ver character varying(16),
     mac_addr character varying(20),
@@ -885,15 +886,15 @@ CREATE TABLE XEDRM6.pol_client (
 );
 
 
-ALTER TABLE XEDRM6.pol_client OWNER TO XEDRM6;
+ALTER TABLE public.pol_client OWNER TO XEDRM6;
 
 -- 20210430
 --
 -- TOC entry 243 (class 1259 OID 17006)
--- Name: pol_list; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: pol_list; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.pol_list (
+CREATE TABLE public.pol_list (
     policy_id character varying(20) NOT NULL,
     policy_nm character varying(256),
     descr character varying(256),
@@ -904,15 +905,15 @@ CREATE TABLE XEDRM6.pol_list (
 );
 
 
-ALTER TABLE XEDRM6.pol_list OWNER TO XEDRM6;
+ALTER TABLE public.pol_list OWNER TO XEDRM6;
 
 -- 20200910
 --
 -- TOC entry 246 (class 1259 OID 17024)
--- Name: sys_code; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: sys_code; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.sys_code (
+CREATE TABLE public.sys_code (
     cd_id character varying(32) NOT NULL,
     cd_key character varying(64),
     cd_ko character varying(128),
@@ -939,15 +940,15 @@ CREATE TABLE XEDRM6.sys_code (
 );
 
 
-ALTER TABLE XEDRM6.sys_code OWNER TO XEDRM6;
+ALTER TABLE public.sys_code OWNER TO XEDRM6;
 
 -- 20200910
 --
 -- TOC entry 247 (class 1259 OID 17030)
--- Name: sys_group; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: sys_group; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.sys_group (
+CREATE TABLE public.sys_group (
     group_id character varying(256) NOT NULL,
     group_nm character varying(128),
     hr boolean DEFAULT FALSE,
@@ -983,15 +984,15 @@ CREATE TABLE XEDRM6.sys_group (
 );
 
 
-ALTER TABLE XEDRM6.sys_group OWNER TO XEDRM6;
+ALTER TABLE public.sys_group OWNER TO XEDRM6;
 
 -- 20200910
 --
 -- TOC entry 248 (class 1259 OID 17036)
--- Name: sys_group_manager; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: sys_group_manager; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.sys_group_manager (
+CREATE TABLE public.sys_group_manager (
     group_id character varying(256) NOT NULL,
     user_id character varying(256) NOT NULL,
     hr boolean DEFAULT FALSE,
@@ -999,15 +1000,15 @@ CREATE TABLE XEDRM6.sys_group_manager (
 );
 
 
-ALTER TABLE XEDRM6.sys_group_manager OWNER TO XEDRM6;
+ALTER TABLE public.sys_group_manager OWNER TO XEDRM6;
 
 -- 20200910
 --
 -- TOC entry 249 (class 1259 OID 17042)
--- Name: sys_group_member; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: sys_group_member; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.sys_group_member (
+CREATE TABLE public.sys_group_member (
     group_id character varying(256) NOT NULL,
     member_id character varying(256) NOT NULL,
     member_type numeric(38,0) DEFAULT 1 NOT NULL,
@@ -1016,15 +1017,15 @@ CREATE TABLE XEDRM6.sys_group_member (
 );
 
 
-ALTER TABLE XEDRM6.sys_group_member OWNER TO XEDRM6;
+ALTER TABLE public.sys_group_member OWNER TO XEDRM6;
 
 -- 20200910
 --
 -- TOC entry 250 (class 1259 OID 17049)
--- Name: sys_menu; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: sys_menu; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.sys_menu (
+CREATE TABLE public.sys_menu (
     menu_id character varying(128) NOT NULL,
     p_menu_id character varying(128),
     menu_order numeric(3,0),
@@ -1053,15 +1054,15 @@ CREATE TABLE XEDRM6.sys_menu (
 );
 
 
-ALTER TABLE XEDRM6.sys_menu OWNER TO XEDRM6;
+ALTER TABLE public.sys_menu OWNER TO XEDRM6;
 
 -- 20200910
 --
 -- TOC entry 253 (class 1259 OID 17067)
--- Name: sys_pgm; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: sys_pgm; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.sys_pgm (
+CREATE TABLE public.sys_pgm (
     pgm_id character varying(128) NOT NULL,
     pgm_type character varying(16),
     record_add_yn character(1),
@@ -1101,15 +1102,15 @@ CREATE TABLE XEDRM6.sys_pgm (
 );
 
 
-ALTER TABLE XEDRM6.sys_pgm OWNER TO XEDRM6;
+ALTER TABLE public.sys_pgm OWNER TO XEDRM6;
 
 -- 20200910: 컬럼 추가(LINK_COL), 컬럼 제거(SORT_TYPE, PINNED_TYPE, URL, FILTER_TYPE, FILTER_DEFAULT_DATA, FILTER_USE_YN, COMBO_DATA_ID)
 --
 -- TOC entry 254 (class 1259 OID 17073)
--- Name: sys_pgm_column; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: sys_pgm_column; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.sys_pgm_column (
+CREATE TABLE public.sys_pgm_column (
     pgm_id character varying(128) NOT NULL,
     col_id character varying(30) NOT NULL,
     col_ko character varying(512),
@@ -1158,15 +1159,15 @@ CREATE TABLE XEDRM6.sys_pgm_column (
 );
 
 
-ALTER TABLE XEDRM6.sys_pgm_column OWNER TO XEDRM6;
+ALTER TABLE public.sys_pgm_column OWNER TO XEDRM6;
 
 -- 20200910
 --
 -- TOC entry 255 (class 1259 OID 17079)
--- Name: sys_pgm_column_data; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: sys_pgm_column_data; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.sys_pgm_column_data (
+CREATE TABLE public.sys_pgm_column_data (
     data_id character varying(64) NOT NULL,
     data_value character varying(256),
     chg_id character varying(256),
@@ -1177,15 +1178,15 @@ CREATE TABLE XEDRM6.sys_pgm_column_data (
 );
 
 
-ALTER TABLE XEDRM6.sys_pgm_column_data OWNER TO XEDRM6;
+ALTER TABLE public.sys_pgm_column_data OWNER TO XEDRM6;
 
 -- 20200910: 컬럼 추가(CASCADE_TYPE, GROUP_ID, GROUP_DATA, GROUP_OBJECT), 컬럼 제거(SUB_MAPPING_YN)
 --
 -- TOC entry 257 (class 1259 OID 17091)
--- Name: sys_tree_node; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: sys_tree_node; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.sys_tree_node (
+CREATE TABLE public.sys_tree_node (
     node_id character varying(128) NOT NULL,
     p_node_id character varying(128),
     node_type character varying(8),
@@ -1200,15 +1201,15 @@ CREATE TABLE XEDRM6.sys_tree_node (
 );
 
 
-ALTER TABLE XEDRM6.sys_tree_node OWNER TO XEDRM6;
+ALTER TABLE public.sys_tree_node OWNER TO XEDRM6;
 
 -- 20200910
 --
 -- TOC entry 251 (class 1259 OID 17055)
--- Name: pol_schedule; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: pol_schedule; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.pol_schedule (	
+CREATE TABLE public.pol_schedule (	
     sched_idx numeric(38,0),
     sched_nm character varying(128),
     sched_type character(4),
@@ -1229,40 +1230,40 @@ CREATE TABLE XEDRM6.pol_schedule (
 );
 
 
-ALTER TABLE XEDRM6.pol_schedule OWNER TO XEDRM6;
+ALTER TABLE public.pol_schedule OWNER TO XEDRM6;
 
 -- 20210628
 --
--- Name: pol_environment; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: pol_environment; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.pol_environment (	
+CREATE TABLE public.pol_environment (	
     env_cd character varying(64),
     ip_addr character varying(2048),
     default_policy_id character varying(20)
 );
 
-ALTER TABLE XEDRM6.pol_environment OWNER TO XEDRM6;
+ALTER TABLE public.pol_environment OWNER TO XEDRM6;
 
 -- 20210628
 --
--- Name: pol_apply; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: pol_apply; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.pol_apply (	
+CREATE TABLE public.pol_apply (	
     policy_id character varying(20),
     env_cd character varying(64)
 );
 
-ALTER TABLE XEDRM6.pol_apply OWNER TO XEDRM6;
+ALTER TABLE public.pol_apply OWNER TO XEDRM6;
 
 -- 20210628
 --
 -- TOC entry 251 (class 1259 OID 17055)
--- Name: pol_apply_client; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: pol_apply_client; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.pol_apply_client (	
+CREATE TABLE public.pol_apply_client (	
     env_cd character varying(64),
     policy_id character varying(20),
     client_idx numeric(38,0),
@@ -1273,15 +1274,15 @@ CREATE TABLE XEDRM6.pol_apply_client (
     chg_dt timestamp without time zone
 );
 
-ALTER TABLE XEDRM6.pol_apply_client OWNER TO XEDRM6;
+ALTER TABLE public.pol_apply_client OWNER TO XEDRM6;
 
 -- 20210628
 --
 -- TOC entry 251 (class 1259 OID 17055)
--- Name: pol_apply_user; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: pol_apply_user; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.pol_apply_user (
+CREATE TABLE public.pol_apply_user (
     policy_id character varying(20),
     env_cd character varying(64),
     user_id character varying(256),
@@ -1293,15 +1294,15 @@ CREATE TABLE XEDRM6.pol_apply_user (
     user_nm character varying(256)
 );
 
-ALTER TABLE XEDRM6.pol_apply_user OWNER TO XEDRM6;
+ALTER TABLE public.pol_apply_user OWNER TO XEDRM6;
 
 -- 20200910
 --
 -- TOC entry 251 (class 1259 OID 17055)
--- Name: pat_list; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: pat_list; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.pat_list (	
+CREATE TABLE public.pat_list (	
     patch_no character varying(20) NOT NULL,
 	patch_type character(1),
 	deploy_status character(1),
@@ -1321,15 +1322,15 @@ CREATE TABLE XEDRM6.pat_list (
 	site_ver character varying(20)
 );
 
-ALTER TABLE XEDRM6.pat_list OWNER TO XEDRM6;
+ALTER TABLE public.pat_list OWNER TO XEDRM6;
 
 -- 20200910
 --
 -- TOC entry 251 (class 1259 OID 17055)
--- Name: pat_object; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: pat_object; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.pat_object (
+CREATE TABLE public.pat_object (
     object_idx numeric(38,0) NOT NULL,
 	object_type character varying(8),
 	object_cd character varying(256),
@@ -1338,7 +1339,7 @@ CREATE TABLE XEDRM6.pat_object (
     patch_no character varying(20) NOT NULL
 );
 
-CREATE TABLE XEDRM6.es_priv_template (
+CREATE TABLE public.es_priv_template (
     TEMPLATEID  character varying(20),
     TEMPLATE_NM character varying(64),
     PRIV_VAL  numeric,
@@ -1346,34 +1347,34 @@ CREATE TABLE XEDRM6.es_priv_template (
 	PRIV_TYPE character varying(20)
 );
 
-alter table XEDRM6.ES_PRIV_TEMPLATE add constraint ES_TEMPLATEID_UNIQUE unique(TEMPLATEID);
-ALTER TABLE XEDRM6.ES_PRIV_TEMPLATE alter column PRIV_MODIFY_YN set default 'Y';
-ALTER TABLE XEDRM6.ES_PRIV_TEMPLATE alter column PRIV_MODIFY_YN set NOT NULL;
-COMMENT ON COLUMN XEDRM6.ES_PRIV_TEMPLATE.TEMPLATEID IS '템플릿 아이디';
-COMMENT ON COLUMN XEDRM6.ES_PRIV_TEMPLATE.PRIV_VAL IS '권한';
-COMMENT ON COLUMN XEDRM6.ES_PRIV_TEMPLATE.PRIV_MODIFY_YN IS '권한 수정 가능 여부';
-COMMENT ON COLUMN XEDRM6.ES_PRIV_TEMPLATE.PRIV_TYPE IS '권한 템플릿 구분';
+alter table public.ES_PRIV_TEMPLATE add constraint ES_TEMPLATEID_UNIQUE unique(TEMPLATEID);
+ALTER TABLE public.ES_PRIV_TEMPLATE alter column PRIV_MODIFY_YN set default 'Y';
+ALTER TABLE public.ES_PRIV_TEMPLATE alter column PRIV_MODIFY_YN set NOT NULL;
+COMMENT ON COLUMN public.ES_PRIV_TEMPLATE.TEMPLATEID IS '템플릿 아이디';
+COMMENT ON COLUMN public.ES_PRIV_TEMPLATE.PRIV_VAL IS '권한';
+COMMENT ON COLUMN public.ES_PRIV_TEMPLATE.PRIV_MODIFY_YN IS '권한 수정 가능 여부';
+COMMENT ON COLUMN public.ES_PRIV_TEMPLATE.PRIV_TYPE IS '권한 템플릿 구분';
 
-CREATE TABLE XEDRM6.ES_ROLE (
+CREATE TABLE public.ES_ROLE (
     role_id numeric(19,0),
     role_name  character varying(255),
     role_auth  character varying(255)
 );
 
-COMMENT ON COLUMN XEDRM6.ES_ROLE.ROLE_ID IS '';
-COMMENT ON COLUMN XEDRM6.ES_ROLE.ROLE_NAME IS 'ROLE_NAME 에 대한 권한';
-COMMENT ON COLUMN XEDRM6.ES_ROLE.ROLE_AUTH IS 'ROLE_AUTH 에 대한 권한';
+COMMENT ON COLUMN public.ES_ROLE.ROLE_ID IS '';
+COMMENT ON COLUMN public.ES_ROLE.ROLE_NAME IS 'ROLE_NAME 에 대한 권한';
+COMMENT ON COLUMN public.ES_ROLE.ROLE_AUTH IS 'ROLE_AUTH 에 대한 권한';
  
    
-ALTER TABLE XEDRM6.pat_object OWNER TO XEDRM6;
+ALTER TABLE public.pat_object OWNER TO XEDRM6;
 
 -- 20200910
 --
 -- TOC entry 260 (class 1259 OID 17100)
--- Name: sys_user; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: sys_user; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.sys_user (
+CREATE TABLE public.sys_user (
     user_id character varying(256) NOT NULL,
     user_nm character varying(128) NOT NULL,
     email character varying(256),
@@ -1422,15 +1423,15 @@ CREATE TABLE XEDRM6.sys_user (
 );
 
 
-ALTER TABLE XEDRM6.sys_user OWNER TO XEDRM6;
+ALTER TABLE public.sys_user OWNER TO XEDRM6;
 
 -- 20200910
 --
 -- TOC entry 262 (class 1259 OID 17112)
--- Name: sys_user_attr; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: sys_user_attr; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.sys_user_attr (
+CREATE TABLE public.sys_user_attr (
     user_id character varying(256) NOT NULL,
     attrname character varying(64) NOT NULL,
     attrvalue character varying(256),
@@ -1438,15 +1439,15 @@ CREATE TABLE XEDRM6.sys_user_attr (
 );
 
 
-ALTER TABLE XEDRM6.sys_user_attr OWNER TO XEDRM6;
+ALTER TABLE public.sys_user_attr OWNER TO XEDRM6;
 
 -- 20210125: 기능 추가로 인한 테이블 추가 
 --
 -- TOC entry ??? (class ???? OID ?????)
--- Name: es_ecm_file; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_ecm_file; Type: TABLE; Schema: public; Owner: XEDRM6
 --
 
-CREATE TABLE XEDRM6.es_ecm_file (
+CREATE TABLE public.es_ecm_file (
 	ecmid character(20) NOT NULL,
 	elementid character(16) NOT NULL,
 	status numeric(19,0) DEFAULT 0,
@@ -1455,746 +1456,746 @@ CREATE TABLE XEDRM6.es_ecm_file (
 );
 
 
-ALTER TABLE XEDRM6.es_ecm_file OWNER TO XEDRM6;
+ALTER TABLE public.es_ecm_file OWNER TO XEDRM6;
 
 --
 -- TOC entry 3024 (class 2606 OID 17134)
--- Name: es_adminmenu es_pk_adminmenu; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_adminmenu es_pk_adminmenu; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.es_adminmenu
+ALTER TABLE ONLY public.es_adminmenu
     ADD CONSTRAINT es_pk_adminmenu PRIMARY KEY (es_id);
 
 
 --
 -- TOC entry 3026 (class 2606 OID 17136)
--- Name: es_audit es_pk_audit; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_audit es_pk_audit; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.es_audit
+ALTER TABLE ONLY public.es_audit
     ADD CONSTRAINT es_pk_audit PRIMARY KEY (es_type, es_targetid);
 
 
 --
 -- TOC entry 3028 (class 2606 OID 17138)
--- Name: es_bookmark es_pk_bookmark; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_bookmark es_pk_bookmark; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.es_bookmark
+ALTER TABLE ONLY public.es_bookmark
     ADD CONSTRAINT es_pk_bookmark PRIMARY KEY (es_id);
 
 
 --
 -- TOC entry 3030 (class 2606 OID 17140)
--- Name: es_codes es_pk_codes; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_codes es_pk_codes; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.es_codes
+ALTER TABLE ONLY public.es_codes
     ADD CONSTRAINT es_pk_codes PRIMARY KEY (es_id);
 
 
 --
 -- TOC entry 3034 (class 2606 OID 17144)
--- Name: es_dashboard es_pk_dashboard; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_dashboard es_pk_dashboard; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.es_dashboard
+ALTER TABLE ONLY public.es_dashboard
     ADD CONSTRAINT es_pk_dashboard PRIMARY KEY (es_id);
 
 
 --
 -- TOC entry 3036 (class 2606 OID 17146)
--- Name: es_dashboardwidget es_pk_dashboardwidget; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_dashboardwidget es_pk_dashboardwidget; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.es_dashboardwidget
+ALTER TABLE ONLY public.es_dashboardwidget
     ADD CONSTRAINT es_pk_dashboardwidget PRIMARY KEY (es_widgettext);
 
 
 --
 -- TOC entry 3041 (class 2606 OID 17151)
--- Name: es_generic es_pk_generic; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_generic es_pk_generic; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.es_generic
+ALTER TABLE ONLY public.es_generic
     ADD CONSTRAINT es_pk_generic PRIMARY KEY (es_id);
 
 
 --
 -- TOC entry 3048 (class 2606 OID 17154)
--- Name: es_history es_pk_history; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_history es_pk_history; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.es_history
+ALTER TABLE ONLY public.es_history
     ADD CONSTRAINT es_pk_history PRIMARY KEY (es_id);
 
 
 --
 -- TOC entry 3052 (class 2606 OID 17160)
--- Name: es_keyword es_pk_keyword; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_keyword es_pk_keyword; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.es_keyword
+ALTER TABLE ONLY public.es_keyword
     ADD CONSTRAINT es_pk_keyword PRIMARY KEY (elementid, eclassid);
 
 
 --
 -- TOC entry 3058 (class 2606 OID 17168)
--- Name: es_rewrite es_pk_rewrite; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_rewrite es_pk_rewrite; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.es_rewrite
+ALTER TABLE ONLY public.es_rewrite
     ADD CONSTRAINT es_pk_rewrite PRIMARY KEY (es_id);
 
 
 --
 -- TOC entry 3063 (class 2606 OID 17173)
--- Name: es_rewriteprocess es_pk_rewriteproc; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_rewriteprocess es_pk_rewriteproc; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.es_rewriteprocess
+ALTER TABLE ONLY public.es_rewriteprocess
     ADD CONSTRAINT es_pk_rewriteproc PRIMARY KEY (es_rewriteid, es_rewriterid);
 
 
 --
 -- TOC entry 3065 (class 2606 OID 17175)
--- Name: es_searches es_pk_searches; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_searches es_pk_searches; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.es_searches
+ALTER TABLE ONLY public.es_searches
     ADD CONSTRAINT es_pk_searches PRIMARY KEY (es_id);
 
 
 --
 -- TOC entry 3069 (class 2606 OID 17179)
--- Name: es_share es_pk_share; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_share es_pk_share; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.es_share
+ALTER TABLE ONLY public.es_share
     ADD CONSTRAINT es_pk_share PRIMARY KEY (es_id);
 
 
 --
 -- TOC entry 3076 (class 2606 OID 17186)
--- Name: es_sysmessage es_pk_sysmessage; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_sysmessage es_pk_sysmessage; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.es_sysmessage
+ALTER TABLE ONLY public.es_sysmessage
     ADD CONSTRAINT es_pk_sysmessage PRIMARY KEY (es_id);
 
 
 --
 -- TOC entry 3079 (class 2606 OID 17189)
--- Name: es_template es_pk_template; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_template es_pk_template; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.es_template
+ALTER TABLE ONLY public.es_template
     ADD CONSTRAINT es_pk_template PRIMARY KEY (es_id);
 
 
 --
 -- TOC entry 3082 (class 2606 OID 17192)
--- Name: es_template_ext es_pk_templateext; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_template_ext es_pk_templateext; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.es_template_ext
+ALTER TABLE ONLY public.es_template_ext
     ADD CONSTRAINT es_pk_templateext PRIMARY KEY (es_templateid, es_name);
 
 
 --
 -- TOC entry 3013 (class 2606 OID 17121)
--- Name: asyselement pk_asyselement; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: asyselement pk_asyselement; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.asyselement
+ALTER TABLE ONLY public.asyselement
     ADD CONSTRAINT pk_asyselement PRIMARY KEY (elementid);
 
 
 --
 -- TOC entry 3032 (class 2606 OID 17142)
--- Name: es_comments pk_commentid; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_comments pk_commentid; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.es_comments
+ALTER TABLE ONLY public.es_comments
     ADD CONSTRAINT pk_commentid PRIMARY KEY (commentid);
 
 
 --
 -- TOC entry 3084 (class 2606 OID 17194)
--- Name: es_version pk_es_version; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_version pk_es_version; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.es_version
+ALTER TABLE ONLY public.es_version
     ADD CONSTRAINT pk_es_version PRIMARY KEY (elementid);
 
 
 --
 -- TOC entry 3020 (class 2606 OID 17130)
--- Name: com_workflow_item xpk_com_workflow_item; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: com_workflow_item xpk_com_workflow_item; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.com_workflow_item
+ALTER TABLE ONLY public.com_workflow_item
     ADD CONSTRAINT xpk_com_workflow_item PRIMARY KEY (item_idx);
 
 
 --
 -- TOC entry 3022 (class 2606 OID 17132)
--- Name: com_workflow_list xpk_com_workflow_list; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: com_workflow_list xpk_com_workflow_list; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.com_workflow_list
+ALTER TABLE ONLY public.com_workflow_list
     ADD CONSTRAINT xpk_com_workflow_list PRIMARY KEY (list_idx);
 
 
 --
 -- TOC entry 3089 (class 2606 OID 17199)
--- Name: pol_client xpk_pol_client; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: pol_client xpk_pol_client; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.pol_client
+ALTER TABLE ONLY public.pol_client
     ADD CONSTRAINT xpk_pol_client PRIMARY KEY (prod_no);
 
 
-ALTER TABLE ONLY XEDRM6.pol_schedule
+ALTER TABLE ONLY public.pol_schedule
     ADD CONSTRAINT xpk_pol_schedule PRIMARY KEY (sched_idx);
 
-ALTER TABLE ONLY XEDRM6.pol_environment
+ALTER TABLE ONLY public.pol_environment
     ADD CONSTRAINT xpk_pol_environment PRIMARY KEY (env_cd);
     
-ALTER TABLE ONLY XEDRM6.pol_apply
+ALTER TABLE ONLY public.pol_apply
     ADD CONSTRAINT xpk_pol_apply PRIMARY KEY (env_cd, policy_id);
     
-ALTER TABLE ONLY XEDRM6.pol_apply_client
+ALTER TABLE ONLY public.pol_apply_client
     ADD CONSTRAINT xpk_pol_apply_client PRIMARY KEY (client_idx);
     
-ALTER TABLE ONLY XEDRM6.pol_apply_user
+ALTER TABLE ONLY public.pol_apply_user
     ADD CONSTRAINT xpk_pol_apply_user PRIMARY KEY (env_cd, user_cl, user_id);
     
 --
 -- TOC entry 3091 (class 2606 OID 17201)
--- Name: pol_list xpk_pol_list; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: pol_list xpk_pol_list; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.pol_list
+ALTER TABLE ONLY public.pol_list
     ADD CONSTRAINT xpk_pol_list PRIMARY KEY (policy_id);
 
 --
 -- TOC entry 3097 (class 2606 OID 17207)
--- Name: sys_code xpk_sys_code; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: sys_code xpk_sys_code; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.sys_code
+ALTER TABLE ONLY public.sys_code
     ADD CONSTRAINT xpk_sys_code PRIMARY KEY (cd_id);
 
 
 --
 -- TOC entry 3099 (class 2606 OID 17209)
--- Name: sys_group xpk_sys_group; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: sys_group xpk_sys_group; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.sys_group
+ALTER TABLE ONLY public.sys_group
     ADD CONSTRAINT xpk_sys_group PRIMARY KEY (group_id);
 
 
 --
 -- TOC entry 3101 (class 2606 OID 17211)
--- Name: sys_group_manager xpk_sys_group_manager; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: sys_group_manager xpk_sys_group_manager; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.sys_group_manager
+ALTER TABLE ONLY public.sys_group_manager
     ADD CONSTRAINT xpk_sys_group_manager PRIMARY KEY (group_id, user_id, type);
 
 
 --
 -- TOC entry 3103 (class 2606 OID 17213)
--- Name: sys_group_member xpk_sys_group_member; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: sys_group_member xpk_sys_group_member; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.sys_group_member
+ALTER TABLE ONLY public.sys_group_member
     ADD CONSTRAINT xpk_sys_group_member PRIMARY KEY (group_id, member_id);
 
 
 --
 -- TOC entry 3105 (class 2606 OID 17215)
--- Name: sys_menu xpk_sys_menu; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: sys_menu xpk_sys_menu; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.sys_menu
+ALTER TABLE ONLY public.sys_menu
     ADD CONSTRAINT xpk_sys_menu PRIMARY KEY (menu_id);
 
 --
 -- TOC entry 3111 (class 2606 OID 17221)
--- Name: sys_pgm xpk_sys_pgm; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: sys_pgm xpk_sys_pgm; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.sys_pgm
+ALTER TABLE ONLY public.sys_pgm
     ADD CONSTRAINT xpk_sys_pgm PRIMARY KEY (pgm_id);
 
 
 --
 -- TOC entry 3113 (class 2606 OID 17223)
--- Name: sys_pgm_column xpk_sys_pgm_column; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: sys_pgm_column xpk_sys_pgm_column; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.sys_pgm_column
+ALTER TABLE ONLY public.sys_pgm_column
     ADD CONSTRAINT xpk_sys_pgm_column PRIMARY KEY (pgm_id, col_id);
 
 
 --
 -- TOC entry 3116 (class 2606 OID 17225)
--- Name: sys_pgm_column_data xpk_sys_pgm_column_data; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: sys_pgm_column_data xpk_sys_pgm_column_data; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.sys_pgm_column_data
+ALTER TABLE ONLY public.sys_pgm_column_data
     ADD CONSTRAINT xpk_sys_pgm_column_data PRIMARY KEY (pgm_id, data_id, row_idx, col_id);
 
 
 --
 -- TOC entry 3118 (class 2606 OID 17228)
--- Name: sys_tree_node xpk_sys_tree_node; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: sys_tree_node xpk_sys_tree_node; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.sys_tree_node
+ALTER TABLE ONLY public.sys_tree_node
     ADD CONSTRAINT xpk_sys_tree_node PRIMARY KEY (tree_type, node_id);
 
 
 --
 -- TOC entry 3122 (class 2606 OID 17232)
--- Name: sys_user xpk_sys_user; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: sys_user xpk_sys_user; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.sys_user
+ALTER TABLE ONLY public.sys_user
     ADD CONSTRAINT xpk_sys_user PRIMARY KEY (user_id);
 
     
-ALTER TABLE ONLY XEDRM6.sys_user_attr
-    ADD CONSTRAINT fk_asysuserattr_userid FOREIGN KEY (user_id) REFERENCES XEDRM6.sys_user(user_id);
+ALTER TABLE ONLY public.sys_user_attr
+    ADD CONSTRAINT fk_asysuserattr_userid FOREIGN KEY (user_id) REFERENCES public.sys_user(user_id);
     
 --
 -- TOC entry x (class x OID x)
--- Name: pat_list xpk_pat_list; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: pat_list xpk_pat_list; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.pat_list
+ALTER TABLE ONLY public.pat_list
     ADD CONSTRAINT xpk_pat_list PRIMARY KEY (patch_no);
     
 --
 -- TOC entry x (class x OID x)
--- Name: pat_object xpk_pat_object; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: pat_object xpk_pat_object; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.pat_object
+ALTER TABLE ONLY public.pat_object
     ADD CONSTRAINT xpk_pat_object PRIMARY KEY (patch_no, object_idx);
 
 --
 -- TOC entry ???? (class ???? OID ?????)
--- Name: es_ecm_file es_pk_ecm_file; Type: CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_ecm_file es_pk_ecm_file; Type: CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.es_ecm_file
+ALTER TABLE ONLY public.es_ecm_file
     ADD CONSTRAINT es_pk_ecm_file PRIMARY KEY (ecmid);
     
 --
 -- TOC entry 3005 (class 1259 OID 17115)
--- Name: asysce_cclassid_elementid; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: asysce_cclassid_elementid; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE INDEX asysce_cclassid_elementid ON XEDRM6.asyscontentelement USING btree (contentclassid, elementid);
+CREATE INDEX asysce_cclassid_elementid ON public.asyscontentelement USING btree (contentclassid, elementid);
 
 
 --
 -- TOC entry 3006 (class 1259 OID 17116)
--- Name: asysce_checksum; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: asysce_checksum; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE INDEX asysce_checksum ON XEDRM6.asyscontentelement USING btree (checksum);
+CREATE INDEX asysce_checksum ON public.asyscontentelement USING btree (checksum);
 
 
 --
 -- TOC entry 3007 (class 1259 OID 17117)
--- Name: asysce_elementid; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: asysce_elementid; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE UNIQUE INDEX asysce_elementid ON XEDRM6.asyscontentelement USING btree (elementid);
+CREATE UNIQUE INDEX asysce_elementid ON public.asyscontentelement USING btree (elementid);
 
 
 --
 -- TOC entry 3008 (class 1259 OID 17118)
--- Name: asysce_filekey; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: asysce_filekey; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE INDEX asysce_filekey ON XEDRM6.asyscontentelement USING btree (filekey);
+CREATE INDEX asysce_filekey ON public.asyscontentelement USING btree (filekey);
 
 
 --
 -- TOC entry 3009 (class 1259 OID 17119)
--- Name: asysce_volumeid_elementid; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: asysce_volumeid_elementid; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE INDEX asysce_volumeid_elementid ON XEDRM6.asyscontentelement USING btree (volumeid, elementid);
+CREATE INDEX asysce_volumeid_elementid ON public.asyscontentelement USING btree (volumeid, elementid);
 
 
 --
 -- TOC entry 3010 (class 1259 OID 17123)
--- Name: asyse_descr; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: asyse_descr; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE INDEX asyse_descr ON XEDRM6.asyselement USING btree (descr);
+CREATE INDEX asyse_descr ON public.asyselement USING btree (descr);
 
 
 --
 -- TOC entry 3011 (class 1259 OID 17122)
--- Name: asyse_modifier; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: asyse_modifier; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE INDEX asyse_modifier ON XEDRM6.asyselement USING btree (modifier);
+CREATE INDEX asyse_modifier ON public.asyselement USING btree (modifier);
 
-CREATE INDEX ASYSE_PARENTID ON XEDRM6.asyselement USING btree (parentid);
+CREATE INDEX ASYSE_PARENTID ON public.asyselement USING btree (parentid);
 
 CREATE INDEX IF NOT EXISTS ASYSE_created_idx  ON PUBLIC.asyselement(created);
 CREATE INDEX IF NOT EXISTS ASYSE_modified_idx ON PUBLIC.asyselement(modified);
-CREATE INDEX IF NOT EXISTS ASYSE_path ON XEDRM6.ASYSELEMENT (PATH );
+CREATE INDEX IF NOT EXISTS ASYSE_path ON public.ASYSELEMENT (PATH );
 --
 -- TOC entry 3014 (class 1259 OID 17125)
--- Name: asysea_elementid; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: asysea_elementid; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE INDEX asysea_elementid ON XEDRM6.asyselementattr USING btree (elementid);
+CREATE INDEX asysea_elementid ON public.asyselementattr USING btree (elementid);
 
 
 --
 -- TOC entry 3015 (class 1259 OID 17124)
--- Name: asysea_elementid_attr; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: asysea_elementid_attr; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE UNIQUE INDEX asysea_elementid_attr ON XEDRM6.asyselementattr USING btree (elementid, attrname);
+CREATE UNIQUE INDEX asysea_elementid_attr ON public.asyselementattr USING btree (elementid, attrname);
 
 
 --
 -- TOC entry 3016 (class 1259 OID 17126)
--- Name: asysea_namevalue; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: asysea_namevalue; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE INDEX asysea_namevalue ON XEDRM6.asyselementattr USING btree (attrname, attrvalue);
+CREATE INDEX asysea_namevalue ON public.asyselementattr USING btree (attrname, attrvalue);
 
 
 --
 -- TOC entry 3039 (class 1259 OID 17149)
--- Name: es_docstat_date; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_docstat_date; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE INDEX es_docstat_date ON XEDRM6.es_docstat USING btree (es_creationdate);
+CREATE INDEX es_docstat_date ON public.es_docstat USING btree (es_creationdate);
 
 
 --
 -- TOC entry 3043 (class 1259 OID 17155)
--- Name: es_hist_date; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_hist_date; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE INDEX es_hist_date ON XEDRM6.es_history USING btree (es_date);
+CREATE INDEX es_hist_date ON public.es_history USING btree (es_date);
 
 
 --
 -- TOC entry 3044 (class 1259 OID 17156)
--- Name: es_hist_docid; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_hist_docid; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE INDEX es_hist_docid ON XEDRM6.es_history USING btree (es_docid);
+CREATE INDEX es_hist_docid ON public.es_history USING btree (es_docid);
 
 
 --
 -- TOC entry 3045 (class 1259 OID 17157)
--- Name: es_hist_event; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_hist_event; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE INDEX es_hist_event ON XEDRM6.es_history USING btree (es_event);
+CREATE INDEX es_hist_event ON public.es_history USING btree (es_event);
 
 
 --
 -- TOC entry 3046 (class 1259 OID 17158)
--- Name: es_hist_uid; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_hist_uid; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE INDEX es_hist_uid ON XEDRM6.es_history USING btree (es_userid);
+CREATE INDEX es_hist_uid ON public.es_history USING btree (es_userid);
 
-CREATE INDEX es_hist_folderid ON XEDRM6.es_history USING btree (es_folderid);  
-CREATE INDEX es_hist_deleted ON XEDRM6.es_history USING btree (es_deleted); 
+CREATE INDEX es_hist_folderid ON public.es_history USING btree (es_folderid);  
+CREATE INDEX es_hist_deleted ON public.es_history USING btree (es_deleted); 
 
 
 --
 -- TOC entry 3049 (class 1259 OID 17162)
--- Name: es_keyword_docid; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_keyword_docid; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE INDEX es_keyword_docid ON XEDRM6.es_keyword USING btree (elementid);
+CREATE INDEX es_keyword_docid ON public.es_keyword USING btree (elementid);
 
 
 --
 -- TOC entry 3050 (class 1259 OID 17161)
--- Name: es_keyword_keyword; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_keyword_keyword; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE INDEX es_keyword_keyword ON XEDRM6.es_keyword USING btree (eclassid);
+CREATE INDEX es_keyword_keyword ON public.es_keyword USING btree (eclassid);
 
 
 --
 -- TOC entry 3053 (class 1259 OID 17163)
--- Name: es_listitems_key; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_listitems_key; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE INDEX es_listitems_key ON XEDRM6.es_listitems USING btree (id, name);
+CREATE INDEX es_listitems_key ON public.es_listitems USING btree (id, name);
 
 
 --
 -- TOC entry 3037 (class 1259 OID 17147)
--- Name: es_pk_delegation; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_pk_delegation; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE UNIQUE INDEX es_pk_delegation ON XEDRM6.es_delegation USING btree (es_id);
+CREATE UNIQUE INDEX es_pk_delegation ON public.es_delegation USING btree (es_id);
 
 
 --
 -- TOC entry 3054 (class 1259 OID 17164)
--- Name: es_pk_menurights; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_pk_menurights; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE UNIQUE INDEX es_pk_menurights ON XEDRM6.es_menurights USING btree (es_menuid, es_securityref);
+CREATE UNIQUE INDEX es_pk_menurights ON public.es_menurights USING btree (es_menuid, es_securityref);
 
 
 --
 -- TOC entry 3055 (class 1259 OID 17165)
--- Name: es_pk_recipient; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_pk_recipient; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE UNIQUE INDEX es_pk_recipient ON XEDRM6.es_recipient USING btree (es_messageid, es_address);
+CREATE UNIQUE INDEX es_pk_recipient ON public.es_recipient USING btree (es_messageid, es_address);
 
 
 --
 -- TOC entry 3056 (class 1259 OID 17166)
--- Name: es_recipient_address_read; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_recipient_address_read; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE INDEX es_recipient_address_read ON XEDRM6.es_recipient USING btree (es_address, es_read);
+CREATE INDEX es_recipient_address_read ON public.es_recipient USING btree (es_address, es_read);
 
 
 --
 -- TOC entry 3059 (class 1259 OID 17169)
--- Name: es_rewrite_current; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_rewrite_current; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE INDEX es_rewrite_current ON XEDRM6.es_rewrite USING btree (es_currentrewriter);
+CREATE INDEX es_rewrite_current ON public.es_rewrite USING btree (es_currentrewriter);
 
 
 --
 -- TOC entry 3060 (class 1259 OID 17170)
--- Name: es_rewrite_expire; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_rewrite_expire; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE INDEX es_rewrite_expire ON XEDRM6.es_rewrite USING btree (es_expiredate);
+CREATE INDEX es_rewrite_expire ON public.es_rewrite USING btree (es_expiredate);
 
 
 --
 -- TOC entry 3061 (class 1259 OID 17171)
--- Name: es_rewrite_target; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_rewrite_target; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE INDEX es_rewrite_target ON XEDRM6.es_rewrite USING btree (es_targetid);
+CREATE INDEX es_rewrite_target ON public.es_rewrite USING btree (es_targetid);
 
 
 --
 -- TOC entry 3072 (class 1259 OID 17182)
--- Name: es_sa_roleid; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_sa_roleid; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE INDEX es_sa_roleid ON XEDRM6.es_shareaccess USING btree (roleid);
+CREATE INDEX es_sa_roleid ON public.es_shareaccess USING btree (roleid);
 
 
 --
 -- TOC entry 3073 (class 1259 OID 17183)
--- Name: es_sa_shareid; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_sa_shareid; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE INDEX es_sa_shareid ON XEDRM6.es_shareaccess USING btree (shareid);
+CREATE INDEX es_sa_shareid ON public.es_shareaccess USING btree (shareid);
 
 
 --
 -- TOC entry 3070 (class 1259 OID 17180)
--- Name: es_share_ticketid; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_share_ticketid; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE INDEX es_share_ticketid ON XEDRM6.es_share USING btree (es_ticketid);
+CREATE INDEX es_share_ticketid ON public.es_share USING btree (es_ticketid);
 
 
 --
 -- TOC entry 3071 (class 1259 OID 17181)
--- Name: es_share_userid; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_share_userid; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE INDEX es_share_userid ON XEDRM6.es_share USING btree (es_userid, elementid);
+CREATE INDEX es_share_userid ON public.es_share USING btree (es_userid, elementid);
 
 
 --
 -- TOC entry 3074 (class 1259 OID 17184)
--- Name: es_stat_date; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_stat_date; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE INDEX es_stat_date ON XEDRM6.es_stat USING btree (es_regdate);
+CREATE INDEX es_stat_date ON public.es_stat USING btree (es_regdate);
 
 
 --
 -- TOC entry 3077 (class 1259 OID 17187)
--- Name: es_sysmessage_author; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_sysmessage_author; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE INDEX es_sysmessage_author ON XEDRM6.es_sysmessage USING btree (es_author);
+CREATE INDEX es_sysmessage_author ON public.es_sysmessage USING btree (es_author);
 
 
 --
 -- TOC entry 3038 (class 1259 OID 17148)
--- Name: es_uk_delegation; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_uk_delegation; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE UNIQUE INDEX es_uk_delegation ON XEDRM6.es_delegation USING btree (es_mandatorid, es_delegatorid);
+CREATE UNIQUE INDEX es_uk_delegation ON public.es_delegation USING btree (es_mandatorid, es_delegatorid);
 
 
 --
 -- TOC entry 3042 (class 1259 OID 17152)
--- Name: es_uk_generic; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_uk_generic; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE UNIQUE INDEX es_uk_generic ON XEDRM6.es_generic USING btree (es_subtype, es_qualifier);
+CREATE UNIQUE INDEX es_uk_generic ON public.es_generic USING btree (es_subtype, es_qualifier);
 
 
 --
 -- TOC entry 3080 (class 1259 OID 17190)
--- Name: es_uk_template; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_uk_template; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE UNIQUE INDEX es_uk_template ON XEDRM6.es_template USING btree (es_name);
+CREATE UNIQUE INDEX es_uk_template ON public.es_template USING btree (es_name);
 
 
 --
 -- TOC entry 3085 (class 1259 OID 17195)
--- Name: es_ve_elementid; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_ve_elementid; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE INDEX es_ve_elementid ON XEDRM6.es_versionelement USING btree (elementid);
+CREATE INDEX es_ve_elementid ON public.es_versionelement USING btree (elementid);
 
 
 --
 -- TOC entry 3086 (class 1259 OID 17197)
--- Name: es_xr_elementid; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_xr_elementid; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE INDEX es_xr_elementid ON XEDRM6.es_xref USING btree (elementid);
+CREATE INDEX es_xr_elementid ON public.es_xref USING btree (elementid);
 
 
 --
 -- TOC entry 3087 (class 1259 OID 17196)
--- Name: es_xr_elementid_attachid; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_xr_elementid_attachid; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE UNIQUE INDEX es_xr_elementid_attachid ON XEDRM6.es_xref USING btree (elementid, attachid);
+CREATE UNIQUE INDEX es_xr_elementid_attachid ON public.es_xref USING btree (elementid, attachid);
 
 
-CREATE INDEX asysua_userid ON XEDRM6.sys_user_attr (user_id);
+CREATE INDEX asysua_userid ON public.sys_user_attr (user_id);
 
 --
 -- TOC entry 3114 (class 1259 OID 17226)
--- Name: xak1_sys_pgm_column_data; Type: INDEX; Schema: XEDRM6; Owner: XEDRM6
+-- Name: xak1_sys_pgm_column_data; Type: INDEX; Schema: public; Owner: XEDRM6
 --
 
-CREATE INDEX xak1_sys_pgm_column_data ON XEDRM6.sys_pgm_column_data USING btree (data_id);
+CREATE INDEX xak1_sys_pgm_column_data ON public.sys_pgm_column_data USING btree (data_id);
 
 
 --
 -- TOC entry 3128 (class 2606 OID 17242)
--- Name: es_comments fk_elementid; Type: FK CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_comments fk_elementid; Type: FK CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.es_comments
-    ADD CONSTRAINT fk_elementid FOREIGN KEY (elementid) REFERENCES XEDRM6.asyselement(elementid);
+ALTER TABLE ONLY public.es_comments
+    ADD CONSTRAINT fk_elementid FOREIGN KEY (elementid) REFERENCES public.asyselement(elementid);
 
 
 --
 -- TOC entry 3133 (class 2606 OID 17267)
--- Name: sys_pgm r_11; Type: FK CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: sys_pgm r_11; Type: FK CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.sys_pgm
-    ADD CONSTRAINT r_11 FOREIGN KEY (pgm_id) REFERENCES XEDRM6.sys_menu(menu_id);
+ALTER TABLE ONLY public.sys_pgm
+    ADD CONSTRAINT r_11 FOREIGN KEY (pgm_id) REFERENCES public.sys_menu(menu_id);
 
 
 --
 -- TOC entry 3127 (class 2606 OID 17237)
--- Name: com_workflow_list r_36; Type: FK CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: com_workflow_list r_36; Type: FK CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.com_workflow_list
-    ADD CONSTRAINT r_36 FOREIGN KEY (item_idx) REFERENCES XEDRM6.com_workflow_item(item_idx) ON DELETE SET NULL;
+ALTER TABLE ONLY public.com_workflow_list
+    ADD CONSTRAINT r_36 FOREIGN KEY (item_idx) REFERENCES public.com_workflow_item(item_idx) ON DELETE SET NULL;
 
 --
 -- TOC entry 3134 (class 2606 OID 17272)
--- Name: sys_pgm_column r_68; Type: FK CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: sys_pgm_column r_68; Type: FK CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.sys_pgm_column
-    ADD CONSTRAINT r_68 FOREIGN KEY (pgm_id) REFERENCES XEDRM6.sys_pgm(pgm_id);
+ALTER TABLE ONLY public.sys_pgm_column
+    ADD CONSTRAINT r_68 FOREIGN KEY (pgm_id) REFERENCES public.sys_pgm(pgm_id);
 
 
 --
 -- TOC entry 3135 (class 2606 OID 17277)
--- Name: sys_pgm_column_data r_79; Type: FK CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: sys_pgm_column_data r_79; Type: FK CONSTRAINT; Schema: public; Owner: XEDRM6
 --  20201022: 테스트 데이터 충돌로 인한 제약사항 비활성화
 --
 
--- ALTER TABLE ONLY XEDRM6.sys_pgm_column_data
---    ADD CONSTRAINT r_79 FOREIGN KEY (pgm_id, col_id) REFERENCES XEDRM6.sys_pgm_column(pgm_id, col_id);
+-- ALTER TABLE ONLY public.sys_pgm_column_data
+--    ADD CONSTRAINT r_79 FOREIGN KEY (pgm_id, col_id) REFERENCES public.sys_pgm_column(pgm_id, col_id);
     
     
 --
 -- TOC entry x (class x OID x)
--- Name: pat_object r_81; Type: FK CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: pat_object r_81; Type: FK CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.pat_object
-    ADD CONSTRAINT r_81 FOREIGN KEY (patch_no) REFERENCES XEDRM6.pat_list(patch_no);
+ALTER TABLE ONLY public.pat_object
+    ADD CONSTRAINT r_81 FOREIGN KEY (patch_no) REFERENCES public.pat_list(patch_no);
 
 
 --
 -- TOC entry x (class x OID x)
--- Name: pol_apply r_83; Type: FK CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: pol_apply r_83; Type: FK CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.pol_apply
-    ADD CONSTRAINT r_83 FOREIGN KEY (policy_id) REFERENCES XEDRM6.pol_list(policy_id);
+ALTER TABLE ONLY public.pol_apply
+    ADD CONSTRAINT r_83 FOREIGN KEY (policy_id) REFERENCES public.pol_list(policy_id);
     
 
 --
 -- TOC entry x (class x OID x)
--- Name: pol_apply r_84; Type: FK CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: pol_apply r_84; Type: FK CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.pol_apply
-    ADD CONSTRAINT r_84 FOREIGN KEY (env_cd) REFERENCES XEDRM6.pol_environment(env_cd);
+ALTER TABLE ONLY public.pol_apply
+    ADD CONSTRAINT r_84 FOREIGN KEY (env_cd) REFERENCES public.pol_environment(env_cd);
     
 
 --
 -- TOC entry x (class x OID x)
--- Name: pol_apply_client r_87; Type: FK CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: pol_apply_client r_87; Type: FK CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.pol_apply_client
-    ADD CONSTRAINT r_87 FOREIGN KEY (env_cd,policy_id) REFERENCES XEDRM6.pol_apply(env_cd,policy_id);
+ALTER TABLE ONLY public.pol_apply_client
+    ADD CONSTRAINT r_87 FOREIGN KEY (env_cd,policy_id) REFERENCES public.pol_apply(env_cd,policy_id);
     
     
 --
 -- TOC entry x (class x OID x)
--- Name: pol_apply_user r_86; Type: FK CONSTRAINT; Schema: XEDRM6; Owner: XEDRM6
+-- Name: pol_apply_user r_86; Type: FK CONSTRAINT; Schema: public; Owner: XEDRM6
 --
 
-ALTER TABLE ONLY XEDRM6.pol_apply_user
-    ADD CONSTRAINT r_86 FOREIGN KEY (env_cd,policy_id) REFERENCES XEDRM6.pol_apply(env_cd,policy_id);
+ALTER TABLE ONLY public.pol_apply_user
+    ADD CONSTRAINT r_86 FOREIGN KEY (env_cd,policy_id) REFERENCES public.pol_apply(env_cd,policy_id);
     
     
 -- Completed on 2019-08-01 10:34:38
@@ -2205,7 +2206,7 @@ ALTER TABLE ONLY XEDRM6.pol_apply_user
 
 
 -- 20200910
-CREATE TABLE XEDRM6.AGT_DISABLE 
+CREATE TABLE public.AGT_DISABLE 
    (	
     REQUEST_IDX numeric(38,0) NOT NULL, 
 	USER_ID character varying(256), 
@@ -2226,9 +2227,9 @@ CREATE TABLE XEDRM6.AGT_DISABLE
 	REQUEST_REASON character varying(256)
 );
 
-ALTER TABLE XEDRM6.AGT_DISABLE OWNER TO XEDRM6;
+ALTER TABLE public.AGT_DISABLE OWNER TO XEDRM6;
 
-ALTER TABLE ONLY XEDRM6.AGT_DISABLE
+ALTER TABLE ONLY public.AGT_DISABLE
     ADD CONSTRAINT XPK_AGT_DISABLE PRIMARY KEY (REQUEST_IDX);
 
 
@@ -2236,15 +2237,15 @@ ALTER TABLE ONLY XEDRM6.AGT_DISABLE
 --  20210223: 성능개선용 인덱스 추가
 --------------------------------------------------------
 -- ASYSELEMENT : PARENTID & LOWER("DESCR")
-CREATE INDEX ASYSE_LOWER_DESCR_PARENTID ON XEDRM6.ASYSELEMENT USING btree (PARENTID, LOWER(DESCR));
+CREATE INDEX ASYSE_LOWER_DESCR_PARENTID ON public.ASYSELEMENT USING btree (PARENTID, LOWER(DESCR));
 -- ES_VERSIONELEMENT : COMPELEMENT
-CREATE INDEX ES_VERSIONELEMENT_COMPELEMENT ON XEDRM6.ES_VERSIONELEMENT USING btree (COMPELEMENT);
+CREATE INDEX ES_VERSIONELEMENT_COMPELEMENT ON public.ES_VERSIONELEMENT USING btree (COMPELEMENT);
 
 --------------------------------------------------------
 --  DDL for Table ES_EFFECTIVE_ACCESS
 --------------------------------------------------------
 
-CREATE TABLE XEDRM6.ES_EFFECTIVE_ACCESS
+CREATE TABLE public.ES_EFFECTIVE_ACCESS
    (	
    	ELEMENTID character (16), 
 	USERROLE character varying(256), 
@@ -2258,7 +2259,7 @@ CREATE TABLE XEDRM6.ES_EFFECTIVE_ACCESS
 	PRIV_ID numeric(38)
    ) 
   ;
-ALTER TABLE XEDRM6.ES_EFFECTIVE_ACCESS OWNER TO XEDRM6;
+ALTER TABLE public.ES_EFFECTIVE_ACCESS OWNER TO XEDRM6;
   
 --------------------------------------------------------
 --  Constraints for Table ES_EFFECTIVE_ACCESS
@@ -2267,16 +2268,16 @@ ALTER TABLE ES_EFFECTIVE_ACCESS alter column PRIVILEGETYPE set NOT NULL;
 ALTER TABLE ES_EFFECTIVE_ACCESS alter column USERROLE set NOT NULL;
 ALTER TABLE ES_EFFECTIVE_ACCESS alter column ELEMENTID set NOT NULL;
 
-CREATE OR REPLACE VIEW XEDRM6.ES_SECUREACCESS AS
+CREATE OR REPLACE VIEW public.ES_SECUREACCESS AS
 SELECT *
-FROM XEDRM6.es_effective_access;
-ALTER VIEW XEDRM6.ES_SECUREACCESS OWNER TO XEDRM6;
+FROM public.es_effective_access;
+ALTER VIEW public.ES_SECUREACCESS OWNER TO XEDRM6;
 
 --------------------------------------------------------
 --  Constraints for Table SYS_THEME
 --------------------------------------------------------
 
-CREATE TABLE XEDRM6.SYS_THEME (
+CREATE TABLE public.SYS_THEME (
 	THEME_ID VARCHAR(128) NOT NULL,
 	THEME_TYPE CHAR(1),
 	THEME_VALUE VARCHAR(128),
@@ -2290,30 +2291,30 @@ CREATE TABLE XEDRM6.SYS_THEME (
 	LAST_CHG_DT TIMESTAMP,
 	CONSTRAINT XPK_SYS_THEME PRIMARY KEY (THEME_ID, THEME_TYPE)
 );
-ALTER TABLE XEDRM6.SYS_THEME OWNER TO XEDRM6;
+ALTER TABLE public.SYS_THEME OWNER TO XEDRM6;
 
 --------------------------------------------------------
 --  20210514: 성능개선용 인덱스, 제약 조건 추가
 --------------------------------------------------------
-CREATE UNIQUE INDEX IF NOT EXISTS es_volume_idx_vid ON XEDRM6.es_volume(volumeId);
-CREATE INDEX if not exists es_effective_access_idx_eid ON XEDRM6.ES_EFFECTIVE_ACCESS(elementid);
-alter table XEDRM6.es_volume add constraint es_volume_pk_vid primary key(volumeid);
+CREATE UNIQUE INDEX IF NOT EXISTS es_volume_idx_vid ON public.es_volume(volumeId);
+CREATE INDEX if not exists es_effective_access_idx_eid ON public.ES_EFFECTIVE_ACCESS(elementid);
+alter table public.es_volume add constraint es_volume_pk_vid primary key(volumeid);
 
 --------------------------------------------------------
 --  20210514: 성능개선용 인덱스, 제약 조건 추가
 --------------------------------------------------------
-ALTER TABLE XEDRM6.ASYSELEMENT add FOREIGN KEY(PRIV_OWNER) REFERENCES XEDRM6.ES_PRIV_TEMPLATE(TEMPLATEID);
-ALTER TABLE XEDRM6.ASYSELEMENT add FOREIGN KEY(PRIV_GROUP) REFERENCES XEDRM6.ES_PRIV_TEMPLATE(TEMPLATEID);
-ALTER TABLE XEDRM6.ASYSELEMENT add FOREIGN KEY(PRIV_OTHER) REFERENCES XEDRM6.ES_PRIV_TEMPLATE(TEMPLATEID);
-ALTER TABLE XEDRM6.ASYSELEMENT add FOREIGN KEY(PRIV_ADMIN) REFERENCES XEDRM6.ES_PRIV_TEMPLATE(TEMPLATEID);
+ALTER TABLE public.ASYSELEMENT add FOREIGN KEY(PRIV_OWNER) REFERENCES public.ES_PRIV_TEMPLATE(TEMPLATEID);
+ALTER TABLE public.ASYSELEMENT add FOREIGN KEY(PRIV_GROUP) REFERENCES public.ES_PRIV_TEMPLATE(TEMPLATEID);
+ALTER TABLE public.ASYSELEMENT add FOREIGN KEY(PRIV_OTHER) REFERENCES public.ES_PRIV_TEMPLATE(TEMPLATEID);
+ALTER TABLE public.ASYSELEMENT add FOREIGN KEY(PRIV_ADMIN) REFERENCES public.ES_PRIV_TEMPLATE(TEMPLATEID);
 
 
 -----------2020.05.18 대시보드 통계기능 관련 테이블 추가-----------
 
 --
--- Name: es_statlogicvolume; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_statlogicvolume; Type: TABLE; Schema: public; Owner: XEDRM6
 --
-CREATE TABLE XEDRM6."es_statlogicvolume"
+CREATE TABLE public."es_statlogicvolume"
   (
     "elementid" character(16),
     "userid"    character varying(256),
@@ -2324,12 +2325,12 @@ CREATE TABLE XEDRM6."es_statlogicvolume"
   ) ;
   
   
-ALTER TABLE XEDRM6.es_statlogicvolume OWNER TO XEDRM6;
+ALTER TABLE public.es_statlogicvolume OWNER TO XEDRM6;
   
 --
--- Name: es_statphyvolume; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_statphyvolume; Type: TABLE; Schema: public; Owner: XEDRM6
 --
-CREATE TABLE XEDRM6."es_statphyvolume"
+CREATE TABLE public."es_statphyvolume"
   (
     "volumeid"    character(16),
     "regdate"     character varying(10),
@@ -2339,12 +2340,12 @@ CREATE TABLE XEDRM6."es_statphyvolume"
   ) ;
 
   
-ALTER TABLE XEDRM6.es_statphyvolume OWNER TO XEDRM6;
+ALTER TABLE public.es_statphyvolume OWNER TO XEDRM6;
   
 --
--- Name: es_statsummary; Type: TABLE; Schema: XEDRM6; Owner: XEDRM6
+-- Name: es_statsummary; Type: TABLE; Schema: public; Owner: XEDRM6
 --
-CREATE TABLE XEDRM6."es_statsummary"
+CREATE TABLE public."es_statsummary"
   (
     "es_event" character varying(255),
     "userid"   character varying(256),
@@ -2352,36 +2353,36 @@ CREATE TABLE XEDRM6."es_statsummary"
     "summary"  numeric(19,0)
   ) ;
   
-ALTER TABLE XEDRM6.es_statsummary OWNER TO XEDRM6;
+ALTER TABLE public.es_statsummary OWNER TO XEDRM6;
 
 
-  ALTER TABLE only XEDRM6."es_statlogicvolume" alter column "filesize" SET NOT null ;
-  ALTER TABLE only XEDRM6."es_statlogicvolume" alter column "doc" SET NOT null ;
-  ALTER TABLE only XEDRM6."es_statlogicvolume" alter column "folder" SET NOT null ;
-  ALTER TABLE only XEDRM6."es_statlogicvolume" alter column "elementid" SET NOT null ;
-  ALTER TABLE only XEDRM6."es_statphyvolume" alter column "usablespace" SET NOT null ;
-  ALTER TABLE only XEDRM6."es_statphyvolume" alter column "total" SET NOT null ;
-  ALTER TABLE only XEDRM6."es_statphyvolume" alter column "usedspace" SET NOT null ;
-  ALTER TABLE only XEDRM6."es_statphyvolume" alter column "regdate" SET NOT null ;
-  ALTER TABLE only XEDRM6."es_statphyvolume" alter column "volumeid" SET NOT null ;
-  ALTER TABLE only XEDRM6."es_statsummary" alter column "summary" SET NOT null ;
-  ALTER TABLE only XEDRM6."es_statsummary" alter column "es_event" SET NOT null ;
+  ALTER TABLE only public."es_statlogicvolume" alter column "filesize" SET NOT null ;
+  ALTER TABLE only public."es_statlogicvolume" alter column "doc" SET NOT null ;
+  ALTER TABLE only public."es_statlogicvolume" alter column "folder" SET NOT null ;
+  ALTER TABLE only public."es_statlogicvolume" alter column "elementid" SET NOT null ;
+  ALTER TABLE only public."es_statphyvolume" alter column "usablespace" SET NOT null ;
+  ALTER TABLE only public."es_statphyvolume" alter column "total" SET NOT null ;
+  ALTER TABLE only public."es_statphyvolume" alter column "usedspace" SET NOT null ;
+  ALTER TABLE only public."es_statphyvolume" alter column "regdate" SET NOT null ;
+  ALTER TABLE only public."es_statphyvolume" alter column "volumeid" SET NOT null ;
+  ALTER TABLE only public."es_statsummary" alter column "summary" SET NOT null ;
+  ALTER TABLE only public."es_statsummary" alter column "es_event" SET NOT null ;
   
   
   -- 20210705 : #980 캐시용 테이블 추가
-CREATE TABLE XEDRM6.es_cache 
+CREATE TABLE public.es_cache 
 	(
 		CACHE_ID character varying(256), 
 		CREATE_YMDTIME character varying(14)
 	);
-ALTER TABLE XEDRM6.es_cache ADD CONSTRAINT XPK_ES_CACHE PRIMARY KEY (cache_id);
-ALTER TABLE XEDRM6.es_cache OWNER TO XEDRM6;
+ALTER TABLE public.es_cache ADD CONSTRAINT XPK_ES_CACHE PRIMARY KEY (cache_id);
+ALTER TABLE public.es_cache OWNER TO XEDRM6;
 
-CREATE INDEX if not exists SYS_GROUP_PARENTID ON XEDRM6.SYS_GROUP (PARENT_ID);
+CREATE INDEX if not exists SYS_GROUP_PARENTID ON public.SYS_GROUP (PARENT_ID);
 
 
 
-CREATE TABLE XEDRM6.ES_VOLUME_HISTORY
+CREATE TABLE public.ES_VOLUME_HISTORY
 (	
     es_id VARCHAR(20) NOT NULL, 
 	es_lastmodified TIMESTAMP (6) NOT NULL, 
@@ -2397,8 +2398,8 @@ CREATE TABLE XEDRM6.ES_VOLUME_HISTORY
 	l1 numeric, 
 	l2 numeric
 );
-   
-ALTER TABLE XEDRM6.ES_VOLUME_HISTORY ADD CONSTRAINT ES_VOLUME_HISTORY_PK PRIMARY KEY(es_id);
+ALTER TABLE public.ES_VOLUME_HISTORY OWNER TO XEDRM6;   
+ALTER TABLE public.ES_VOLUME_HISTORY ADD CONSTRAINT ES_VOLUME_HISTORY_PK PRIMARY KEY(es_id);
 create index ES_VOLUME_HISTORY_idx1 on ES_VOLUME_HISTORY(es_date);
 create index ES_VOLUME_HISTORY_idx2 on ES_VOLUME_HISTORY(es_deleted);
 create index ES_VOLUME_HISTORY_idx3 on ES_VOLUME_HISTORY(es_volumeid);

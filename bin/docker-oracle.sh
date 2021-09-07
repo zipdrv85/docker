@@ -4,7 +4,7 @@ case "$1" in
     'start')  # Start docker postgres
 	echo "Starting Docker PostgresHA Service...: "
 	
-	docker-compose -f ../compose/docker-compose-oracle.yml up --build -d
+	docker-compose -f ../composeLocal/docker-compose-oracle.yml up --build -d
 	
 	RVAL=$?
 	echo $RVAL
