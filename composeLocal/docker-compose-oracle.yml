@@ -19,7 +19,7 @@ services:
         - ../db/oracle/data:/u01/app/oracle
         - ../db/oracle/script:/docker-entrypoint-initdb.d
       ports:
-        - "6729:1521"
+        - "15120:1521"
 
 #volumes:
   #oraclexe11gHA:

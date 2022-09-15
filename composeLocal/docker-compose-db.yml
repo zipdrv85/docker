@@ -19,7 +19,7 @@ services:
         #- ../db/oracle/storage:/u01/app/oracle
         - ../db/oracle/script:/docker-entrypoint-initdb.d
       ports:
-        - "11521:1521"
+        - "15120:1521"
 
   db-postgres:
     image: postgres:13-alpine
@@ -29,52 +29,64 @@ services:
     container_name: postgres13HA-database
     restart: always
     environment:
-      - POSTGRES_PASSWORD=1234
+      - POSTGRES_PASSWORD='#fhfpsTm4u!'
     volumes:
       #- postgres13HA:/var/lib/postgresql/data
       - ../db/postgres/script:/docker-entrypoint-initdb.d
     ports:
-      - "15432:5432"
+      - "15320:5432"
         #networks:
         #- backend-postgres
         #nginxHA-postgres:
           #image: nginx
-  db-tibero:
+   #db-tibero:
           #image: chanhi2000/tibero6:latest
-    build:
-      context: ../db/tibero/tibero-docker/
-      dockerfile: Dockerfile
-    container_name: tiberoHA-database
-    hostname: docker_tibero
+          #build:
+          #context: ../db/tibero/tibero-docker/
+          #dockerfile: Dockerfile
+          #container_name: tiberoHA-database
+          #hostname: docker_tibero
     # hostname: <HOSTNMAE_YOU_LIKE>
-    stdin_open: true
-    environment:
-      - TB_MAX_SESSION_COUNT=100
-      - TB_MEMORY_TARGET=4G
-      - TB_TOTAL_SHM_SIZE=2G
+    #stdin_open: true
+    #environment:
+    #- TB_MAX_SESSION_COUNT=100
+    #- TB_MEMORY_TARGET=4G
+    #- TB_TOTAL_SHM_SIZE=2G
       # specify all below for triggering tbimport from '/opt/tibero/dump'
-      - TB_IMPORT_ENABLE=true # default `false`
-      - TB_IMPORT_SID=TIBERO
-      - TB_IMPORT_PORT=8629
-      - TB_IMPORT_USERNAME=XEDRM5
-      - TB_IMPORT_PASSWORD=1234
-      - TB_IMPORT_SCRIPT=y
-      - TB_IMPORT_IGNORE=y
-      - TB_IMPORT_ROWS=y
-      - TB_IMPORT_CONSTRAINT=y
-      - TB_IMPORT_INDEX=y
-      - TB_IMPORT_TRIGGER=y
-      - TB_IMPORT_SYNONYM=n
-      - TB_IMPORT_SEQUENCE=y
-      - TB_IMPORT_USER=XEDRM5
-    volumes:
+      #- TB_IMPORT_ENABLE=true # default `false`
+      #- TB_IMPORT_SID=TIBERO
+      #- TB_IMPORT_PORT=8629
+      #- TB_IMPORT_USERNAME=XEDRM5
+      #- TB_IMPORT_PASSWORD=1234
+      #- TB_IMPORT_SCRIPT=y
+      #- TB_IMPORT_IGNORE=y
+      #- TB_IMPORT_ROWS=y
+      #- TB_IMPORT_CONSTRAINT=y
+      #- TB_IMPORT_INDEX=y
+      #- TB_IMPORT_TRIGGER=y
+      #- TB_IMPORT_SYNONYM=n
+      #- TB_IMPORT_SEQUENCE=y
+      #- TB_IMPORT_USER=XEDRM5
+      #volumes:
             #- ../db/tibero/tibero/database:/home/tibero/tibero6/database
-      - ../db/tibero/tibero/init/:/opt/tibero/init
-      - ../db/tibero/tibero/license:/opt/tibero/license
-      - ../db/tibero/tibero/dump:/opt/tibero/dump
-      - ../db/tibero/script:/scripts
+            #- ../db/tibero/tibero/init/:/opt/tibero/init
+            #- ../db/tibero/tibero/license:/opt/tibero/license
+            #- ../db/tibero/tibero/dump:/opt/tibero/dump
+            #- ../db/tibero/script:/scripts
+            #ports:
+            #- "18629:8629"
+  db-maria:
+    image: mariadb:latest
+    volumes:
+      - ../db/maria/conf.d:/etc/mysql/conf.d
+      - ../db/maria/data:/var/lib/mysql
+      - ../db/maria/initdb.d:/docker-entrypoint-initdb.d
+    env_file: ../db/maria/.env
+    environment:
+      TZ: Asia/Seoul
     ports:
-      - "18629:8629"
+      - "33600:3306"
+    restart: always
 
 
 #volumes:
